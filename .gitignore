@@ -1,0 +1,20 @@
+# nuScenes dataset and the private review workbook -- must stay local
+data/
+occlusion_samples.xlsx
+
+# Generated outputs -- regenerable from scripts, never uploaded
+occluded_samples/
+results/
+
+# Isolated Python environment for the YOLO experiment
+.venv/
+
+# Pretrained model weights (downloaded, not authored here)
+*.pt
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Jupyter
+.ipynb_checkpoints/
