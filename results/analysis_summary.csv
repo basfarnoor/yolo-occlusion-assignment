@@ -1,0 +1,6 @@
+stage_number,stage_label,n_reviewed,n_detected,detection_rate,n_visible_with_class_judgement,n_correct_class,correct_class_rate,n_confidence_values,mean_confidence,median_confidence,n_failure_type_recorded,failure_count[None],failure_count[Missed while visible],failure_count[Missed while partially visible],failure_count[Wrong class],failure_count[Box on the wrong object],failure_count[False target detection during full occlusion],failure_count[Unclear]
+1,Previous No Occlusion,8,8,1.0,8,8,1.0,8,0.774,0.86,0,0,0,0,0,0,0,0
+2,First Partial Occlusion,3,3,1.0,3,3,1.0,3,0.587,0.78,0,0,0,0,0,0,0,0
+3,Full Occlusion,8,1,0.125,1,1,1.0,8,0.029,0.0,0,0,0,0,0,0,0,0
+4,First Partial Appearance,2,1,0.5,1,1,1.0,2,0.425,0.425,0,0,0,0,0,0,0,0
+5,Full Appearance,7,7,1.0,7,7,1.0,6,0.845,0.91,0,0,0,0,0,0,0,0

@@ -3,8 +3,8 @@ data/
 occlusion_samples.xlsx
 
 # Generated outputs -- regenerable from scripts, never uploaded
-occluded_samples/
-results/
+# occluded_samples/
+# results/
 
 # Isolated Python environment for the YOLO experiment
 .venv/

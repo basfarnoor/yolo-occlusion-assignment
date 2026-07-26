@@ -1,0 +1,650 @@
+sample_number,stage_number,stage_name,image_filename,detected_class,confidence,x1,y1,x2,y2,box_width,box_height,inference_time_ms
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.92236,3.66,462.46,506.83,643.78,503.16,181.31,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.88396,533.7,463.75,677.41,556.48,143.72,92.72,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.82276,862.28,451.07,910.9,492.39,48.62,41.32,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.75438,1161.12,461.74,1556.29,652.32,395.17,190.58,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.65258,976.44,447.27,1047.73,496.86,71.28,49.58,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.63868,647.81,432.92,721.0,495.57,73.19,62.65,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.46852,770.78,442.33,800.78,470.3,29.99,27.97,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.2937,813.05,447.36,838.21,464.32,25.16,16.95,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.28594,477.29,457.41,554.59,531.27,77.31,73.86,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.28094,720.26,441.28,751.62,478.71,31.36,37.43,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.22631,933.75,446.3,962.19,475.85,28.44,29.54,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.20789,958.63,447.1,995.74,483.44,37.11,36.33,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.16609,911.84,446.87,955.41,470.51,43.57,23.64,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.16122,722.04,443.06,756.85,476.96,34.81,33.91,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.15783,1236.22,434.56,1301.27,472.56,65.06,38.0,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.12979,1162.78,462.13,1555.42,652.81,392.64,190.68,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.11492,1123.36,445.85,1148.48,487.68,25.13,41.83,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.10232,957.9,448.87,994.28,492.63,36.38,43.76,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.1023,1200.99,292.95,1231.24,336.99,30.24,44.04,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.09171,687.23,442.87,723.25,493.39,36.02,50.51,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.08186,1139.96,448.34,1192.93,517.41,52.97,69.07,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.07041,1081.44,451.11,1133.52,482.19,52.09,31.08,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.06945,1486.83,447.03,1518.04,518.17,31.21,71.15,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.06556,680.27,437.13,725.14,492.52,44.87,55.39,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.06421,1139.96,448.34,1192.93,517.41,52.97,69.07,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.0634,1238.64,433.29,1300.31,466.04,61.67,32.75,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.06286,647.81,432.92,721.0,495.57,73.19,62.65,836.4
+sample_001,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.0513,808.01,446.0,828.76,465.44,20.75,19.44,836.4
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.9291,59.71,460.25,587.44,653.69,527.74,193.43,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.83948,862.26,455.56,906.33,494.66,44.07,39.1,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.78269,525.06,468.75,667.55,564.17,142.49,95.43,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.73097,1196.21,466.84,1599.95,685.88,403.74,219.03,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.69617,969.54,452.49,1053.56,503.09,84.03,50.6,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.65707,767.4,447.95,801.61,475.65,34.2,27.7,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.63226,50.88,479.21,90.6,569.24,39.72,90.03,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.47585,0.05,492.16,29.81,591.22,29.77,99.06,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.30434,1195.17,466.88,1599.45,685.82,404.28,218.94,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.30001,640.85,439.34,716.78,499.12,75.93,59.79,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.25125,809.39,450.98,842.12,469.1,32.73,18.11,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.24314,1264.84,441.68,1316.18,482.4,51.34,40.72,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.22176,469.44,459.65,544.91,501.35,75.47,41.7,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.16554,717.74,449.33,750.97,488.0,33.23,38.67,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.16158,804.66,451.85,828.62,471.35,23.96,19.5,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.1487,685.5,452.63,719.2,496.38,33.7,43.75,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.14764,715.85,452.43,750.78,490.58,34.93,38.15,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.14492,913.88,452.02,949.2,476.54,35.32,24.52,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.11907,936.37,450.9,959.29,477.5,22.92,26.6,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.1184,645.77,446.51,716.69,499.27,70.92,52.76,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,traffic light,0.10729,1232.22,283.0,1267.49,335.34,35.27,52.34,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.10162,1577.42,451.55,1599.25,513.49,21.82,61.95,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.09486,1232.91,423.14,1268.75,530.63,35.84,107.49,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.09441,960.47,454.58,992.19,496.4,31.72,41.82,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,truck,0.08585,862.26,455.56,906.33,494.66,44.07,39.1,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.08245,957.28,450.6,994.29,479.89,37.01,29.29,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.07936,1167.52,450.36,1202.49,479.42,34.97,29.06,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.07623,643.78,454.99,693.84,500.49,50.06,45.5,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.07618,1577.42,451.55,1599.25,513.49,21.82,61.95,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.06913,691.1,441.67,723.2,495.82,32.1,54.15,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.05459,582.2,444.14,603.91,475.01,21.71,30.87,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.05442,742.26,449.34,759.56,482.05,17.29,32.71,162.43
+sample_001,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.05313,1132.37,446.56,1160.84,490.73,28.47,44.17,162.43
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.93494,1271.24,479.71,1600.0,755.27,328.76,275.56,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.92538,340.77,461.82,810.09,651.44,469.32,189.63,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.77908,225.0,495.11,377.73,591.3,152.73,96.19,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.67061,861.8,466.66,901.83,499.92,40.03,33.26,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.46278,1281.7,270.23,1323.98,356.31,42.28,86.08,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.38911,983.67,465.55,1063.13,516.22,79.47,50.68,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.31629,859.56,468.76,900.91,499.99,41.35,31.22,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,person,0.28286,1226.4,458.72,1254.11,538.79,27.7,80.06,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.28202,707.11,459.84,753.64,497.8,46.53,37.96,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.25864,767.03,458.9,799.69,487.65,32.66,28.74,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,person,0.23763,1220.79,460.22,1253.14,538.12,32.35,77.9,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.1567,913.09,462.59,957.62,487.22,44.53,24.63,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.14969,639.2,444.99,702.46,485.26,63.26,40.26,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.14127,926.32,462.27,964.56,492.37,38.23,30.1,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.12974,957.06,464.45,997.35,503.15,40.29,38.7,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.12233,769.22,456.15,800.67,485.69,31.46,29.54,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.11292,720.82,463.74,758.7,494.78,37.88,31.04,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.08698,639.68,449.23,716.21,503.74,76.53,54.51,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.08399,1255.93,446.67,1292.71,489.28,36.78,42.61,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.07909,760.61,462.12,794.67,488.89,34.06,26.77,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.07778,1340.13,453.13,1394.75,477.98,54.62,24.85,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,person,0.0754,594.92,427.54,626.51,461.66,31.58,34.12,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,person,0.07039,268.45,481.33,295.48,522.7,27.03,41.38,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.07011,820.68,464.24,843.29,483.32,22.61,19.08,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.0696,684.36,458.58,741.61,499.55,57.25,40.97,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,person,0.06673,615.5,427.66,643.42,461.2,27.91,33.54,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.06316,961.13,463.64,1006.11,506.47,44.98,42.83,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.05982,1257.4,452.6,1292.07,492.14,34.67,39.53,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.05858,806.03,456.24,847.35,480.11,41.32,23.87,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.05833,637.73,446.75,704.45,506.83,66.72,60.08,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.0575,804.51,463.42,828.79,482.55,24.28,19.13,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,car,0.05601,953.45,466.95,1000.19,509.57,46.73,42.62,182.73
+sample_001,3,full_occlusion,3_full_occlusion.jpg,person,0.05244,552.43,427.49,584.11,463.2,31.68,35.71,182.73
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.91691,1305.91,483.49,1600.0,795.94,294.09,312.45,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.89228,525.94,463.93,895.47,632.93,369.53,168.99,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.88674,198.31,499.25,402.75,596.6,204.44,97.35,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.8539,386.07,482.56,560.32,608.47,174.25,125.9,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.50808,998.94,466.28,1064.59,518.64,65.65,52.37,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.45154,860.83,468.27,898.61,496.92,37.77,28.66,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.35438,858.08,466.71,897.73,498.17,39.65,31.46,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.34602,1283.36,453.05,1324.22,491.9,40.85,38.86,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.17684,1264.38,453.22,1323.61,493.95,59.22,40.74,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.17065,909.98,463.65,955.52,490.71,45.54,27.06,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.16753,638.3,444.87,697.88,470.85,59.59,25.98,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.15638,947.62,464.76,993.79,504.47,46.17,39.72,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.15043,1313.48,398.94,1360.15,579.53,46.67,180.59,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.15039,963.26,464.43,1011.1,508.98,47.84,44.55,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.12344,242.17,480.69,269.36,530.63,27.19,49.94,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.12257,325.34,497.46,402.57,539.74,77.22,42.27,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.11954,929.9,464.51,962.55,496.22,32.65,31.71,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.11228,1254.38,456.77,1291.48,494.18,37.1,37.41,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.10592,967.49,466.31,1007.73,513.25,40.23,46.94,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.10244,1224.52,453.16,1264.5,492.08,39.98,38.92,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.09628,1267.13,448.92,1324.13,493.01,57.0,44.09,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.09017,1229.94,456.87,1255.52,535.19,25.57,78.33,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.08439,951.15,466.94,994.43,510.03,43.29,43.09,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.08366,1284.43,452.35,1322.52,489.11,38.09,36.77,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.08049,444.29,481.48,508.73,523.34,64.44,41.86,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.07653,638.57,449.56,678.76,469.7,40.18,20.14,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.07363,1259.78,451.56,1301.92,493.53,42.14,41.97,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.06553,1381.73,421.67,1562.99,525.87,181.26,104.2,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.06237,805.48,464.39,845.7,499.28,40.22,34.89,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,traffic light,0.06062,494.94,416.53,512.06,437.54,17.11,21.01,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.05937,1385.1,471.33,1470.18,527.07,85.08,55.74,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.05858,458.58,486.62,507.73,521.03,49.15,34.41,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,truck,0.0582,1378.09,380.19,1564.41,525.47,186.31,145.28,156.37
+sample_001,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.0524,950.13,461.79,1003.6,507.17,53.47,45.39,156.37
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.92284,307.19,487.34,598.92,626.28,291.74,138.95,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.88348,670.55,461.18,944.48,622.16,273.94,160.98,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.80445,161.62,501.81,376.69,608.49,215.07,106.67,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.80384,1358.71,492.78,1599.25,764.99,240.54,272.21,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.61643,1000.42,469.73,1067.34,524.8,66.92,55.07,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.42513,1291.13,457.17,1352.86,497.4,61.73,40.22,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.39156,1248.06,454.19,1349.31,500.7,101.24,46.51,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.27672,297.36,501.66,376.46,540.21,79.09,38.55,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,person,0.23816,208.95,480.2,236.03,542.94,27.08,62.75,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.22534,906.17,466.7,961.83,498.97,55.66,32.27,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.20112,931.98,468.18,967.49,501.21,35.51,33.04,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,person,0.17599,206.31,481.03,232.52,545.11,26.22,64.09,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.17479,966.84,469.48,1004.02,516.46,37.18,46.98,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,truck,0.16807,613.04,452.45,695.75,524.93,82.7,72.48,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,parking meter,0.16208,1353.42,405.18,1403.36,521.12,49.94,115.94,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,person,0.1404,207.0,482.72,235.6,542.66,28.59,59.94,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,person,0.12129,204.78,487.55,230.8,544.49,26.02,56.94,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.11357,956.19,468.5,989.8,507.92,33.61,39.42,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,truck,0.10912,1403.42,440.39,1586.77,532.79,183.35,92.39,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.10886,563.57,479.25,615.53,514.99,51.97,35.74,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.10309,1161.02,461.29,1252.55,500.07,91.53,38.77,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.09655,965.79,467.09,1007.81,511.3,42.02,44.22,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.09649,1403.42,440.39,1586.77,532.79,183.35,92.39,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.0825,956.62,470.42,987.82,511.92,31.2,41.5,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.07503,1285.71,455.88,1352.12,498.28,66.41,42.41,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.07153,613.04,452.45,695.75,524.93,82.7,72.48,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.07033,1246.94,458.98,1294.29,499.84,47.35,40.86,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.06381,892.75,466.58,929.13,500.25,36.39,33.66,161.0
+sample_001,5,full_appearance,5_full_appearance.jpg,car,0.05199,208.49,492.86,274.51,542.34,66.02,49.48,161.0
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.91356,548.45,465.73,924.1,588.81,375.65,123.08,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.8614,378.58,483.64,555.58,546.98,177.0,63.34,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.80065,19.3,450.47,383.05,589.7,363.75,139.24,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.72824,1040.77,187.99,1072.87,253.52,32.1,65.53,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.46517,1093.63,116.64,1129.85,202.82,36.22,86.18,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.43578,1440.16,3.25,1502.63,201.66,62.47,198.41,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.32784,1171.58,53.58,1220.52,162.87,48.94,109.29,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.23382,727.1,320.26,745.44,353.41,18.34,33.15,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.11069,591.68,328.21,607.88,364.93,16.2,36.71,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.10665,589.43,328.68,607.7,365.98,18.27,37.3,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.07953,1484.04,421.6,1599.56,492.18,115.52,70.58,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.06239,1426.32,227.68,1518.74,289.11,92.43,61.44,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.06164,19.3,450.47,383.05,589.7,363.75,139.24,171.58
+sample_003,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05013,724.86,316.04,744.15,344.83,19.3,28.79,171.58
+sample_003,3,full_occlusion,3_full_occlusion.jpg,car,0.90351,934.21,453.22,1310.5,576.68,376.29,123.46,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.73914,1041.03,186.78,1072.53,253.89,31.5,67.11,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,car,0.54284,248.43,436.92,637.06,579.22,388.62,142.31,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.52354,1439.2,3.11,1502.75,200.46,63.55,197.35,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.47415,1093.86,116.45,1129.7,196.47,35.84,80.02,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.39877,1171.54,50.22,1220.13,162.32,48.59,112.11,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,car,0.32404,1.6,459.04,177.5,604.53,175.9,145.49,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,truck,0.30733,248.43,436.92,637.06,579.22,388.62,142.31,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,car,0.28297,0.3,473.34,115.54,605.8,115.24,132.46,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.24165,726.92,322.2,745.36,354.44,18.43,32.24,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,truck,0.15723,0.04,399.7,178.01,603.21,177.97,203.51,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.13752,1426.5,227.0,1506.13,290.36,79.63,63.36,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.13158,589.13,327.97,608.08,367.61,18.95,39.64,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.0954,591.8,327.59,608.3,366.53,16.5,38.94,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,car,0.09338,0.04,399.7,178.01,603.21,177.97,203.51,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.08649,588.35,328.58,608.39,372.35,20.04,43.77,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,truck,0.07392,0.3,473.34,115.54,605.8,115.24,132.46,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,truck,0.06958,1.6,459.04,177.5,604.53,175.9,145.49,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.06046,1330.57,269.72,1358.42,324.4,27.85,54.68,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.05263,724.96,329.64,744.21,366.32,19.25,36.69,183.82
+sample_003,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.05045,934.46,414.66,956.03,436.6,21.57,21.93,183.82
+sample_003,5,full_appearance,5_full_appearance.jpg,bus,0.87789,1019.54,332.19,1598.3,574.04,578.75,241.85,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.8606,221.64,480.82,548.99,576.87,327.35,96.05,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.72812,1041.21,188.09,1072.38,253.69,31.17,65.59,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.59498,633.79,482.47,682.62,521.12,48.83,38.65,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.5156,1093.72,116.76,1130.01,204.76,36.29,87.99,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,bus,0.47977,0.0,414.66,355.09,570.58,355.09,155.92,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.35645,1171.47,50.74,1220.26,160.6,48.8,109.87,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.33914,1439.18,3.88,1502.94,203.18,63.76,199.3,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.29272,543.78,479.28,590.12,523.82,46.34,44.55,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.28258,727.53,321.2,745.79,352.37,18.26,31.17,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.17018,588.99,328.35,607.81,365.97,18.82,37.62,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.13372,455.23,303.33,510.53,403.08,55.3,99.75,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.12932,1555.31,478.32,1599.41,557.39,44.1,79.07,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.1261,588.05,483.14,636.92,521.15,48.87,38.01,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.1131,592.03,328.13,608.24,365.5,16.21,37.37,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.08573,588.38,328.97,608.23,369.96,19.85,40.99,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.08145,891.98,490.89,928.22,517.56,36.24,26.67,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,truck,0.07471,0.0,414.66,355.09,570.58,355.09,155.92,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.07418,0.36,598.13,144.96,719.24,144.6,121.11,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.06174,1425.06,227.96,1515.35,289.34,90.29,61.38,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,car,0.06147,546.97,476.78,590.09,505.2,43.12,28.42,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.05966,933.63,414.66,959.38,438.29,25.75,23.64,141.68
+sample_003,5,full_appearance,5_full_appearance.jpg,traffic light,0.05603,725.3,317.03,744.83,344.85,19.53,27.82,141.68
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.91047,1315.57,446.87,1598.97,544.73,283.4,97.86,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,bus,0.82405,606.48,353.52,906.42,522.09,299.94,168.57,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.59666,842.42,455.81,1237.37,573.31,394.94,117.5,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.52451,1106.45,288.43,1136.17,380.36,29.72,91.93,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.4304,1078.38,291.68,1106.53,346.78,28.14,55.1,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.38356,1106.1,287.97,1134.32,356.34,28.22,68.37,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.27709,843.32,455.85,1236.73,574.07,393.41,118.22,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.21804,911.26,319.49,934.96,391.95,23.7,72.47,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.10917,456.67,359.16,472.68,383.57,16.0,24.41,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.06813,456.9,358.5,474.33,379.65,17.43,21.15,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.06207,910.05,319.28,931.81,390.54,21.76,71.26,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.05919,570.35,444.02,607.81,486.19,37.47,42.17,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.05586,606.48,353.52,906.42,522.09,299.94,168.57,162.25
+sample_004,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05028,1079.14,287.7,1125.69,358.82,46.55,71.12,162.25
+sample_004,3,full_occlusion,3_full_occlusion.jpg,car,0.88665,1117.69,447.42,1562.72,573.93,445.02,126.51,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,truck,0.62173,592.55,352.8,824.77,516.73,232.23,163.93,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.59863,1088.0,278.69,1119.36,354.64,31.36,75.95,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.39649,1061.99,281.43,1090.45,344.39,28.46,62.96,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,bus,0.31498,592.55,352.8,824.77,516.73,232.23,163.93,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.26578,891.86,315.18,915.4,388.41,23.54,73.23,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.22266,892.54,315.68,915.9,372.86,23.37,57.18,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.09417,890.95,316.16,910.67,378.37,19.72,62.21,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.08703,420.65,359.2,441.02,380.26,20.37,21.06,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,car,0.06349,545.1,445.03,595.16,493.02,50.06,47.99,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,person,0.0608,898.12,429.77,924.91,502.55,26.8,72.78,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.06014,1092.06,280.23,1122.64,369.8,30.58,89.57,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.05281,889.85,312.65,921.99,388.15,32.14,75.51,135.54
+sample_004,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.0521,603.1,255.05,624.47,290.31,21.37,35.26,135.54
+sample_004,5,full_appearance,5_full_appearance.jpg,car,0.91402,880.11,443.73,1188.8,540.21,308.68,96.48,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,car,0.88804,1438.5,439.47,1599.09,568.21,160.58,128.74,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,truck,0.72777,598.61,354.63,762.53,508.22,163.92,153.58,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.39148,1076.92,271.16,1106.38,331.76,29.45,60.6,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.37956,875.46,309.22,898.7,380.2,23.24,70.98,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,bus,0.15329,598.61,354.63,762.53,508.22,163.92,153.58,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,car,0.14303,525.37,438.92,583.88,487.34,58.5,48.42,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.14198,1094.34,335.43,1123.12,366.03,28.78,30.6,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.12926,396.87,351.32,415.91,372.36,19.05,21.04,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.09867,1048.18,275.04,1070.2,333.55,22.02,58.52,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.0857,1075.32,273.41,1127.31,366.19,51.99,92.78,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.05882,887.92,314.05,913.49,369.45,25.57,55.4,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.05704,875.55,313.31,895.44,381.6,19.9,68.29,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.05672,396.42,350.59,426.41,419.92,29.99,69.33,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.05671,1071.77,269.08,1115.4,365.94,43.63,96.86,160.04
+sample_004,5,full_appearance,5_full_appearance.jpg,traffic light,0.05236,874.4,306.86,910.41,379.6,36.0,72.73,160.04
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.87442,233.73,413.33,683.76,581.79,450.03,168.46,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.82041,0.04,471.62,161.61,550.57,161.57,78.95,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.81543,776.9,390.42,1226.74,546.48,449.85,156.05,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.5675,1061.16,268.42,1090.62,335.19,29.46,66.77,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.47033,628.31,386.94,711.05,484.24,82.74,97.31,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.21666,1031.89,270.75,1066.25,334.53,34.36,63.78,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,bus,0.11592,628.31,386.94,711.05,484.24,82.74,97.31,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.11253,371.63,352.55,390.14,373.84,18.51,21.29,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.1023,861.13,310.6,882.14,377.04,21.01,66.44,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.08337,368.73,350.85,389.75,375.74,21.02,24.89,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.06945,1062.23,270.58,1092.59,332.43,30.36,61.85,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05652,1035.65,266.29,1093.31,338.63,57.67,72.35,139.24
+sample_005,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05582,1075.75,337.9,1098.2,367.44,22.45,29.54,139.24
+sample_005,3,full_occlusion,3_full_occlusion.jpg,truck,0.47229,512.02,398.31,977.72,580.7,465.7,182.39,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.37062,1062.45,271.09,1093.27,331.45,30.82,60.35,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.31332,1061.66,269.15,1091.04,334.01,29.38,64.86,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.30489,859.54,310.2,881.04,388.14,21.5,77.94,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.25113,1032.1,271.69,1064.96,334.33,32.86,62.64,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,bus,0.20081,512.02,398.31,977.72,580.7,465.7,182.39,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,car,0.18338,512.02,398.31,977.72,580.7,465.7,182.39,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,person,0.16152,949.28,400.7,983.51,485.29,34.23,84.59,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.12336,372.25,352.42,390.12,373.82,17.87,21.4,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.10878,1074.76,338.6,1097.31,367.69,22.55,29.1,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.0961,368.98,350.86,389.75,374.89,20.77,24.03,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.08602,1063.64,269.83,1095.19,367.84,31.55,98.01,167.94
+sample_005,3,full_occlusion,3_full_occlusion.jpg,person,0.08155,359.95,440.25,391.31,510.55,31.36,70.3,167.94
+sample_005,5,full_appearance,5_full_appearance.jpg,car,0.85986,1472.77,435.08,1599.29,541.23,126.52,106.15,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,truck,0.80995,364.12,397.18,775.86,550.38,411.75,153.2,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,truck,0.6672,822.06,394.92,1320.26,576.95,498.21,182.03,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,traffic light,0.5747,1060.68,268.95,1090.94,334.57,30.26,65.62,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,traffic light,0.15905,1032.04,270.75,1065.85,334.15,33.81,63.4,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,traffic light,0.15399,372.57,352.73,390.13,373.73,17.56,21.0,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,car,0.15061,822.06,394.92,1320.26,576.95,498.21,182.03,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,traffic light,0.11542,860.55,309.9,881.74,388.89,21.2,78.98,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,bus,0.06688,822.06,394.92,1320.26,576.95,498.21,182.03,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,traffic light,0.06428,369.71,351.52,389.93,374.45,20.22,22.93,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,traffic light,0.05156,1076.13,336.58,1098.54,366.76,22.41,30.18,166.25
+sample_005,5,full_appearance,5_full_appearance.jpg,traffic light,0.05094,1039.05,266.75,1094.0,336.74,54.95,69.99,166.25
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.92965,1253.1,432.41,1599.87,541.65,346.77,109.24,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.91487,590.48,453.63,981.76,584.56,391.28,130.93,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.89782,355.76,456.11,611.03,547.43,255.27,91.31,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.37927,1062.6,271.65,1093.5,332.01,30.9,60.36,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.3504,1061.74,269.37,1091.27,335.84,29.53,66.47,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.30017,1031.67,271.99,1064.79,333.92,33.13,61.93,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.14567,859.89,311.27,882.29,381.82,22.4,70.55,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.13208,1075.91,336.59,1098.51,368.56,22.59,31.97,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.12709,372.49,353.46,390.83,373.83,18.34,20.37,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.07879,369.09,351.9,389.78,374.78,20.69,22.88,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.07871,722.78,282.22,749.82,354.08,27.04,71.86,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.07523,1063.73,270.03,1095.72,368.58,31.99,98.55,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.06659,865.12,420.03,887.55,489.4,22.42,69.37,155.39
+sample_006,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05085,857.78,316.41,877.28,383.97,19.51,67.55,155.39
+sample_006,3,full_occlusion,3_full_occlusion.jpg,car,0.91817,160.11,462.26,434.69,551.29,274.58,89.03,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,car,0.52418,927.41,441.94,1349.79,583.34,422.38,141.4,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,car,0.39884,925.33,442.44,1349.04,582.09,423.72,139.65,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,person,0.35541,865.13,422.57,889.52,497.3,24.38,74.73,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.3057,1062.7,271.36,1093.3,332.05,30.61,60.69,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.30375,1031.79,271.16,1064.95,333.28,33.15,62.12,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.27853,1061.71,268.99,1090.89,333.9,29.18,64.91,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.24109,1063.39,270.29,1095.42,367.79,32.03,97.5,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,car,0.19536,585.77,447.68,626.03,470.16,40.26,22.48,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.18043,860.42,311.8,881.11,380.34,20.69,68.54,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,car,0.17564,639.05,418.68,688.42,465.41,49.37,46.73,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.17347,372.43,353.8,390.51,375.2,18.08,21.4,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,truck,0.16641,639.05,418.68,688.42,465.41,49.37,46.73,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,car,0.16336,505.89,440.88,563.49,490.87,57.6,49.99,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,car,0.15988,577.98,446.53,618.92,471.16,40.94,24.63,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.12376,1075.78,337.1,1099.69,368.81,23.92,31.71,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.09272,369.84,352.26,389.61,376.43,19.76,24.17,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.07668,858.47,317.15,876.0,383.05,17.53,65.9,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,bus,0.06292,639.05,418.68,688.42,465.41,49.37,46.73,156.38
+sample_006,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.05958,868.0,314.76,895.29,373.6,27.3,58.84,156.38
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.93081,678.96,445.89,996.14,545.15,317.18,99.27,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.91732,0.0,469.6,247.95,554.18,247.95,84.58,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.90194,1274.06,437.57,1600.0,578.3,325.94,140.73,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.37156,1062.39,271.16,1093.65,332.32,31.26,61.16,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,person,0.30878,312.36,455.32,340.79,523.96,28.42,68.64,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.30692,1031.72,271.71,1065.12,333.21,33.4,61.49,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.28278,1061.63,269.05,1091.31,335.32,29.68,66.27,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.25773,634.54,420.38,683.32,463.63,48.78,43.24,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.20905,860.68,310.44,883.98,380.14,23.31,69.7,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.20082,1063.7,270.01,1095.75,367.3,32.05,97.29,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.17369,581.56,442.87,627.05,470.5,45.49,27.63,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,person,0.16697,291.63,448.92,329.15,516.74,37.52,67.82,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.14339,371.98,353.55,390.27,373.21,18.3,19.67,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.14172,575.33,441.46,624.49,471.38,49.16,29.92,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.14117,1077.78,338.8,1098.43,368.4,20.64,29.6,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.10355,504.61,441.3,563.59,491.64,58.98,50.34,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,person,0.08946,317.72,456.67,344.09,517.23,26.36,60.56,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.08267,368.8,352.3,389.0,373.19,20.2,20.89,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,person,0.06912,364.9,442.12,395.68,509.03,30.78,66.91,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,person,0.06884,362.92,446.44,390.41,509.92,27.49,63.48,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,car,0.06653,593.44,457.19,764.25,526.54,170.81,69.35,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,truck,0.05661,634.54,420.38,683.32,463.63,48.78,43.24,144.46
+sample_006,5,full_appearance,5_full_appearance.jpg,traffic light,0.05585,866.8,313.13,896.19,375.19,29.39,62.05,144.46
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.85986,1472.77,435.08,1599.29,541.23,126.52,106.15,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.80995,364.12,397.18,775.86,550.38,411.75,153.2,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.6672,822.06,394.92,1320.26,576.95,498.21,182.03,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.5747,1060.68,268.95,1090.94,334.57,30.26,65.62,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.15905,1032.04,270.75,1065.85,334.15,33.81,63.4,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.15399,372.57,352.73,390.13,373.73,17.56,21.0,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.15061,822.06,394.92,1320.26,576.95,498.21,182.03,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.11542,860.55,309.9,881.74,388.89,21.2,78.98,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,bus,0.06688,822.06,394.92,1320.26,576.95,498.21,182.03,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.06428,369.71,351.52,389.93,374.45,20.22,22.93,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05156,1076.13,336.58,1098.54,366.76,22.41,30.18,135.2
+sample_007,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05094,1039.05,266.75,1094.0,336.74,54.95,69.99,135.2
+sample_007,3,full_occlusion,3_full_occlusion.jpg,car,0.90133,0.57,473.99,123.8,575.32,123.23,101.33,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,truck,0.76415,173.74,408.21,570.8,551.67,397.06,143.46,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,truck,0.50212,1152.11,382.0,1600.0,574.08,447.89,192.08,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,truck,0.42401,173.66,407.88,570.86,550.43,397.19,142.55,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,person,0.38601,864.64,420.99,888.8,497.0,24.16,76.01,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,truck,0.34425,644.89,398.13,713.12,477.44,68.23,79.3,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.34205,1061.49,268.81,1090.96,335.88,29.47,67.08,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.32237,1062.28,271.09,1093.14,332.29,30.86,61.21,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,bus,0.26768,644.89,398.13,713.12,477.44,68.23,79.3,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,bus,0.26297,1152.11,382.0,1600.0,574.08,447.89,192.08,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.21225,1032.53,271.38,1065.07,333.39,32.54,62.02,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,car,0.20072,1152.11,382.0,1600.0,574.08,447.89,192.08,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.17303,860.69,312.41,881.33,374.63,20.64,62.23,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.15063,372.29,352.83,390.69,375.11,18.4,22.29,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.12444,1077.35,337.51,1096.58,368.07,19.23,30.56,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.08706,369.13,350.93,389.45,375.48,20.32,24.55,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.07679,1068.46,367.38,1082.48,395.62,14.02,28.24,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,car,0.06287,644.89,398.13,713.12,477.44,68.23,79.3,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,car,0.06267,174.06,427.99,321.06,549.46,147.0,121.47,168.0
+sample_007,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.05167,858.12,320.0,876.83,382.55,18.71,62.55,168.0
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.9118,35.05,465.82,357.83,577.37,322.77,111.55,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.90661,933.5,420.91,1266.34,543.27,332.84,122.36,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,person,0.56706,1261.39,418.06,1312.86,494.07,51.48,76.01,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,truck,0.49346,1492.25,377.52,1599.26,565.2,107.01,187.68,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,person,0.46906,865.17,422.54,889.73,496.91,24.55,74.37,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.42402,0.18,437.96,128.35,549.75,128.17,111.79,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.39951,1062.54,270.54,1093.63,333.37,31.09,62.82,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.31722,860.42,311.3,882.47,376.61,22.06,65.3,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,bus,0.3136,651.18,403.77,711.4,474.87,60.22,71.1,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,bus,0.26415,1492.25,377.52,1599.26,565.2,107.01,187.68,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.25929,1032.48,270.94,1064.95,334.26,32.47,63.32,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,truck,0.24173,651.18,403.77,711.4,474.87,60.22,71.1,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,bicycle,0.22074,1249.3,453.05,1334.62,524.86,85.32,71.81,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.2123,1061.68,268.69,1090.86,335.56,29.19,66.86,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.17666,506.12,440.71,562.25,491.07,56.13,50.36,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,bus,0.17391,651.15,402.59,710.94,475.69,59.79,73.1,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.16805,372.54,353.63,390.14,375.29,17.59,21.66,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,truck,0.14301,651.15,402.59,710.94,475.69,59.79,73.1,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.13795,1076.48,338.96,1097.14,367.69,20.66,28.73,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.1177,651.18,403.77,711.4,474.87,60.22,71.1,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.11676,369.43,351.94,389.07,375.61,19.63,23.67,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,bicycle,0.10429,1253.71,420.93,1331.75,524.15,78.05,103.22,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.09726,1492.25,377.52,1599.26,565.2,107.01,187.68,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.09565,576.17,441.85,602.81,468.17,26.64,26.32,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.08092,619.18,450.85,642.83,467.67,23.65,16.81,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,person,0.07532,1255.73,417.69,1327.21,521.86,71.48,104.18,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.07059,51.86,435.85,124.31,477.7,72.45,41.84,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,traffic light,0.06673,858.9,316.8,877.43,383.19,18.53,66.39,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.06417,0.11,467.73,65.17,550.14,65.07,82.42,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,car,0.06363,602.24,447.01,627.35,467.32,25.12,20.31,157.41
+sample_007,5,full_appearance,5_full_appearance.jpg,bicycle,0.05768,1262.76,474.29,1333.54,522.88,70.78,48.6,157.41
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.87458,214.65,477.45,726.75,808.58,512.1,331.13,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.54148,1128.31,557.03,1168.95,647.86,40.64,90.83,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.38331,746.84,542.67,775.27,635.01,28.43,92.34,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.36424,746.24,541.81,776.05,635.21,29.81,93.39,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.22579,49.17,488.09,227.64,622.17,178.47,134.09,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.19657,1054.72,536.92,1082.48,637.19,27.75,100.27,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.16449,0.69,485.16,226.32,623.75,225.63,138.59,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.16059,1407.46,508.53,1443.71,637.82,36.24,129.29,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.14522,1407.56,510.89,1444.54,630.52,36.98,119.63,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.14394,1408.39,513.58,1440.21,634.4,31.81,120.83,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.1188,1107.62,459.94,1141.39,550.83,33.77,90.9,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.09774,1057.14,539.43,1076.03,587.96,18.89,48.52,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.09674,949.46,490.68,973.65,554.1,24.18,63.42,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.08531,1490.96,561.07,1535.7,594.39,44.74,33.31,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.07837,0.0,483.62,229.43,622.46,229.43,138.84,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.0652,101.52,520.94,224.17,620.11,122.65,99.17,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.06235,947.23,493.69,968.61,554.2,21.38,60.51,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05822,1057.14,539.43,1076.03,587.96,18.89,48.52,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05617,631.32,450.13,671.11,491.99,39.79,41.86,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05487,632.41,450.47,683.43,494.13,51.02,43.67,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05435,638.55,446.21,682.12,491.33,43.57,45.12,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.05125,713.85,537.7,744.53,606.15,30.68,68.45,155.01
+sample_011,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05092,630.96,447.22,680.77,489.76,49.82,42.54,155.01
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.90482,33.4,468.42,579.5,808.29,546.1,339.87,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.75358,0.0,587.27,290.68,896.42,290.68,309.15,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.74471,749.73,523.2,785.98,627.77,36.26,104.57,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.49346,642.01,530.33,694.35,685.87,52.34,155.54,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.49268,1474.6,515.02,1514.44,625.23,39.84,110.21,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.35168,1419.97,496.08,1443.67,572.25,23.71,76.18,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.34311,694.65,524.96,732.6,625.13,37.95,100.17,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.33045,1181.68,524.44,1223.81,633.26,42.13,108.82,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,umbrella,0.31389,636.86,489.73,727.51,543.27,90.65,53.54,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.18232,1040.12,485.95,1062.5,519.45,22.37,33.5,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.1169,0.0,556.03,21.07,624.32,21.07,68.29,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,traffic light,0.10495,1124.08,446.72,1157.82,522.71,33.75,75.99,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.10023,698.73,518.35,741.18,626.84,42.44,108.49,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.09886,0.5,468.97,108.92,600.7,108.42,131.73,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.097,574.27,498.87,653.11,569.32,78.84,70.45,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.09228,1096.65,522.05,1124.19,608.82,27.54,86.77,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,traffic light,0.08468,1125.06,431.58,1162.18,523.92,37.12,92.34,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.07405,905.9,470.6,948.24,563.4,42.34,92.8,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.05812,1014.44,487.42,1033.32,519.45,18.88,32.03,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,traffic light,0.05789,1114.5,441.35,1156.97,525.59,42.47,84.24,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.05427,571.44,489.39,732.76,563.32,161.33,73.92,148.43
+sample_011,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.05269,1513.99,537.39,1562.48,567.16,48.5,29.77,148.43
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.69611,768.47,505.04,799.73,609.36,31.26,104.33,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.65812,669.53,517.03,733.83,676.56,64.3,159.53,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.37728,1256.58,504.55,1301.62,618.41,45.04,113.85,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,car,0.36439,578.86,473.8,765.19,553.87,186.33,80.07,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.33281,1430.85,478.9,1463.12,554.41,32.27,75.51,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,tv,0.20837,1368.7,270.77,1545.2,345.04,176.5,74.27,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,car,0.19942,0.0,387.49,381.87,787.17,381.87,399.68,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,bus,0.19547,0.0,387.49,381.87,787.17,381.87,399.68,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,tv,0.18173,794.93,284.27,894.55,346.01,99.62,61.74,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,umbrella,0.17631,662.48,477.93,761.41,523.82,98.93,45.89,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,truck,0.1335,0.0,387.49,381.87,787.17,381.87,399.68,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.11345,710.69,514.87,748.61,605.86,37.91,90.98,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,tv,0.10987,1162.77,271.74,1332.73,349.7,169.95,77.95,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,car,0.10498,363.26,460.25,460.4,581.84,97.15,121.59,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,clock,0.09768,418.87,419.74,474.8,478.9,55.93,59.16,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.09661,654.38,402.07,679.99,452.29,25.61,50.23,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.09382,1426.23,481.54,1452.46,554.36,26.22,72.82,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.09304,1492.39,496.8,1516.14,560.95,23.76,64.14,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,truck,0.09111,578.86,473.8,765.19,553.87,186.33,80.07,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,truck,0.08835,363.26,460.25,460.4,581.84,97.15,121.59,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,person,0.08398,1491.38,493.25,1515.23,558.96,23.85,65.71,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.08298,634.26,402.53,679.69,455.38,45.43,52.85,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,tv,0.08261,968.33,262.71,1138.17,353.67,169.84,90.96,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.06468,1160.18,403.04,1197.69,484.93,37.51,81.89,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,bus,0.06312,363.26,460.25,460.4,581.84,97.15,121.59,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,tv,0.05523,1367.54,274.18,1491.91,341.42,124.37,67.24,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,car,0.05297,1538.92,512.4,1598.35,561.44,59.43,49.04,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.05272,655.32,407.14,678.47,453.06,23.15,45.92,147.59
+sample_011,3,full_occlusion,3_full_occlusion.jpg,car,0.05116,0.36,394.46,380.91,868.22,380.56,473.76,147.59
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.61113,0.52,438.82,170.48,755.24,169.96,316.42,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,truck,0.58156,3.69,371.97,487.86,577.63,484.18,205.66,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,umbrella,0.56439,768.29,460.03,884.82,509.74,116.52,49.71,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.5355,769.72,502.16,832.9,673.11,63.18,170.95,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.45123,0.17,436.37,172.05,826.23,171.88,389.86,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.38175,160.33,477.05,324.19,578.53,163.86,101.48,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.2429,845.59,505.54,873.26,594.7,27.66,89.16,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.20329,1293.31,473.57,1327.12,576.43,33.81,102.86,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,tv,0.18957,1254.16,224.4,1445.95,314.6,191.79,90.2,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,tv,0.17471,1484.89,224.65,1599.14,311.96,114.24,87.31,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.15697,842.68,507.21,872.18,595.7,29.51,88.5,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.14975,623.32,455.82,780.76,531.53,157.44,75.71,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,tv,0.13383,1483.89,226.74,1598.98,303.79,115.09,77.05,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.12549,633.18,456.48,778.56,533.07,145.38,76.59,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,truck,0.11908,1304.0,433.5,1465.49,536.25,161.49,102.75,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.11561,1148.58,442.85,1175.76,479.4,27.18,36.55,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,truck,0.11378,329.87,441.09,486.71,572.68,156.84,131.6,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.11093,742.5,497.32,774.28,586.78,31.78,89.46,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.10475,1516.54,455.02,1546.25,531.44,29.71,76.43,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.09967,741.89,494.83,781.53,588.07,39.64,93.24,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.09631,767.41,498.84,832.19,672.8,64.78,173.96,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.09247,1304.0,433.5,1465.49,536.25,161.49,102.75,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.08784,1410.41,462.34,1473.52,601.86,63.11,139.53,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,tv,0.08504,1044.1,221.65,1225.15,314.32,181.05,92.67,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.0771,1534.59,459.31,1565.6,530.66,31.01,71.35,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.07206,1414.28,508.02,1458.43,601.77,44.15,93.75,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.07008,843.56,507.19,871.22,596.11,27.65,88.92,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.06736,116.75,487.05,167.29,554.32,50.55,67.27,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,truck,0.06421,480.0,408.23,775.93,532.51,295.93,124.27,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.0635,110.58,477.49,316.35,580.02,205.78,102.52,152.71
+sample_011,4,first_partial_appearance,4_first_partial_appearance.jpg,truck,0.05661,0.17,436.37,172.05,826.23,171.88,389.86,152.71
+sample_011,5,full_appearance,5_full_appearance.jpg,person,0.73469,971.06,511.11,1044.31,702.6,73.24,191.5,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.59491,77.68,427.91,303.81,611.86,226.12,183.95,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,person,0.58352,898.65,514.86,932.37,600.28,33.72,85.42,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.56574,777.76,457.29,953.9,533.54,176.15,76.24,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.52454,0.16,502.39,37.96,700.44,37.8,198.05,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,person,0.3581,1552.27,469.56,1582.84,579.8,30.57,110.24,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.3505,462.33,441.12,623.73,578.12,161.4,137.0,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.21984,291.15,482.69,468.8,586.93,177.65,104.24,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,traffic light,0.1855,828.97,374.6,881.49,433.13,52.52,58.53,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,traffic light,0.17963,858.7,376.65,884.35,431.21,25.65,54.56,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,umbrella,0.16088,962.22,464.86,1085.46,525.24,123.24,60.39,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.14113,957.27,463.17,1206.7,555.72,249.43,92.55,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.12284,964.13,464.8,1099.25,552.85,135.12,88.05,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,umbrella,0.10106,967.22,464.42,1085.57,509.22,118.35,44.8,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,truck,0.09188,77.68,427.91,303.81,611.86,226.12,183.95,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,truck,0.08236,462.33,441.12,623.73,578.12,161.4,137.0,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,person,0.07885,1319.32,440.62,1348.6,477.0,29.28,36.38,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,traffic light,0.0613,825.38,380.67,848.33,429.77,22.95,49.1,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,person,0.05689,1381.07,442.77,1413.36,490.8,32.29,48.03,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,car,0.05277,0.43,428.58,295.82,609.89,295.39,181.31,138.2
+sample_011,5,full_appearance,5_full_appearance.jpg,traffic light,0.05024,831.15,383.55,859.54,434.77,28.39,51.22,138.2
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.75398,642.43,463.63,1037.2,838.19,394.77,374.56,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,person,0.70099,466.7,532.32,527.76,671.95,61.06,139.63,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.42757,208.97,504.49,360.04,613.52,151.06,109.03,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.33275,0.48,475.91,100.29,596.03,99.82,120.12,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.18345,1026.71,568.34,1127.48,642.25,100.77,73.91,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.14949,1126.29,570.28,1263.78,648.69,137.49,78.41,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.1271,117.25,496.37,262.9,608.49,145.65,112.11,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.11654,420.67,513.45,488.27,607.66,67.6,94.21,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.10857,121.05,501.28,361.03,614.37,239.98,113.09,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.0684,1025.84,568.65,1126.0,642.4,100.16,73.75,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.06308,643.48,567.78,1034.79,839.01,391.31,271.23,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.06167,647.63,465.46,1026.39,665.14,378.76,199.68,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.0595,651.79,464.98,1031.29,619.01,379.5,154.03,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.05947,75.57,538.04,122.36,583.26,46.79,45.22,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.05685,159.23,240.23,218.88,299.8,59.65,59.57,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,truck,0.05541,208.97,504.49,360.04,613.52,151.06,109.03,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,traffic light,0.0548,88.51,388.0,108.53,424.92,20.02,36.93,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.05074,361.73,559.34,413.3,608.72,51.57,49.38,142.26
+sample_012,1,previous_no_occlusion,1_previous_no_occlusion.jpg,car,0.05008,414.05,512.33,536.98,611.18,122.93,98.85,142.26
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.92004,575.34,472.52,970.6,824.61,395.26,352.09,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.48788,1548.09,649.41,1599.24,820.88,51.16,171.47,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.46833,409.1,516.68,524.69,619.16,115.6,102.48,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.40793,1000.72,566.4,1044.91,655.3,44.19,88.89,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.30764,247.42,545.77,342.17,620.92,94.76,75.15,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,traffic light,0.28713,203.39,144.2,292.93,300.64,89.54,156.44,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,truck,0.27066,952.65,479.62,1260.37,653.84,307.72,174.22,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.23161,1515.9,560.92,1544.65,621.82,28.74,60.9,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.22576,0.13,525.6,75.93,591.09,75.8,65.49,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,traffic light,0.13217,100.17,224.92,164.77,291.59,64.61,66.66,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.10893,61.1,517.73,108.32,582.35,47.22,64.62,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.10447,1519.2,561.41,1544.72,621.03,25.53,59.63,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.09976,188.69,507.11,341.51,620.73,152.82,113.63,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,bus,0.08831,952.65,479.62,1260.37,653.84,307.72,174.22,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,traffic light,0.08566,250.98,146.19,292.53,225.6,41.55,79.41,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,person,0.07976,564.59,518.43,628.89,670.85,64.29,152.42,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.07787,1.02,522.21,104.68,589.89,103.66,67.68,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.07726,239.67,511.94,341.58,619.25,101.91,107.3,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.06823,60.15,530.34,107.56,584.49,47.41,54.15,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.06448,46.47,528.83,105.4,585.39,58.93,56.56,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.05848,564.59,518.43,628.89,670.85,64.29,152.42,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.05659,1254.0,578.88,1311.45,613.71,57.45,34.83,169.06
+sample_012,2,first_partial_occlusion,2_first_partial_occlusion.jpg,car,0.05435,574.28,518.81,629.18,602.35,54.9,83.54,169.06
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.91928,536.27,478.32,933.63,823.53,397.36,345.21,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.6673,1031.82,568.17,1066.67,657.11,34.85,88.94,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.60381,1261.41,571.84,1287.04,656.35,25.62,84.51,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.60306,980.27,564.0,1007.76,645.17,27.49,81.17,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.47249,178.66,507.09,333.4,624.67,154.74,117.57,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.36706,1494.11,556.39,1528.02,623.52,33.92,67.13,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.22518,537.33,507.52,636.77,777.9,99.44,270.38,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.22049,1552.07,615.71,1599.23,795.69,47.16,179.98,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.21993,1023.63,523.45,1066.48,655.44,42.86,131.99,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.19935,1552.07,615.71,1599.23,795.69,47.16,179.98,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.18888,398.73,519.98,516.4,620.94,117.67,100.95,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.13298,318.54,550.92,387.89,616.12,69.35,65.2,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.13076,0.0,523.21,42.81,596.7,42.81,73.49,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.1068,217.61,546.4,333.37,623.64,115.76,77.23,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,truck,0.08729,178.66,507.09,333.4,624.67,154.74,117.57,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,car,0.08491,338.17,576.01,390.69,617.74,52.51,41.73,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.06684,147.73,177.7,183.85,215.14,36.12,37.44,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,traffic light,0.06331,19.78,199.94,94.66,266.35,74.88,66.41,160.1
+sample_012,3,full_occlusion,3_full_occlusion.jpg,person,0.05933,1026.06,527.08,1068.59,655.01,42.52,127.93,160.1
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.87458,214.65,477.45,726.75,808.58,512.1,331.13,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.54148,1128.31,557.03,1168.95,647.86,40.64,90.83,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.38331,746.84,542.67,775.27,635.01,28.43,92.34,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.36424,746.24,541.81,776.05,635.21,29.81,93.39,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.22579,49.17,488.09,227.64,622.17,178.47,134.09,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.19657,1054.72,536.92,1082.48,637.19,27.75,100.27,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.16449,0.69,485.16,226.32,623.75,225.63,138.59,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.16059,1407.46,508.53,1443.71,637.82,36.24,129.29,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.14522,1407.56,510.89,1444.54,630.52,36.98,119.63,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.14394,1408.39,513.58,1440.21,634.4,31.81,120.83,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,traffic light,0.1188,1107.62,459.94,1141.39,550.83,33.77,90.9,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.09774,1057.14,539.43,1076.03,587.96,18.89,48.52,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.09674,949.46,490.68,973.65,554.1,24.18,63.42,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.08531,1490.96,561.07,1535.7,594.39,44.74,33.31,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.07837,0.0,483.62,229.43,622.46,229.43,138.84,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,car,0.0652,101.52,520.94,224.17,620.11,122.65,99.17,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.06235,947.23,493.69,968.61,554.2,21.38,60.51,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,traffic light,0.05822,1057.14,539.43,1076.03,587.96,18.89,48.52,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,traffic light,0.05617,631.32,450.13,671.11,491.99,39.79,41.86,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,traffic light,0.05487,632.41,450.47,683.43,494.13,51.02,43.67,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,traffic light,0.05435,638.55,446.21,682.12,491.33,43.57,45.12,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,person,0.05125,713.85,537.7,744.53,606.15,30.68,68.45,162.85
+sample_012,4,first_partial_appearance,4_first_partial_appearance.jpg,traffic light,0.05092,630.96,447.22,680.77,489.76,49.82,42.54,162.85
+sample_012,5,full_appearance,5_full_appearance.jpg,car,0.90482,33.4,468.42,579.5,808.29,546.1,339.87,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.75358,0.0,587.27,290.68,896.42,290.68,309.15,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.74471,749.73,523.2,785.98,627.77,36.26,104.57,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.49346,642.01,530.33,694.35,685.87,52.34,155.54,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.49268,1474.6,515.02,1514.44,625.23,39.84,110.21,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.35168,1419.97,496.08,1443.67,572.25,23.71,76.18,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.34311,694.65,524.96,732.6,625.13,37.95,100.17,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.33045,1181.68,524.44,1223.81,633.26,42.13,108.82,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,umbrella,0.31389,636.86,489.73,727.51,543.27,90.65,53.54,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.18232,1040.12,485.95,1062.5,519.45,22.37,33.5,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,car,0.1169,0.0,556.03,21.07,624.32,21.07,68.29,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,traffic light,0.10495,1124.08,446.72,1157.82,522.71,33.75,75.99,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.10023,698.73,518.35,741.18,626.84,42.44,108.49,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,car,0.09886,0.5,468.97,108.92,600.7,108.42,131.73,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,car,0.097,574.27,498.87,653.11,569.32,78.84,70.45,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.09228,1096.65,522.05,1124.19,608.82,27.54,86.77,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,traffic light,0.08468,1125.06,431.58,1162.18,523.92,37.12,92.34,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.07405,905.9,470.6,948.24,563.4,42.34,92.8,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,person,0.05812,1014.44,487.42,1033.32,519.45,18.88,32.03,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,traffic light,0.05789,1114.5,441.35,1156.97,525.59,42.47,84.24,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,car,0.05427,571.44,489.39,732.76,563.32,161.33,73.92,147.19
+sample_012,5,full_appearance,5_full_appearance.jpg,car,0.05269,1513.99,537.39,1562.48,567.16,48.5,29.77,147.19
