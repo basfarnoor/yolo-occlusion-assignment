@@ -1,7 +1,7 @@
 """Copy nuScenes images referenced in occlusion_samples.xlsx into occluded_samples/.
 
 Safe to rerun: never overwrites, never deletes, never moves/edits source files.
-See STUDENT_YOLO_OCCLUSION_ASSIGNMENT.md Task 3 for the full specification.
+See assignments/1_yolo_occlusion.md Task 3 for the full specification.
 """
 from __future__ import annotations
 

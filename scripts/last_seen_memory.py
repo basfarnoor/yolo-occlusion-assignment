@@ -1,7 +1,7 @@
 """Assignment 2, Tasks 2-4: last-seen memory tracking, comparison images,
 and the Results worksheet.
 
-Memory rule (intentionally simple, per NEXT_ASSIGNMENT_LAST_SEEN_MEMORY.md):
+Memory rule (intentionally simple, per assignments/2_last_seen_memory.md):
   - When YOLO sees the target: draw it green, save its box as "last seen".
   - When YOLO loses it: redraw the saved box unchanged, dashed orange,
     labeled with its memory age (in stages).
@@ -443,4 +443,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

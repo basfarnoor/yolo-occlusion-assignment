@@ -1,4 +1,4 @@
-# Next Assignment: Give YOLO a Last-Seen Memory
+# Assignment 2: Give YOLO a Last-Seen Memory
 
 > Give this entire file to Claude Code.
 >

@@ -1,6 +1,6 @@
 """Build results/student_review.xlsx: one row per organized sample-stage image,
 ready for the student to manually track one target object through the five
-occlusion stages. See STUDENT_YOLO_OCCLUSION_ASSIGNMENT.md Task 5.
+occlusion stages. See assignments/1_yolo_occlusion.md Task 5.
 
 Does not read or alter the raw YOLO CSV outputs -- it only reuses the image
 list from all_images.csv to know which (sample, stage) rows exist.

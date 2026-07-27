@@ -1,7 +1,7 @@
 """Fill Claude's proposed target picks into the Target Selection sheet.
 These are automated best-guesses (class + position matching across frames) --
 clearly a proposal for the student to visually confirm or override, not a
-final decision. See NEXT_ASSIGNMENT_LAST_SEEN_MEMORY.md Task 1.
+final decision. See assignments/2_last_seen_memory.md Task 1.
 """
 import openpyxl
 

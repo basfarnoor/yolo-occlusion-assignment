@@ -1,4 +1,4 @@
-# Assignment: Test How Occlusion Affects YOLO
+# Assignment 1: Test How Occlusion Affects YOLO
 
 > This file is both your assignment and your prompt for Claude Code.
 >

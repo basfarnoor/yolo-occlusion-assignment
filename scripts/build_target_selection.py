@@ -1,6 +1,6 @@
 """Assignment 2, Task 1: render numbered before/after occlusion images and
 build the Target Selection workbook. Never picks the target itself -- that
-is the student's job. See NEXT_ASSIGNMENT_LAST_SEEN_MEMORY.md.
+is the student's job. See assignments/2_last_seen_memory.md.
 """
 from __future__ import annotations
 

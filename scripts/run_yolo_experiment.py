@@ -2,7 +2,7 @@
 
 Prediction only -- no training or fine-tuning. CPU only. Processes one image
 at a time (never loads the whole dataset into memory). See
-STUDENT_YOLO_OCCLUSION_ASSIGNMENT.md Task 4 for the full specification.
+assignments/1_yolo_occlusion.md Task 4 for the full specification.
 """
 from __future__ import annotations
 
