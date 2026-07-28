@@ -6,6 +6,8 @@ together.
 
 ## Folder guide
 
+- [`OATM/`](OATM/) — active workspace for the Occlusion-Adaptive Temporal
+  Memory research project, beginning with its methodology.
 - [`assignments/01_yolo_occlusion/`](assignments/01_yolo_occlusion/) — baseline
   YOLO occlusion experiment, organized samples, review material, and presentation.
 - [`assignments/02_last_seen_memory/`](assignments/02_last_seen_memory/) — static
@@ -21,6 +23,6 @@ samples as anchors. The private nuScenes dataset remains in the repository-level
 
 ## Where to start
 
-Open the `README.md` inside the assignment you want to review. Its scripts can
-be run from that assignment folder, and generated outputs stay in that same
-folder.
+Open [`OATM/METHODOLOGY.md`](OATM/METHODOLOGY.md) to continue the main research
+project. For completed coursework, open the `README.md` inside the relevant
+assignment; its scripts and generated outputs stay in that assignment folder.

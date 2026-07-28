@@ -65,4 +65,4 @@ frames (roughly 0.8 seconds at this dataset's ~12Hz camera rate) is apparently c
 where that drift catches up to -- and starts to erase -- the advantage motion prediction provides
 over simply standing still. This matches the paper's implicit assumption that SORT is best suited to
 *short* gaps, and motivates exactly the kind of smarter, non-constant-velocity motion model discussed
-as future work in `TEMPORAL_OCCLUSION_METHODOLOGY.md`.
+as future work in [`OATM/METHODOLOGY.md`](../../../OATM/METHODOLOGY.md).

@@ -32,4 +32,4 @@ The memory box should use velocity to predict where the object has moved, instea
 
 ---
 
-*This directly motivates the next step in the bigger OATM research project (`../01_yolo_occlusion/TEMPORAL_OCCLUSION_METHODOLOGY.md`): ego-motion-compensated motion prediction instead of a static last-seen box.*
+*This directly motivates the next step in the bigger OATM research project ([`OATM/METHODOLOGY.md`](../../../OATM/METHODOLOGY.md)): ego-motion-compensated motion prediction instead of a static last-seen box.*

@@ -28,4 +28,4 @@ Knowing the object's velocity (speed and direction) from earlier frames could le
 
 ---
 
-*This is exactly the idea behind the bigger OATM research project described in `PROJECT_EXPLAINED_SIMPLY.md` and `TEMPORAL_OCCLUSION_METHODOLOGY.md` — this small experiment is direct evidence for why that memory-based approach is worth building.*
+*This is exactly the idea behind the bigger OATM research project described in `PROJECT_EXPLAINED_SIMPLY.md` and [`OATM/METHODOLOGY.md`](../../../OATM/METHODOLOGY.md) — this small experiment is direct evidence for why that memory-based approach is worth building.*
