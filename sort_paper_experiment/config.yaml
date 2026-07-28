@@ -1,0 +1,26 @@
+# Configuration for the SORT paper-inspired experiment.
+# Paper: Bewley et al., "Simple Online and Realtime Tracking," ICIP 2016.
+# https://arxiv.org/abs/1602.00763
+
+detector:
+  model_name: "yolo26n.pt"
+  confidence_threshold: 0.05
+  image_size: 640           # may be auto-reduced to 480 if the benchmark is slow; recorded if so
+  device: "cpu"
+
+tracker:
+  max_age: 3                # frames a track may go unmatched before it is removed
+  min_hits: 1                # consecutive hits before a track is considered "confirmed"
+  iou_threshold: 0.3          # minimum IoU for a detection-to-track match
+
+occlusion_experiment:
+  gap_lengths: [1, 2, 3, 5, 8, 10]   # frames of detection artificially withheld
+  min_track_length: 12        # frames a track must last to be eligible
+  min_track_length_floor: 8   # do not relax below this
+  max_eligible_tracks: 10
+  random_seed: 42
+  min_confidence: 0.3
+  min_displacement_px: 15     # how much a track must move for static vs. motion to differ meaningfully
+
+ablation:
+  variants: ["static_memory", "sort_with_motion", "sort_zero_velocity"]

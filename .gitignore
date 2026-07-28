@@ -18,3 +18,11 @@ __pycache__/
 
 # Jupyter
 .ipynb_checkpoints/
+
+# SORT experiment: raw copied nuScenes clip frames and the detection cache
+# are regenerable build artifacts, not reviewable results -- never commit them.
+results/sort_paper_experiment/clips/
+results/sort_paper_experiment/.detection_cache.json
+results/sort_paper_experiment/*.bak
+sort_paper_experiment/**/__pycache__/
+sort_paper_experiment/.pytest_cache/
