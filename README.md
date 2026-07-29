@@ -23,6 +23,7 @@ samples as anchors. The private nuScenes dataset remains in the repository-level
 
 ## Where to start
 
-Open [`OATM/METHODOLOGY.md`](OATM/METHODOLOGY.md) to continue the main research
-project. For completed coursework, open the `README.md` inside the relevant
+Open [`OATM/METHODOLOGY.md`](OATM/METHODOLOGY.md) for the research design and
+[`OATM/IMPLEMENTATION_PLAN.md`](OATM/IMPLEMENTATION_PLAN.md) for the phased build
+plan. For completed coursework, open the `README.md` inside the relevant
 assignment; its scripts and generated outputs stay in that assignment folder.

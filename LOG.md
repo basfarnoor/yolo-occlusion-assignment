@@ -3,12 +3,40 @@
 ## Current status
 
 - **Phase:** Environment and data-pipeline validation.
-- **Active branch:** `codex/organize-assignments`.
+- **Active branch:** `master`.
 - **Methodology:** Defined in `OATM/METHODOLOGY.md`.
+- **Implementation plan:** Defined in `OATM/IMPLEMENTATION_PLAN.md`.
 - **Dataset:** nuScenes mini is available locally at `data/nuscenes/`.
 - **Immediate milestone:** Prove that a clean OATM pipeline can load nuScenes
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
+
+## 2026-07-29 — Planned the OATM implementation
+
+### Change
+
+Created `OATM/IMPLEMENTATION_PLAN.md` with the pipeline, data contracts,
+repository structure, phases, quality gates, experiment matrix, tests, risks,
+definition of done, and a continuation checklist.
+
+### Reason
+
+Turn the methodology into a durable engineering and experimental handoff that
+can resume without reconstructing decisions.
+
+### Validation
+
+- Fast-forwarded local `master` to merged `origin/master`.
+- Grounded the plan in the methodology and earlier experiments.
+- Kept privileged nuScenes evaluation data outside camera-only inference.
+- Defined observed mini checks: 10 scenes, 404 keyframes, and 2,342
+  `CAM_FRONT` records.
+
+### Decision and next step
+
+Implement Phase 0 and Phase 1 only: scaffold the project and build a read-only
+chronological mini audit. Do not begin detection or tracking until that dataset
+foundation passes its quality gate.
 
 ## 2026-07-29 — Installed nuScenes mini on IBEX
 
