@@ -11,6 +11,37 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-01 — Tightened OATM methodology before experiments
+
+### Change
+
+Revised `OATM/METHODOLOGY.md` and `OATM/IMPLEMENTATION_PLAN.md` using the
+evidence and limitations from Assignments 1–4. Separated strong detections,
+weak detections, and prediction-only outputs; corrected the camera-only
+ego-motion design; narrowed the first MVP; separated confidence quantities;
+defined controlled visual occlusion versus detector intervention; and made
+ghost-risk tradeoffs and valid experimental units explicit.
+
+### Reason
+
+The prior proposal combined too many unvalidated components, treated low
+confidence too much like direct occlusion evidence, and contradicted its
+camera-only claim by naming recorded ego pose as online input.
+
+### Validation
+
+- Cross-checked terminology, phase gates, schemas, metrics, and tomorrow's
+  starting checklist across both OATM documents.
+- Preserved causal inference and the privileged-data boundary.
+- Grounded the revised scope in the small, preliminary assignment evidence
+  without promoting pilot results into general claims.
+
+### Decision and next step
+
+Begin with Phase 0 and Phase 1 only. Establish the reproducible scaffold and
+read-only chronological nuScenes-mini audit before projection, detection, or
+tracking experiments.
+
 ## 2026-08-01 — Added a reproducible Assignment 4 environment
 
 ### Change

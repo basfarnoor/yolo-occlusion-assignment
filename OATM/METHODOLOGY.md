@@ -16,7 +16,12 @@ Can an occlusion-aware, uncertainty-calibrated temporal memory system improve ob
 
 ## Hypothesis
 
-A detector augmented with appearance memory, ego-motion-compensated motion prediction, explicit occlusion classification, and uncertainty-aware confidence decay will preserve more valid object tracks through short occlusions than a single-frame detector, SORT-style motion tracking, or ByteTrack, while an anti-ghost termination mechanism will limit false persistence after objects leave the scene.
+Starting from a ByteTrack-style baseline, explicit separation of strong visual
+evidence, weak visual evidence, and prediction-only persistence, followed by
+camera-derived motion compensation and uncertainty-aware termination, should
+improve the tradeoff between short-occlusion recovery and false persistence.
+Appearance memory and explicit occlusion classification are secondary hypotheses
+that must earn their place through ablation rather than being assumed beneficial.
 
 ## Why using previous frames is not sufficient novelty
 
@@ -38,6 +43,19 @@ The proposed contribution is an **occlusion-specific decision and memory system*
 3. How its location should be predicted while hidden.
 4. How prediction confidence should change with time and uncertainty.
 5. When the system must terminate the prediction to avoid a ghost object.
+
+## Evidence from the four preliminary assignments
+
+The completed assignments motivate OATM but do not validate the complete method.
+YOLO frequently lost fully hidden targets in eight selected examples. Frozen
+last-seen memory preserved a report but produced severe localization drift in
+five examples. A controlled SORT study showed that constant-velocity prediction
+can help selected smooth, moving tracks, but its original evaluation was not an
+independent end-to-end tracker validation. A small ByteTrack study showed that
+weak detections can improve continuity, including a held-out natural-event
+result of 3/6 recoveries versus 2/6 for high-confidence SORT. These are pilot
+signals, not effect-size estimates. They justify staged experiments in which
+each new OATM component is tested independently.
 
 ## Comparison with existing methodological families
 
@@ -65,6 +83,11 @@ A pretrained detector processes the current camera image and produces:
 - Object-level appearance embeddings or visual features.
 
 A pretrained YOLO-family or RT-DETR model is sufficient. Training a large detector from scratch is not necessary because the research contribution is the temporal recovery mechanism.
+
+Low confidence is treated as weak visual support, not proof of occlusion. It can
+also result from distance, blur, illumination, truncation, class confusion, or a
+false box. The detector therefore runs with a documented low confidence floor,
+and the temporal system records whether evidence is strong, weak, or absent.
 
 ### 2. Per-object dual memory
 
@@ -96,13 +119,22 @@ where:
 
 - \(C_t\) is current detection confidence.
 - \(I_{\text{overlap}}\) measures overlap with a potential foreground occluder.
-- \(D_{\text{ordering}}\) estimates whether the overlapping object is closer to the camera.
+- \(D_{\text{ordering}}\) is a camera-derived depth-ordering proxy, not privileged
+  nuScenes depth at inference.
 - \(T_{\text{consistency}}\) measures agreement between the disappearance and the previous trajectory.
 
-The classifier assigns one of the following states:
+This expression is an initial feature inventory, not a calibrated probability
+model. Every term must be computable causally from camera frames and tracker
+history. The classifier must be evaluated separately on true occlusions,
+field-of-view exits, ordinary detector misses, poor viewing conditions, and
+false-positive tracks.
 
-- `VISIBLE`: supported by a current-frame detection.
-- `OCCLUDED`: not directly visible, but supported by temporal and occlusion evidence.
+The state machine assigns one of the following states:
+
+- `OBSERVED_STRONG`: supported by a current high-confidence detection.
+- `OBSERVED_WEAK`: supported by an associated current low-confidence detection.
+- `PREDICTED_HIDDEN`: no current detection, but persistence is supported by
+  temporal and occlusion evidence.
 - `LOST`: insufficient evidence to continue the track.
 - `EXITED`: predicted to have left the camera field of view.
 
@@ -110,33 +142,45 @@ The state distinction is important for safety. A completely hidden object should
 
 ### 4. Ego-motion-compensated state recovery
 
-If a track is classified as `OCCLUDED`, OATM:
+If a track is classified as `PREDICTED_HIDDEN`, OATM:
 
 1. Predicts its location from motion history.
-2. Compensates for movement of the observing vehicle using nuScenes ego-pose information.
+2. Compensates for camera motion estimated causally from consecutive camera
+   images, excluding tracked foreground regions where practical.
 3. Produces an uncertainty region around the predicted location.
 4. Searches that region for weak visual evidence.
 5. Compares candidate features with the last clear appearance memory.
 6. Updates the predicted box, identity confidence, and uncertainty.
 
-The first implementation can use a Kalman filter with ego-motion compensation. A later extension could replace or augment it with a small gated recurrent unit or lightweight learned motion model.
+Recorded nuScenes ego pose is permitted only as privileged offline supervision,
+evaluation evidence, or a clearly labeled oracle diagnostic. It is never an
+input to the headline camera-only method. The first implementation compares a
+stationary model and timestamp-aware constant-velocity Kalman model before
+adding camera-motion compensation. A learned motion model is outside the MVP.
 
 ### 5. Adaptive confidence decay
 
-Conventional trackers commonly keep missing tracks for a fixed number of frames. OATM instead reduces confidence according to elapsed time and estimated uncertainty:
+OATM must not collapse detector confidence, object-existence probability,
+identity confidence, and localization uncertainty into one score. It records
+them separately. A simple initial persistence model uses a non-negative hazard:
 
 \[
-P_t = P_{t-1}\exp(-\alpha U_t - \beta \Delta t)
+h_t = \beta + \alpha\,\Delta U_t, \qquad
+P^{\mathrm{exist}}_t = P^{\mathrm{exist}}_{t-1}\exp(-h_t\Delta t)
 \]
 
 where:
 
-- \(P_t\) is current persistence confidence.
-- \(U_t\) is motion or localization uncertainty.
-- \(\Delta t\) is the duration since the last reliable observation.
-- \(\alpha\) and \(\beta\) control the decay rate.
+- \(P^{\mathrm{exist}}_t\) is the estimated probability that the object remains
+  relevant in the camera scene.
+- \(\Delta U_t\) is incremental localization-uncertainty growth.
+- \(\Delta t\) is elapsed time in seconds.
+- \(\alpha\) and \(\beta\) are tuned on development scenes only.
 
-This allows a predictable, slow-moving object to remain in memory longer than an object undergoing uncertain or abrupt motion.
+Confidence cannot increase without new evidence. Calibration is measured on
+held-out scenes, and fixed-lifetime baselines are compared at matched ghost-risk
+operating points. This formulation is an MVP policy, not a claim that the
+hazard equation is intrinsically novel.
 
 ### 6. Reappearance and identity recovery
 
@@ -170,7 +214,7 @@ The defensible contribution is the combination of:
 - Ego-motion-compensated trajectory prediction.
 - Occlusion-dependent confidence decay.
 - Uncertainty-aware track termination.
-- Separate visible and predicted-hidden output states.
+- Separate strong-observed, weak-observed, and predicted-hidden output states.
 - An occlusion-specific evaluation subset derived from nuScenes.
 - Controlled experiments that measure both successful persistence and harmful ghost predictions.
 
@@ -221,6 +265,14 @@ Controlled occlusions should vary by:
 
 Results from natural and controlled occlusions must not be merged into a single unexplained score.
 
+Controlled visual occlusion must modify the input pixels and rerun the detector;
+editing confidence values or deleting detection rows is instead called a
+`detector-intervention` experiment. Detector interventions remain useful for
+isolating tracker behavior, but they do not demonstrate visual occlusion
+handling. Every controlled image records its source frame, target, mask,
+coverage, duration, seed, and transformation parameters, while original
+nuScenes files remain untouched.
+
 ## Experimental comparison
 
 The experiment should compare at least five systems:
@@ -249,6 +301,20 @@ Standard detection accuracy alone is insufficient. Report:
 - **Runtime:** Frames per second or latency per frame.
 
 Results should also be stratified by object class, visibility level, distance, and occlusion duration.
+
+The primary presentation is a tradeoff rather than a single recall score:
+
+- Hidden-object recall versus ghost frames per scene or track.
+- Identity preservation versus wrong-object association rate.
+- Localization error versus occlusion duration.
+- Risk-coverage and calibration curves as persistence thresholds vary.
+
+A ghost is reported both as an event and a duration: a predicted-hidden output
+that does not correspond to the intended ground-truth instance, or that remains
+after a verified exit/loss condition. Wrong-object associations, initial false
+tracks, and stale post-exit predictions are counted separately. Frame rows are
+never treated as independent objects; uncertainty is computed at track/event
+level and clustered by scene where sample size permits.
 
 ## Ablation study
 
@@ -294,12 +360,19 @@ The most difficult part is not obtaining images. It is constructing trustworthy 
 - nuScenes `CAM_FRONT` only.
 - Cars and pedestrians only.
 - Pretrained detector.
-- SORT and ByteTrack baselines.
-- Rule-based occlusion classifier.
-- Kalman motion memory with ego-motion compensation.
-- Appearance embedding from the detector backbone.
-- Adaptive confidence decay and anti-ghost termination.
+- Detector-only, static-memory, SORT, and ByteTrack baselines on identical
+  observations.
+- Explicit `OBSERVED_STRONG`, `OBSERVED_WEAK`, `PREDICTED_HIDDEN`, `LOST`, and
+  `EXITED` outputs.
+- Timestamp-aware stationary and constant-velocity motion baselines with
+  localization uncertainty.
+- A small rule-based occlusion/exit/loss gate using only camera-derived evidence.
+- Fixed-lifetime and uncertainty-aware termination compared at matched risk.
 - Natural and controlled test subsets.
+
+Camera-derived ego-motion and appearance memory enter only after the simpler
+motion/state/termination MVP passes its gates. This ordering prevents a large
+combined system from hiding which component caused an improvement or failure.
 
 ### Optional extension
 

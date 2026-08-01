@@ -25,7 +25,7 @@ flowchart LR
         MOTION["Motion memory<br/>+ uncertainty"]
         APPEAR["Clear-view<br/>appearance memory"]
         OCC["Occlusion evidence"]
-        STATE["VISIBLE / OCCLUDED<br/>LOST / EXITED"]
+        STATE["OBSERVED_STRONG / OBSERVED_WEAK<br/>PREDICTED_HIDDEN / LOST / EXITED"]
         DECAY["Adaptive confidence<br/>+ anti-ghost rules"]
         OUTPUT["Visible detections<br/>+ marked predictions"]
         IMAGE --> DETECT --> ASSOC
@@ -63,12 +63,14 @@ Use:
 - nuScenes `CAM_FRONT`.
 - Cars and pedestrians first; add trucks/buses after class mapping is stable.
 - A frozen YOLO-family detector matching earlier experiments where practical.
+- A ByteTrack-style strong/weak-evidence baseline.
 - A rule-based OATM state machine before any learned classifier.
-- Kalman-style motion memory.
-- Camera-derived ego-motion compensation for the primary result.
-- Frozen clear-frame crop embeddings for appearance memory.
-- Adaptive persistence confidence and explicit anti-ghost termination.
+- Stationary and timestamp-aware Kalman motion models with uncertainty.
+- Fixed and uncertainty-aware termination policies compared at matched risk.
 - Separate natural and controlled occlusion studies.
+
+Defer camera-derived ego-motion and appearance memory until the simpler
+motion/state/termination MVP passes. Do not implement all components at once.
 
 Do not add detector training, end-to-end video transformers, multi-camera
 fusion, or a learned motion model to the MVP.
@@ -182,14 +184,17 @@ image, model, threshold, and image size.
 ### Occlusion events — one row per candidate/reviewed event
 
 Required fields: `event_id`, scene/object IDs, pre/start/end/post boundaries,
-`event_source` (`natural` or `controlled`), visibility pattern, optional occluder
-ID, review status, rejection reason, and scene-derived split.
+`event_source` (`natural`, `controlled_visual`, or `detector_intervention`),
+visibility pattern, optional occluder ID, review status, rejection reason, and
+scene-derived split.
 
 ### Tracker/OATM output — one row per track per frame
 
 Required fields: frame IDs, method/run/track IDs, state, evidence type, box,
-nullable detector confidence, persistence confidence, uncertainty/covariance,
-memory age in frames/seconds, and termination reason.
+nullable detector confidence, existence confidence, identity confidence,
+localization uncertainty/covariance, memory age in frames/seconds, and
+termination reason. Current detections and prediction-only outputs must never
+share an ambiguous evidence label.
 
 ## 4. Phases and quality gates
 
@@ -275,25 +280,34 @@ tests pass; IDs never cross scenes; one config regenerates metrics.
 
 **Goal:** dense, precisely known gaps before sparse natural evaluation.
 
-Build seeded conditions for detection withholding, simple visual masks, and
-later realistic foreground masks. Vary duration, coverage, target size/class,
-and relative motion. Preserve source references and exact mask parameters.
+Build two explicitly separate families:
+
+1. `detector_intervention`: demote or remove detector rows to isolate tracker
+   behavior, extending Assignment 4 without calling it visual occlusion.
+2. `controlled_visual`: alter pixels with seeded masks or realistic foreground
+   objects, then rerun the frozen detector.
+
+Vary duration, coverage, target size/class, and relative motion. Preserve source
+references, seeds, mask parameters, and detector cache keys.
 
 Gate: every method receives identical events; source files remain unchanged;
-the manifest exactly recreates every controlled frame; controlled and natural
-results never merge silently.
+the manifest exactly recreates every controlled frame; visual, intervention,
+and natural results never merge silently.
 
 ### Phase 6 — Motion memory and visual ego-motion
 
 **Goal:** improve on frozen memory and basic SORT.
 
-Tasks: define state/covariance; timestamp-aware Kalman prediction; robust
-background motion excluding object regions; compensate predictions; grow
-uncertainty; compare no compensation, visual compensation, and oracle pose.
+Tasks: define state/covariance; compare stationary and timestamp-aware
+constant-velocity prediction; grow uncertainty; test smooth, slow, turning, and
+abrupt-motion fixtures. Only after that gate, estimate robust background image
+motion excluding object regions and compare no compensation, visual
+compensation, and oracle pose.
 
-Gate: primary inference never reads pose metadata; visual-motion failure yields
-explicit low confidence; synthetic camera/object motion tests pass; motion beats
-static memory on controlled moving gaps or the negative result is documented.
+Gate: uncertainty grows through missing evidence; model choice is reported by
+motion regime; primary inference never reads pose metadata; visual-motion
+failure yields explicit low confidence; motion beats static memory on controlled
+moving gaps or the negative result is documented.
 
 ### Phase 7 — Occlusion evidence and state machine
 
@@ -303,25 +317,36 @@ Evidence initially combines confidence decline, plausible foreground overlap,
 relative-depth proxy, trajectory consistency, boundary/outward motion,
 uncertainty, and elapsed time.
 
+Low confidence alone means weak support, not occlusion. Evaluate the gate on
+occlusion, exit, ordinary miss, poor-viewing, and false-track negative cases.
+
 ```mermaid
 stateDiagram-v2
-    [*] --> VISIBLE: confirmed detection
-    VISIBLE --> OCCLUDED: missing + occlusion evidence
-    VISIBLE --> LOST: missing + insufficient evidence
-    VISIBLE --> EXITED: boundary + outward motion
-    OCCLUDED --> VISIBLE: compatible reappearance
-    OCCLUDED --> LOST: uncertainty / confidence limit
-    OCCLUDED --> EXITED: predicted exit
-    LOST --> VISIBLE: new track only
+    [*] --> OBSERVED_STRONG: confirmed high-score detection
+    OBSERVED_STRONG --> OBSERVED_WEAK: associated weak detection
+    OBSERVED_WEAK --> OBSERVED_STRONG: strong evidence returns
+    OBSERVED_STRONG --> PREDICTED_HIDDEN: missing + occlusion evidence
+    OBSERVED_WEAK --> PREDICTED_HIDDEN: evidence disappears + occlusion evidence
+    OBSERVED_STRONG --> LOST: missing + insufficient evidence
+    OBSERVED_WEAK --> LOST: missing + insufficient evidence
+    PREDICTED_HIDDEN --> OBSERVED_STRONG: compatible strong reappearance
+    PREDICTED_HIDDEN --> OBSERVED_WEAK: compatible weak reappearance
+    PREDICTED_HIDDEN --> LOST: uncertainty / existence limit
+    PREDICTED_HIDDEN --> EXITED: predicted exit
+    LOST --> OBSERVED_STRONG: new track only
     EXITED --> [*]
     LOST --> [*]
 ```
 
-Gate: transition truth table is exhaustive; `VISIBLE` always has a current
-detection; hidden predictions are marked `OCCLUDED`; recall improves without
+Gate: transition truth table is exhaustive; both `OBSERVED_*` states always have
+a current associated detection; `PREDICTED_HIDDEN` never claims current visual
+evidence; per-cause state confusion is reported; recall improves without
 retaining every miss.
 
 ### Phase 8 — Appearance memory and identity recovery
+
+**Optional ordering:** skip this phase until the Phase 9 termination gate passes;
+appearance is not required for the first OATM MVP comparison.
 
 **Goal:** reconnect the correct object.
 
@@ -337,13 +362,16 @@ null result is retained.
 
 **Goal:** control the safety cost of persistence.
 
-Separate persistence from detector confidence. Decay by time and uncertainty.
-Terminate on confidence floor, uncertainty ceiling, predicted exit, impossible
-occluder relationship, or failed expected reappearance. Record exactly one
-reason. Tune only on validation scenes.
+Maintain detector confidence, existence confidence, identity confidence, and
+localization uncertainty separately. Apply time-based existence decay.
+Use elapsed seconds and incremental uncertainty growth. Terminate on existence
+floor, uncertainty ceiling, predicted exit, impossible occluder relationship,
+or failed expected reappearance. Record exactly one reason. Tune only on
+validation scenes.
 
-Gate: confidence cannot rise without evidence; exit cases terminate earlier
-than plausible occlusions; ghost rate appears beside recall; test thresholds
+Gate: confidence cannot rise without new evidence; calibration is measured on
+held-out scenes; fixed and adaptive lifetimes are compared at matched ghost
+risk; exit cases terminate earlier than plausible occlusions; test thresholds
 remain frozen.
 
 ### Phase 10 — Evaluation, ablation, and reporting
@@ -357,11 +385,16 @@ no anti-ghost logic.
 
 Metrics: occluded recall; visible precision/recall; identity preservation and
 switches; center error/IoU; ghost rate/duration; maximum recovered gap; recovery
-latency; confidence calibration; runtime.
+latency; existence/identity calibration; runtime. Primary plots show hidden
+recall versus ghost duration, identity preservation versus wrong-object
+association, localization error versus gap duration, and risk-coverage curves.
 
-Rules: natural and controlled results stay separate; include sample count and
-distributions; stratify by duration/class/size/distance/visibility/motion;
-include failures; no test-scene tuning.
+Rules: natural, controlled-visual, and detector-intervention results stay
+separate; count ghost events and duration; separate wrong associations, initial
+false tracks, and stale post-exit predictions; use event/track—not frame row—as
+the experimental unit; cluster uncertainty by scene where possible; include
+sample counts and distributions; stratify by duration/class/size/distance/
+visibility/motion; include failures; no test-scene tuning.
 
 Gate: one command regenerates tables from immutable outputs; each number traces
 to run ID, config, commit, and event manifest.
@@ -419,14 +452,22 @@ event, or metric count changes require an explicit explanation.
 
 ## 8. MVP definition of done
 
-The MVP is done only when audits pass on mini and trainval; natural/controlled
-manifests are frozen and scene-disjoint; methods share images/detections; OATM
-emits explicit states; primary inference consumes no privileged data; baselines
-and ablations reproduce; recall/localization/identity/ghost/calibration/runtime
-are reported separately for natural and controlled events; failures and limits
+The MVP is done only when audits pass on mini and trainval; natural,
+controlled-visual, and intervention manifests are frozen and scene-disjoint;
+methods share images/detections; OATM emits explicit states; primary inference
+consumes no privileged data; baselines and ablations reproduce; recall/
+localization/identity/ghost/calibration/runtime are reported separately for all
+three experiment families; failures and limits
 are documented; and `LOG.md` records run IDs, commit, config, and conclusions.
 
 ## 9. Tomorrow's starting checklist
+
+**Experiment question:** Can the clean OATM workspace reconstruct the complete
+chronological nuScenes-mini `CAM_FRONT` stream without missing files, broken
+links, non-causal ordering, or privileged-data leakage into an inference API?
+
+**Acceptance checks:** the Phase 0 environment/tests pass and the Phase 1 audit
+matches the exact mini counts below with zero integrity failures.
 
 Resume in this exact order:
 
