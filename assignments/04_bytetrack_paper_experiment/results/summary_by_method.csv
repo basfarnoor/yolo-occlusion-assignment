@@ -1,0 +1,5 @@
+method,evidence_type,n_events,n_rows,recovery_rate_at_event_frame,identity_continuity_rate
+high_confidence_sort,natural_events,12,36,0.583,0.333
+high_confidence_sort,controlled_events,35,665,0.967,0.845
+bytetrack,natural_events,12,36,0.667,0.5
+bytetrack,controlled_events,35,665,0.992,0.921

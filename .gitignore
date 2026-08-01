@@ -26,3 +26,15 @@ assignments/03_sort_paper_experiment/results/.detection_cache.json
 assignments/03_sort_paper_experiment/results/*.bak
 assignments/03_sort_paper_experiment/experiment/**/__pycache__/
 assignments/03_sort_paper_experiment/experiment/.pytest_cache/
+
+# ByteTrack experiment: same regenerable build artifacts as Assignment 3 --
+# raw copied clip frames, the detection cache, and large local-only visual
+# review material (overlays/contact sheets, reproducible from the committed
+# CSVs and scripts). Never commit them.
+assignments/04_bytetrack_paper_experiment/results/clips/
+assignments/04_bytetrack_paper_experiment/results/.detection_cache.json
+assignments/04_bytetrack_paper_experiment/results/*.bak
+assignments/04_bytetrack_paper_experiment/results/projection_overlays/
+assignments/04_bytetrack_paper_experiment/results/natural_event_contact_sheets/
+assignments/04_bytetrack_paper_experiment/experiment/**/__pycache__/
+assignments/04_bytetrack_paper_experiment/experiment/.pytest_cache/

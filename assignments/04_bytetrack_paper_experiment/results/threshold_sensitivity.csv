@@ -1,0 +1,13 @@
+method,clip,high_score_threshold,threshold_offset,n_tracks_born,mean_track_length_frames
+high_confidence_sort,clip_sample_006,0.35,-0.15,8,18.12
+high_confidence_sort,clip_sample_001,0.35,-0.15,15,17.8
+bytetrack,clip_sample_006,0.35,-0.15,8,18.12
+bytetrack,clip_sample_001,0.35,-0.15,15,19.67
+high_confidence_sort,clip_sample_006,0.5,0.0,6,21.33
+high_confidence_sort,clip_sample_001,0.5,0.0,13,18.31
+bytetrack,clip_sample_006,0.5,0.0,6,21.67
+bytetrack,clip_sample_001,0.5,0.0,14,19.79
+high_confidence_sort,clip_sample_006,0.65,0.15,6,21.33
+high_confidence_sort,clip_sample_001,0.65,0.15,14,14.21
+bytetrack,clip_sample_006,0.65,0.15,6,21.33
+bytetrack,clip_sample_001,0.65,0.15,13,20.08

@@ -1,0 +1,13 @@
+clip_name,split,instance_token,category,before_frame,event_frame,after_frame,before_confidence,event_confidence,after_confidence,before_visibility,event_visibility,after_visibility,plausible_cause,frames_available_before,frames_available_after
+clip_sample_001,development,045cd82a77a1472499e8c15100cb5ff3,vehicle.car,8,14,19,0.78269,,0.92538,v80-100,v0-40,v0-40,visibility_drop,2,3
+clip_sample_001,development,06ff24b7f1e8479b934f1b74348028bc,vehicle.car,14,19,25,0.50031,0.38911,0.50808,v80-100,v80-100,v80-100,confidence_drop_same_visibility,3,2
+clip_sample_003,evaluation,7a8b24608009457b963da57aa18beb58,vehicle.car,13,19,25,0.8614,,,v80-100,v0-40,v0-40,visibility_drop,3,2
+clip_sample_006,development,11ae216987c84c0abefef802331df41c,vehicle.car,13,19,25,0.92965,0.39884,0.93081,v80-100,v80-100,v80-100,confidence_drop_same_visibility,2,2
+clip_sample_006,development,ba9b515701e248b0a00c814447cea8a1,vehicle.bicycle,13,19,25,0.89782,,,v0-40,v80-100,v80-100,no_detection_match,3,2
+clip_sample_011,evaluation,3f81e988f45c44119cca8011a3274603,vehicle.car,13,19,25,0.90482,0.05116,0.45123,v80-100,v80-100,v80-100,confidence_drop_same_visibility,3,2
+clip_sample_011,evaluation,575b8651141f42d7bcaf03a8cab65bd3,human.pedestrian.adult,7,13,19,0.54148,0.33045,0.37728,v80-100,v80-100,v80-100,confidence_drop_same_visibility,2,2
+clip_sample_001,development,3620feb00d744241a94855f3a8913a78,vehicle.car,2,8,14,0.75438,0.30434,0.92536,v80-100,v80-100,v80-100,confidence_drop_same_visibility,1,4
+clip_sample_001,development,9439a24131dc4e1faa3b5b73f518f1da,vehicle.truck,2,8,14,0.63868,0.30001,0.12127,v60-80,v60-80,v60-80,confidence_drop_same_visibility,1,4
+clip_sample_011,evaluation,155047a77309452a908e6c96ddd60b55,human.pedestrian.adult,19,25,31,0.65812,0.09631,0.73469,v80-100,v80-100,v80-100,confidence_drop_same_visibility,4,1
+clip_sample_011,evaluation,8c3247533921448abe371a59d4696252,human.pedestrian.adult,1,7,13,0.63427,0.16059,0.49268,v80-100,v80-100,v80-100,confidence_drop_same_visibility,1,2
+clip_sample_011,evaluation,c530e58bfaaf4ba38bf0f66c11381d7b,human.pedestrian.adult,19,25,31,0.69611,0.15697,,v0-40,v0-40,v0-40,confidence_drop_same_visibility,3,1

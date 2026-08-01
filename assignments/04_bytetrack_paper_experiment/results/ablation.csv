@@ -1,0 +1,5 @@
+variant,evidence_type,n_events,n_rows,recovery_or_coverage_rate,identity_continuity_rate
+bytetrack_no_second_association,natural_events,12,36,0.583,0.333
+bytetrack_no_second_association,controlled_events,35,665,0.967,0.845
+bytetrack_full,natural_events,12,36,0.667,0.5
+bytetrack_full,controlled_events,35,665,0.992,0.921

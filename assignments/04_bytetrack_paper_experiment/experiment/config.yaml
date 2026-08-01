@@ -1,0 +1,52 @@
+# Configuration for the ByteTrack paper-inspired experiment.
+# Paper: Zhang et al., "ByteTrack: Multi-Object Tracking by Associating Every
+# Detection Box," ECCV 2022. https://arxiv.org/abs/2110.06864
+#
+# All thresholds below were chosen from results/detection_confidence_by_visibility.png
+# (development scenes only: clip_sample_001, clip_sample_006) BEFORE any
+# evaluation-split (clip_sample_003, clip_sample_011) result was opened, per
+# Task 5's requirement. They must not be re-tuned after seeing evaluation
+# results -- Task 12's sensitivity check varies high_score_threshold
+# separately, on development scenes only, without touching this frozen file.
+
+detector:
+  model_name: "yolo26n.pt"
+  detection_floor: 0.05      # absolute minimum kept at all; anything below is never seen by ByteTrack
+  image_size: 640            # may be auto-reduced to 480 if the benchmark is slow; recorded if so
+  device: "cpu"
+
+tracker:
+  high_score_threshold: 0.5   # detections >= this are "high-confidence" -- first association
+  # low-confidence band is [detection_floor, high_score_threshold) -- second association
+  new_track_threshold: 0.6    # unmatched detections must clear this (stricter than high_score_threshold)
+                               # before birthing a new track ID, to avoid spurious new IDs from
+                               # borderline-confident boxes that merely failed to match anything
+  first_association_iou_threshold: 0.3   # matches Assignment 3's proven SORT setting
+  second_association_iou_threshold: 0.5  # stricter than the first stage: a low-confidence box is
+                                          # less trustworthy, so it must overlap more convincingly
+                                          # before it is allowed to update an existing track
+  track_buffer: 5             # frames a track may go unmatched before removal (~0.4s at this
+                               # dataset's ~12Hz camera rate) -- short enough that our 36-frame
+                               # clips can exercise both "recovers within buffer" and "expires
+                               # beyond buffer" cases
+
+sort_baseline:
+  # High-confidence SORT (Method B) uses the identical settings above except
+  # it has no second association stage at all -- see src/sort_tracker.py.
+  max_age: 5                  # kept equal to tracker.track_buffer for a fair A/B/C comparison
+  iou_threshold: 0.3           # kept equal to tracker.first_association_iou_threshold
+
+natural_event_selection:
+  max_events: 12
+  min_frames_before: 3
+  min_frames_after: 3
+  random_seed: 42
+
+controlled_experiments:
+  confidence_demotion_windows: [1, 2, 3]
+  max_controlled_tracks: 12
+  random_seed: 42
+
+ablation:
+  variants: ["bytetrack_full", "bytetrack_no_second_association"]
+  threshold_sensitivity_offsets: [-0.15, 0.0, 0.15]  # applied to high_score_threshold, dev scenes only

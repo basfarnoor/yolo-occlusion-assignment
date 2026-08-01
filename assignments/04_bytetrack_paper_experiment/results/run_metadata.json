@@ -1,0 +1,29 @@
+{
+  "config_hash": "fb4064bd6db764c5",
+  "counts": {
+    "scenes": 4,
+    "clips": 4,
+    "unique_frames": 144,
+    "natural_events": 12,
+    "natural_event_unique_instances": 12,
+    "controlled_events": 35,
+    "controlled_unique_target_tracks": 5,
+    "natural_trial_rows": 72,
+    "controlled_trial_rows": 1330
+  },
+  "note_on_repeated_rows": "1330 controlled trial rows come from only 35 events on 5 unique target tracks -- rows are per-frame-per-method observations, not independent objects. Use the event or track as the experimental unit, never the row count.",
+  "runtime_ms_per_frame": {
+    "high_confidence_sort": {
+      "mean": 0.9749,
+      "median": 0.6124,
+      "std": 0.8837,
+      "n": 432
+    },
+    "bytetrack": {
+      "mean": 1.1469,
+      "median": 0.8721,
+      "std": 0.7971,
+      "n": 432
+    }
+  }
+}

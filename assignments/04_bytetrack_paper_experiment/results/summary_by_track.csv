@@ -1,0 +1,11 @@
+track_key,method,n_events_for_this_track,mean_window_coverage_rate,mean_post_window_id_continuity_rate
+clip_sample_001_track10,bytetrack,7,1.0,1.0
+clip_sample_001_track10,high_confidence_sort,7,1.0,0.857
+clip_sample_001_track3,bytetrack,7,1.0,1.0
+clip_sample_001_track3,high_confidence_sort,7,0.959,0.795
+clip_sample_001_track9,bytetrack,7,1.0,0.857
+clip_sample_001_track9,high_confidence_sort,7,0.959,0.857
+clip_sample_011_track31,bytetrack,7,1.0,0.893
+clip_sample_011_track31,high_confidence_sort,7,0.959,0.857
+clip_sample_011_track32,bytetrack,7,0.959,0.857
+clip_sample_011_track32,high_confidence_sort,7,0.959,0.857
