@@ -9,6 +9,9 @@ occlusion_samples.xlsx
 # Isolated Python environment for the YOLO experiment
 **/.venv/
 
+# Assignment 4 uv environment (kept explicit for local setup clarity)
+assignments/04_bytetrack_paper_experiment/experiment/.venv/
+
 # Pretrained model weights (downloaded, not authored here)
 *.pt
 

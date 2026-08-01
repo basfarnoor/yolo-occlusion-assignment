@@ -11,6 +11,31 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-01 — Added a reproducible Assignment 4 environment
+
+### Change
+
+Added an assignment-local `pyproject.toml` for uv with the runtime and test
+dependencies used by the ByteTrack experiment, plus an explicit `.venv`
+ignore rule.
+
+### Reason
+
+Make the completed experiment and its automated checks reproducible without
+depending on unrecorded system Python packages.
+
+### Validation
+
+- `uv lock` resolved 73 packages with standard PyTorch wheels, supporting CPU
+  execution and CUDA when a compatible allocated resource is available.
+- The assignment-local environment passed all 42 automated tests.
+- The environment remains local and excluded from Git.
+
+### Decision and next step
+
+Use `uv sync` and `uv run pytest` from the Assignment 4 `experiment/`
+directory whenever its saved results or implementation are audited.
+
 ## 2026-07-29 — Planned the OATM implementation
 
 ### Change

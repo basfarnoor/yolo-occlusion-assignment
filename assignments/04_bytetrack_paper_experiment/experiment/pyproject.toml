@@ -1,0 +1,25 @@
+[project]
+name = "bytetrack-paper-experiment"
+version = "0.1.0"
+description = "Reproducible environment for the Assignment 4 ByteTrack paper experiment"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "matplotlib>=3.8,<4",
+    "numpy>=1.26,<3",
+    "opencv-python-headless>=4.9,<5",
+    "pillow>=10,<13",
+    "pyquaternion>=0.9.9,<0.10",
+    "pyyaml>=6,<7",
+    "scipy>=1.12,<2",
+    "shapely>=2,<3",
+    "ultralytics>=8.3,<9",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<9",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
