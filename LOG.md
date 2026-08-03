@@ -11,6 +11,38 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-03 — Added the student-facing OATM implementation assignment
+
+### Change
+
+Created `OATM/STUDENT_IMPLEMENTATION_ASSIGNMENT.md`, a Claude Code-ready master
+assignment that divides the OATM implementation into 17 ordered tasks with
+plain-language explanations, required outputs, automated checks, student
+questions, and mentor stop points.
+
+### Reason
+
+The methodology and implementation plan define the research rigorously, but a
+student needs a guided workflow like the four completed assignments: Claude
+handles code and terminal work one task at a time while the student reviews the
+scientific meaning and makes explicit human decisions.
+
+### Validation
+
+- Cross-checked the task order and terminology against `METHODOLOGY.md` and
+  `IMPLEMENTATION_PLAN.md`.
+- Preserved the Phase 0–1 stopping gate, causal camera-only boundary,
+  scene-disjoint splitting, offline privileged-label boundary, separate event
+  families, and recall-versus-ghost evaluation.
+- Matched the instructional pattern of the earlier assignments with task goals,
+  deliverables, completion checks, LLM rules, and student checkpoints.
+- Ran `git diff --check` successfully.
+
+### Decision and next step
+
+Give the complete new assignment to Claude Code, begin with Task 0, and stop
+after Task 2 for mentor review before projection or tracking work starts.
+
 ## 2026-08-01 — Tightened OATM methodology before experiments
 
 ### Change
