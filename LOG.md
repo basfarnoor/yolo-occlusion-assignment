@@ -11,6 +11,45 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-04 — OATM Task 5: run detector once, cache observations
+
+### Change
+
+Implemented `oatm.detection.cache` (content-hash cache: image + model +
+weights + image size + confidence floor + package versions) and
+`scripts/run_detector.py`. Ran the same pretrained `yolo26n.pt` used in
+Assignments 1-4 (prediction only, no training) over all 2,342 CAM_FRONT
+frames across all 10 mini scenes, confidence floor 0.05.
+
+### Reason
+
+Every later baseline (SORT, ByteTrack, OATM) must compare fairly -- that
+requires one shared, cached detector observation table, never a per-method
+re-run.
+
+### Validation
+
+- First run: 2,342/2,342 cache misses (real inference), 49,436 raw
+  detections, 285.4s wall-clock (0.17s/frame benchmark, within budget).
+- Second run (identical inputs): 2,342/2,342 cache **hits**, 0 misses,
+  identical 49,436-row output, 9.9s wall-clock -- a real, not just unit-tested,
+  proof the cache works.
+- 9 new tests (cache-key sensitivity to every field, round-trip, a
+  call-counting fake-inference test proving a hit skips real work, plus
+  integration checks against the real generated artifact: no out-of-range
+  confidence, every detection traces to a real frame, weak detections
+  actually survive the floor). 64 tests total, all passing. `ruff check`
+  clean.
+- Confidence-by-class table confirms the target MVP classes are well
+  represented: 31,367 car, 5,097 person, 3,193 truck, 1,031 bus detections,
+  spanning the full 0.05-0.95+ confidence range.
+
+### Decision and next step
+
+Next: Task 6 (rebuild and verify the YOLO-only / static-memory / SORT /
+ByteTrack baselines behind one common interface, auditing Assignments 1-4's
+code for reuse rather than copying it blindly).
+
 ## 2026-08-04 — OATM Task 4: mine and review natural occlusion events
 
 ### Change
