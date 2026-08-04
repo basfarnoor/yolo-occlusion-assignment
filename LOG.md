@@ -62,6 +62,55 @@ event families -- two explicitly separate experiment types, extending
 Assignment 4's controlled-experiment pattern rather than calling detection
 edits "visual occlusion").
 
+## 2026-08-04 — OATM Task 8: motion memory and growing uncertainty
+
+### Change
+
+Added `oatm.memory.{motion,motion_regimes,motion_comparison}` and
+`scripts/run_motion_comparison.py`. Built seven synthetic motion-regime
+fixtures with EXACTLY known ground truth (stationary, smooth, slow, unequal
+timestamp gaps, turning, abrupt, missing-then-reappear) and compared
+`StationaryPredictor` (frozen box) against the existing timestamp-aware
+Kalman filter on each. Wrote the committed `results/motion_regime_report.md`
+and the required diagram, `results/charts/uncertainty_growth.png`.
+
+### Reason
+
+Before adding any occlusion classifier or appearance memory, the project
+needs to know, honestly and per motion regime, whether constant-velocity
+prediction actually beats freezing the box -- and whether the system's own
+uncertainty estimate behaves sensibly while evidence is missing.
+
+### Validation
+
+- 15 new tests (133 total), all passing: uncertainty grows monotonically
+  during every regime's gap (not just some), stationary is exact on a
+  non-moving object, Kalman clearly wins on smooth motion, the two models
+  are close on slow motion, Kalman wins on irregular timestamps (the exact
+  payoff of Assignment 4's dt-aware repair), and the abrupt/turning regimes
+  are checked for a REPORTABLE result without asserting a predetermined
+  winner.
+- Caught and fixed an honesty issue in my own first draft: the report
+  initially labeled the turning-motion result "negative/mixed" without
+  checking the actual numbers -- Kalman still won there (51.35px vs.
+  66.56px), just by a much smaller margin than on smooth motion (23% vs.
+  100% error reduction). Rewrote that section to report the real numbers and
+  explain the margin, rather than asserting a loss that didn't happen.
+- Kalman won on mean center error in all seven regimes tested (including
+  turning/abrupt, where its assumption is violated) -- an honest result, not
+  a forced negative one; the report explains why that is not the same claim
+  as "motion prediction always helps" and flags turning/abrupt as the
+  regimes most likely to flip with real noise or sharper turns.
+- Required diagram confirms uncertainty visibly grows (P-trace 20.7 -> 48.4
+  -> 88.8) after 1, 3, and 5 missing frames.
+
+### Decision and next step
+
+Per this task's rule ("do not add visual ego-motion compensation or
+appearance embeddings yet"), stopping the motion work here. Next: Task 9
+(the OBSERVED_STRONG / OBSERVED_WEAK / PREDICTED_HIDDEN / LOST / EXITED
+state machine).
+
 ## 2026-08-04 — OATM Task 7: controlled-occlusion event families
 
 ### Change
