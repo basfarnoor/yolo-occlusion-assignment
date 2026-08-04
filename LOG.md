@@ -62,6 +62,49 @@ event families -- two explicitly separate experiment types, extending
 Assignment 4's controlled-experiment pattern rather than calling detection
 edits "visual occlusion").
 
+## 2026-08-04 — OATM Task 9: OATM evidence states / state machine
+
+### Change
+
+Added `oatm.occlusion.state_machine` (the exact five-state machine --
+`OBSERVED_STRONG`/`OBSERVED_WEAK`/`PREDICTED_HIDDEN`/`LOST`/`EXITED` -- with
+an explicit, exhaustive transition table) and `oatm.occlusion.evidence` (a
+small rule-based, camera-only classifier: foreground-overlap, confidence
+trend, image-boundary + outward motion, elapsed time/grace -- deliberately
+NOT using any privileged nuScenes label).
+
+### Reason
+
+The system must distinguish "I can currently see it," "I can barely see
+it," "I believe it's hidden," "I've lost it," and "it left" -- and low
+confidence alone must never be treated as proof of occlusion.
+
+### Validation
+
+- 40 new tests (158 total): an EXHAUSTIVE 5-state x 5-event (25-combination)
+  transition table -- every allowed transition works, every disallowed one
+  (including all events on the two terminal states) raises
+  `InvalidTransitionError`, not a silent no-op. Plus the required fixtures:
+  true occlusion (visible occluder), field-of-view exit (boundary +
+  outward motion -- checked and confirmed it wins even when an occluder is
+  also present), ordinary detector miss (no occluder, grace spent ->
+  insufficient evidence, not hidden forever), poor visibility (a
+  barely-above-floor detection is still just a weak detection, never
+  occlusion), false initial track (a track born then immediately missing
+  goes to insufficient evidence quickly), and compatible/incompatible
+  reappearance (the latter proven via Task 6's own association test: a
+  wrong-class candidate is never handed to this classifier as a match).
+- Explicitly verified a track can only ever be BORN into `OBSERVED_STRONG`
+  (never `OBSERVED_WEAK`), and that `LOST`/`EXITED` are structurally
+  terminal in the transition table itself, not just guarded by an
+  `if`-check that could be forgotten later.
+
+### Decision and next step
+
+Next: Task 10 (adaptive existence/identity confidence and anti-ghost
+termination -- the piece that decides how long a `PREDICTED_HIDDEN` track
+gets to keep waiting before it must become `LOST`).
+
 ## 2026-08-04 — OATM Task 8: motion memory and growing uncertainty
 
 ### Change
