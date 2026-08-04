@@ -62,6 +62,65 @@ event families -- two explicitly separate experiment types, extending
 Assignment 4's controlled-experiment pattern rather than calling detection
 edits "visual occlusion").
 
+## 2026-08-04 — OATM Task 12: appearance-memory ablation
+
+### Change
+
+Mentor approved Task 12 only (appearance memory), not Task 13, after Task
+11's mandatory checkpoint -- based on the identity-switch rates already
+visible in that report. Added `oatm.memory.appearance` (`AppearanceAnchor`,
+pure numpy, testable without torch/images), `oatm.memory.embedder` (the
+actual frozen network -- pretrained MobileNetV3-Small, eval mode, no
+gradients, never fine-tuned), `oatm.tracking.reconnection` (a third,
+appearance-gated association stage with `appearance_only` and `dual`
+modes), and `oatm.tracking.oatm_appearance_adapter.OATMAppearanceTracker`
+(Method F plus that optional stage). Ran `run_appearance_ablation.py` +
+`build_appearance_ablation_report.py` comparing `motion_only` (Task 11's
+OATM MVP, unchanged), `appearance_only`, and `dual` on the SAME 48
+controlled events Task 11 used.
+
+### Reason
+
+Task 11's report showed ByteTrack/OATM still mis-assigning a new track ID
+4-17% of the time even in the controlled families -- motion-only
+association's clearest remaining weak point, and the specific gap Task 12's
+question ("does appearance reconnect the correct identity better than
+motion alone?") targets directly.
+
+### Validation
+
+- 25 new tests (219 total, all passing; `ruff check` clean), including the
+  required hard-negative case: two same-class hidden tracks, one spatially
+  near a reappearing detection and one far away -- appearance correctly
+  picks the real match by embedding similarity, not the nearer decoy.
+- Ran the full ablation on all 48 controlled events x 3 modes (144 rows) in
+  79s, embedding only detections within a bounded window around each event
+  (documented, does not affect any measured outcome) -- 1,057 unique crops
+  embedded via the frozen network.
+- **Null/harmful result, preserved and reported honestly, not adjusted:**
+  same-ID recovery was 38/48 for `motion_only`, but only 32/48
+  (`appearance_only`) and 34/48 (`dual`) -- appearance-based reconnection
+  did not improve identity preservation on this sample, and localization
+  error among reconnected tracks got markedly worse (`detector_intervention`
+  center error: 3.0px motion_only vs. 14.4px appearance_only). The frozen,
+  generic ImageNet MobileNetV3-Small embedding evidently does not
+  discriminate these specific same-class real objects (cars/pedestrians at
+  typical driving-scene crop resolution) well enough to help, and
+  occasionally causes a wrong reconnection instead. `hidden_frame_coverage`
+  and `fully_bridged` were unchanged across all three modes -- reconnection
+  only fires during the post-window recovery search, never during the
+  hidden window itself, so this null result is specifically about identity
+  correctness at reappearance, not occlusion-bridging.
+
+### Decision and next step
+
+Given the null/harmful result, `OATMTracker` (motion-only, Task 11's
+version) remains the frozen method going forward -- `OATMAppearanceTracker`
+stays available but is not adopted as the primary method. Task 13
+(ego-motion) was not approved and is not started. Next: Task 14 (freeze the
+method, scale beyond mini) -- unless the mentor wants to revisit this
+ablation's scope (e.g. a different embedding model) first.
+
 ## 2026-08-04 — OATM Task 11: first complete OATM MVP study
 
 ### Change

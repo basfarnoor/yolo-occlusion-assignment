@@ -1,0 +1,53 @@
+{
+  "run_id": "30614cf75bbc",
+  "n_events_run": 48,
+  "modes": [
+    "motion_only",
+    "appearance_only",
+    "dual"
+  ],
+  "embed_lead_in_frames": 15,
+  "n_unique_embeddings": 1057,
+  "total_elapsed_s": 79.11355400085449,
+  "summary": {
+    "motion_only": {
+      "n_events": 48,
+      "n_linked": 48,
+      "mean_hidden_frame_coverage": 0.8895833333333334,
+      "fully_bridged_rate": 0.8125,
+      "mean_center_error_px": 3.5874208412192083,
+      "mean_iou": 0.8237794448820588,
+      "recovery_status_counts": {
+        "same_id": 38,
+        "new_id": 6,
+        "not_recovered": 4
+      }
+    },
+    "appearance_only": {
+      "n_events": 48,
+      "n_linked": 48,
+      "mean_hidden_frame_coverage": 0.8895833333333334,
+      "fully_bridged_rate": 0.8125,
+      "mean_center_error_px": 15.855729320640306,
+      "mean_iou": 0.7392252664793396,
+      "recovery_status_counts": {
+        "same_id": 32,
+        "new_id": 11,
+        "not_recovered": 5
+      }
+    },
+    "dual": {
+      "n_events": 48,
+      "n_linked": 48,
+      "mean_hidden_frame_coverage": 0.8895833333333334,
+      "fully_bridged_rate": 0.8125,
+      "mean_center_error_px": 5.98255410072364,
+      "mean_iou": 0.7882214410516307,
+      "recovery_status_counts": {
+        "same_id": 34,
+        "new_id": 10,
+        "not_recovered": 4
+      }
+    }
+  }
+}
