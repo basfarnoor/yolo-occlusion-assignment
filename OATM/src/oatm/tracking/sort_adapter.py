@@ -73,6 +73,10 @@ class SortAdapter:
                 state="OBSERVED_STRONG" if matched_this_frame else "PREDICTED_HIDDEN",
                 evidence_source="strong_detection" if matched_this_frame else "motion_prediction",
                 x1=box[0], y1=box[1], x2=box[2], y2=box[3],
+                raw_detection_x1=t.last_raw_box[0] if t.last_raw_box else None,
+                raw_detection_y1=t.last_raw_box[1] if t.last_raw_box else None,
+                raw_detection_x2=t.last_raw_box[2] if t.last_raw_box else None,
+                raw_detection_y2=t.last_raw_box[3] if t.last_raw_box else None,
                 detector_confidence=t.last_confidence if matched_this_frame else None,
                 existence_confidence=1.0, identity_confidence=1.0,  # not modeled by this baseline
                 localization_uncertainty=float(np.trace(t.P)),  # real Kalman covariance trace

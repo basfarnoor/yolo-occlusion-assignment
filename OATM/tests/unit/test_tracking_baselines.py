@@ -190,6 +190,44 @@ def test_localization_uncertainty_grows_while_a_track_is_missing(tracker_factory
     assert uncertainties[-1] > uncertainties[0]
 
 
+@pytest.mark.parametrize("tracker_factory", [
+    lambda: SortAdapter(track_buffer=3),
+    lambda: ByteTrackAdapter(track_buffer=3),
+])
+def test_raw_detection_box_is_the_actual_yolo_box_not_the_smoothed_state(tracker_factory):
+    """Regression test for the exact bug Assignment 4's mentor review found
+    (see reuse_audit.md, required repair #1): raw_detection_x1..y2 must be
+    the literal matched box, distinct from the Kalman-smoothed x1..y2, and
+    None whenever the track has no real evidence this frame."""
+    KalmanBoxTracker.reset_id_counter()
+    tracker = tracker_factory()
+    outputs = tracker.update([_det(0, 0, 40, 40)], timestamp=0.0)
+    assert (outputs[0].raw_detection_x1, outputs[0].raw_detection_y1,
+            outputs[0].raw_detection_x2, outputs[0].raw_detection_y2) == (0, 0, 40, 40)
+
+    outputs = tracker.update([_det(3, 1, 43, 41)], timestamp=1.0)
+    assert outputs[0].raw_detection_x1 == 3
+    assert outputs[0].x1 != outputs[0].raw_detection_x1, (
+        "the Kalman-corrected x1 should differ from the raw detection once there is any innovation"
+    )
+
+    outputs = tracker.update([], timestamp=2.0)
+    assert outputs[0].evidence_source == "motion_prediction"
+    assert outputs[0].raw_detection_x1 is None
+
+
+def test_static_memory_raw_detection_box_matches_frozen_box_while_matched():
+    KalmanBoxTracker.reset_id_counter()
+    static_memory._StaticTrack.reset_id_counter()
+    tracker = StaticMemoryTracker(track_buffer=3)
+    outputs = tracker.update([_det(0, 0, 40, 40)], timestamp=0.0)
+    assert (outputs[0].raw_detection_x1, outputs[0].raw_detection_x2) == (0, 40)
+
+    outputs = tracker.update([], timestamp=1.0)
+    assert outputs[0].raw_detection_x1 is None
+    assert outputs[0].x1 == 0  # the frozen box itself is unchanged
+
+
 def test_baseline_confidence_fields_are_documented_constants_not_fabricated():
     KalmanBoxTracker.reset_id_counter()
     tracker = ByteTrackAdapter()

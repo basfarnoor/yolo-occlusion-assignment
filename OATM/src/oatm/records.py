@@ -127,6 +127,16 @@ class TrackerOutputRecord(BaseModel):
     y1: float
     x2: float
     y2: float
+    # The RAW detection box actually matched this frame (before any Kalman
+    # correction), or None when evidence_source is motion_prediction. Any
+    # code needing "the real YOLO box" must use these, never x1..y2 above --
+    # x1..y2 is the tracker's smoothed state. This exact confusion was
+    # Assignment 4's most serious bug (see its reuse_audit.md, repair #1);
+    # this field exists so it can never quietly happen again here.
+    raw_detection_x1: float | None = None
+    raw_detection_y1: float | None = None
+    raw_detection_x2: float | None = None
+    raw_detection_y2: float | None = None
     detector_confidence: float | None = Field(default=None, ge=0.0, le=1.0)
     existence_confidence: float = Field(ge=0.0, le=1.0)
     identity_confidence: float = Field(ge=0.0, le=1.0)

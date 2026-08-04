@@ -88,6 +88,10 @@ class StaticMemoryTracker:
                 state="OBSERVED_STRONG" if matched_this_frame else "PREDICTED_HIDDEN",
                 evidence_source="strong_detection" if matched_this_frame else "motion_prediction",
                 x1=t.box[0], y1=t.box[1], x2=t.box[2], y2=t.box[3],
+                raw_detection_x1=t.raw_detection_box[0] if t.raw_detection_box else None,
+                raw_detection_y1=t.raw_detection_box[1] if t.raw_detection_box else None,
+                raw_detection_x2=t.raw_detection_box[2] if t.raw_detection_box else None,
+                raw_detection_y2=t.raw_detection_box[3] if t.raw_detection_box else None,
                 detector_confidence=t.last_confidence if matched_this_frame else None,
                 existence_confidence=1.0, identity_confidence=1.0,  # not modeled by this baseline
                 localization_uncertainty=memory_age_seconds,  # crude proxy: longer frozen = less trustworthy

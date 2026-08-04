@@ -141,3 +141,16 @@ that already-repaired code, not on Assignment 3's original version.
 **Task 6 is complete when:** all four baselines run from one configuration,
 receive identical evidence, and pass both the synthetic unit tests and a
 real one-scene integration test -- verified below.
+
+## Addendum: a schema gap found while starting Task 7
+
+While preparing Task 7's controlled experiments (which need each target's
+*raw* per-frame box to modify), `TrackerOutputRecord` turned out to have
+dropped Assignment 4's `raw_detection_box` field entirely -- only the
+Kalman-smoothed `x1..y2` remained. Continuing to build Task 7 on that gap
+would have silently reintroduced the exact circular-reference bug Assignment
+4 had to repair. Added `raw_detection_x1/y1/x2/y2` (nullable, `None` when
+`evidence_source` is `motion_prediction`) to the canonical contract and wired
+them through all four baselines, with a regression test. Re-ran
+`run_baselines.py`: identical 34,042-row output, confirming the fix only adds
+fields rather than changing tracking behavior.

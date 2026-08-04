@@ -20,6 +20,8 @@ def run_yolo_only_frame(
             track_id=i,  # no real identity -- see module docstring
             state="OBSERVED_STRONG", evidence_source="strong_detection",
             x1=d["x1"], y1=d["y1"], x2=d["x2"], y2=d["y2"],
+            raw_detection_x1=d["x1"], raw_detection_y1=d["y1"],
+            raw_detection_x2=d["x2"], raw_detection_y2=d["y2"],
             detector_confidence=d["confidence"],
             existence_confidence=1.0, identity_confidence=1.0,  # not modeled by this baseline
             localization_uncertainty=0.0,  # a current detection, not a prediction

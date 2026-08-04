@@ -1,6 +1,6 @@
 # Baseline Summary (Task 6)
 
-Run ID: `ecbbdaf34940`. Scenes: 10. Elapsed: 4.2s.
+Run ID: `c5dfa5476349`. Scenes: 10. Elapsed: 7.1s.
 
 | Method | Output rows | Unique track IDs | Mean track length (rows) |
 |---|---:|---:|---:|
@@ -13,4 +13,4 @@ Run ID: `ecbbdaf34940`. Scenes: 10. Elapsed: 4.2s.
 
 Local-only artifact (git-ignored, regenerable with `python scripts/run_baselines.py`):
 
-- `OATM/artifacts/baseline_outputs.parquet` -- 34042 rows, schema: `oatm.records.TrackerOutputRecord`, 1190 KB.
+- `OATM/artifacts/baseline_outputs.parquet` -- 34042 rows, schema: `oatm.records.TrackerOutputRecord`, 1488 KB.
