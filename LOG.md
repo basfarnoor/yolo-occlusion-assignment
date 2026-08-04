@@ -62,6 +62,52 @@ event families -- two explicitly separate experiment types, extending
 Assignment 4's controlled-experiment pattern rather than calling detection
 edits "visual occlusion").
 
+## 2026-08-04 — OATM Task 7: controlled-occlusion event families
+
+### Change
+
+Implemented `oatm.dataset.controlled_occlusion` and
+`scripts/build_controlled_events.py`. Selected 6 real target tracks (via the
+ByteTrack baseline's now-correct raw detection boxes) and built two
+explicitly separate event families: `detector_intervention` (demote/remove
+the target's detection row, pixels untouched) and `controlled_visual` (paint
+a seeded gray mask over the target on a local image copy, then rerun the
+real frozen detector on that copy). 48 events total (24 each), varying
+duration (2, 5 frames) and coverage (0.5, 1.0).
+
+### Reason
+
+Detector intervention and visual occlusion test fundamentally different
+things (tracker logic in isolation vs. real re-detection under an actual
+covered target) and must never be conflated or compared as if they were the
+same experiment.
+
+### Validation
+
+- Found and fixed a determinism bug before it shipped: the original seed
+  derivation used Python's built-in `hash()`, which is randomized per
+  process (`PYTHONHASHSEED`) -- every rerun would have produced different,
+  unreproducible masks. Replaced with a SHA-256-based deterministic digest.
+- 11 new tests (same-seed same-mask, full-coverage mask matches the target
+  box size, deterministic target selection/windowing, all four baselines
+  receiving the identical unmutated detection list) plus 3 integration tests
+  against the real manifest (both families present and never merged, every
+  event has a seed and traceable target, visual events additionally record
+  mask box and cache key). 103 tests total, all passing.
+- **Visual checkpoint actually performed**, not just described: zoomed into
+  full-resolution modified frames and confirmed the gray mask lands exactly
+  on the intended target (a pedestrian at a bus stop -- shoes visible below
+  the mask edge; a car at a distant intersection). Sent the full six-target
+  before/after comparison to the student directly for her own confirmation.
+- Confirmed the source nuScenes files are only ever opened for reading
+  (`Image.open()` + `.copy()` before any drawing) -- never written to.
+
+### Decision and next step
+
+Next: Task 8 (motion memory -- compare stationary vs. timestamp-aware
+constant-velocity prediction across synthetic motion regimes, with growing
+localization uncertainty).
+
 ## 2026-08-04 — OATM Task 5: run detector once, cache observations
 
 ### Change
