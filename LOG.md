@@ -11,6 +11,51 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-04 — OATM Task 3: project 3D ground truth into CAM_FRONT
+
+### Change
+
+Implemented `oatm.dataset.projection` (global -> ego -> camera -> pinhole
+transform, behind-camera rejection, image-boundary clipping via shapely,
+car/pedestrian evaluation-class mapping) and
+`scripts/project_annotations.py` + `scripts/build_projection_overlays.py`.
+Wrote local-only `projected_ground_truth.parquet` (5,384 accepted rows) and
+`projection_rejections.json`, plus the committed `results/projection_audit.md`.
+
+### Reason
+
+Every later phase needs a trustworthy, independently-derived 2D ground truth
+to score the tracker against -- one that can never leak into the camera-only
+online path (METHODOLOGY.md's camera-only boundary).
+
+### Validation
+
+- 17 new tests (unit + integration), all passing (60 total in the project):
+  known coordinate transform, behind-camera rejection, boundary clipping with
+  nonzero truncation, positive finite area, deterministic ordering, MVP
+  class-mapping, and identity preservation against the real dataset.
+- Independent cross-check: the transform was reimplemented with `scipy`'s
+  rotation library (instead of `pyquaternion`) and agrees to 1e-9 across 3
+  rotation/translation cases -- satisfies the "compare with an independent
+  reference" requirement without standing up the full official devkit.
+- 5,384 of 18,538 considered annotations accepted (rest were behind the
+  vehicle or outside the frame, as expected since annotations cover the full
+  360-degree scene, not just CAM_FRONT); 3,492 map to the MVP's car/pedestrian
+  scope.
+- Visually reviewed 50 overlay frames (5 contact sheets, all 10 scenes, day/
+  night/rain) -- tight alignment throughout, no systematic error, nothing
+  needed a silent correction.
+- `ruff check` clean; `git add -n` shows only source/tests/docs.
+
+### Decision and next step
+
+Task 3 has no separate student checkpoint in the assignment (only "automated
+checks pass and every discrepancy is explained"), so continuing directly.
+Next: Task 4 (mine and review natural occlusion events from real visibility
+transitions) -- this task DOES have a student checkpoint requiring an actual
+contact-sheet review with accept/reject/unsure answers, so it will pause for
+that.
+
 ## 2026-08-04 — OATM Task 2: read-only mini audit + chronological CAM_FRONT index
 
 ### Change

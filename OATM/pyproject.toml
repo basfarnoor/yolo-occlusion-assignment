@@ -8,6 +8,10 @@ dependencies = [
     "pyyaml>=6,<7",
     "pandas>=2.2,<3",
     "pyarrow>=16,<26",
+    "pyquaternion>=0.9.9,<0.10",
+    "shapely>=2,<3",
+    "scipy>=1.12,<2",
+    "pillow>=10,<13",
 ]
 
 [dependency-groups]
