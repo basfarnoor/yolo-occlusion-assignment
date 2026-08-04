@@ -1,4 +1,8 @@
-from oatm.evaluation.event_metrics import EventMetricsInputs, compute_event_metrics
+from oatm.evaluation.event_metrics import (
+    EventMetricsInputs,
+    compute_event_metrics,
+    compute_yolo_only_event_metrics,
+)
 
 
 def _row(track_id, cls, box, state="OBSERVED_STRONG"):
@@ -86,3 +90,53 @@ def test_not_recovered_when_no_real_detection_reclaims_the_object():
     result = compute_event_metrics(inputs)
     assert result.recovery_status == "not_recovered"
     assert result.recovery_latency_frames is None
+
+
+def test_yolo_only_ignores_coincidentally_equal_track_id_across_unrelated_frames():
+    """Regression test for a real bug: yolo_only's track_id is just a
+    per-frame index, so two UNRELATED detections in different frames can
+    share the same track_id purely by chance. The yolo_only-specific metric
+    must not treat that coincidence as the object staying alive -- only real
+    spatial overlap against the true location counts."""
+    outputs_by_frame = {
+        0: [_row(0, "car", (0, 0, 40, 40))],
+        # frame 1: track_id 0 reused, but this is a COMPLETELY different,
+        # unrelated car far away -- must NOT count as the target being alive.
+        1: [_row(0, "car", (900, 800, 940, 840))],
+    }
+    gt_box_by_frame = {1: (2, 2, 42, 42)}
+    inputs = EventMetricsInputs(
+        event_id="e6", method_name="yolo_only", reference_box=(0, 0, 40, 40), reference_class="car",
+        pre_frame_index=0, hidden_frame_indices=[1], recovery_search_frame_indices=[],
+        outputs_by_frame=outputs_by_frame, gt_box_by_frame=gt_box_by_frame,
+    )
+    result = compute_yolo_only_event_metrics(inputs)
+    assert result.n_hidden_frames_alive == 0, "a coincidentally-equal track_id must never count as detected"
+
+
+def test_yolo_only_counts_real_spatial_redetection_as_alive():
+    outputs_by_frame = {
+        0: [_row(0, "car", (0, 0, 40, 40))],
+        1: [_row(3, "car", (2, 2, 42, 42))],  # different track_id, but really the same location
+    }
+    gt_box_by_frame = {1: (2, 2, 42, 42)}
+    inputs = EventMetricsInputs(
+        event_id="e7", method_name="yolo_only", reference_box=(0, 0, 40, 40), reference_class="car",
+        pre_frame_index=0, hidden_frame_indices=[1], recovery_search_frame_indices=[],
+        outputs_by_frame=outputs_by_frame, gt_box_by_frame=gt_box_by_frame,
+    )
+    result = compute_yolo_only_event_metrics(inputs)
+    assert result.n_hidden_frames_alive == 1
+    assert result.recovery_status in ("not_recovered", "n/a")  # no recovery frames given in this test
+
+
+def test_yolo_only_recovery_status_is_never_same_id_or_new_id():
+    outputs_by_frame = {0: [_row(0, "car", (0, 0, 40, 40))], 3: [_row(9, "car", (2, 2, 42, 42))]}
+    gt_box_by_frame = {3: (2, 2, 42, 42)}
+    inputs = EventMetricsInputs(
+        event_id="e8", method_name="yolo_only", reference_box=(0, 0, 40, 40), reference_class="car",
+        pre_frame_index=0, hidden_frame_indices=[1, 2], recovery_search_frame_indices=[3],
+        outputs_by_frame=outputs_by_frame, gt_box_by_frame=gt_box_by_frame,
+    )
+    result = compute_yolo_only_event_metrics(inputs)
+    assert result.recovery_status == "detected"

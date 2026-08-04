@@ -25,3 +25,22 @@ bytetrack:
   first_association_iou_threshold: 0.3
   second_association_iou_threshold: 0.5
   track_buffer: 5
+
+# Method F (Task 11): same association thresholds as bytetrack (the fair
+# comparison point -- identical detection matching, the difference is what
+# happens to a track once nothing matches). Confidence/uncertainty values
+# are Task 10's frozen configs/termination.yaml, duplicated here (not
+# loaded from that file) so this one config fully describes one tracker run.
+oatm_mvp:
+  detection_floor: 0.05
+  high_score_threshold: 0.5
+  new_track_threshold: 0.6
+  first_association_iou_threshold: 0.3
+  second_association_iou_threshold: 0.5
+  existence_floor: 0.05
+  uncertainty_ceiling: 500.0
+  confidence_beta: 0.15
+  confidence_alpha: 0.01
+  boundary_margin_px: 25.0
+  max_grace_frames_without_evidence: 1
+  occluder_iou_threshold: 0.02

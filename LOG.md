@@ -62,6 +62,82 @@ event families -- two explicitly separate experiment types, extending
 Assignment 4's controlled-experiment pattern rather than calling detection
 edits "visual occlusion").
 
+## 2026-08-04 — OATM Task 11: first complete OATM MVP study
+
+### Change
+
+Added `oatm.evaluation` (`ground_truth`, `linking`, `event_metrics`,
+`global_metrics`) and two scripts: `run_mvp_study.py` (the expensive part --
+one full continuous 5-method run over all 10 scenes, plus a fresh event-
+scoped rerun for each of the 48 controlled events) and `build_mvp_report.py`
+(fast, reads only the immutable outputs already written, regenerates
+`results/mvp_report.md` + 4 charts without rerunning any tracker). Also added
+`class_name` to `TrackerOutputRecord` (needed for class-aware ground-truth
+matching and precision/recall) and an `oatm_mvp` section to
+`configs/tracker.yaml`, duplicating Task 10's frozen confidence/uncertainty
+values so one config fully describes the run.
+
+### Reason
+
+Comparing YOLO-only/static/SORT/ByteTrack/OATM-MVP needed one common way to
+resolve "the same real object" across methods that each assign their own
+track_id, one definition of hidden-window bridging usable across all three
+event families without conflating them, and metrics separated by family per
+the assignment's own requirement.
+
+### Validation
+
+- 19 new tests (194 total, all passing; `ruff check` clean).
+- Counts: 10 scenes, 2342 unique frames per method (404 real keyframes with
+  ground truth + 1938 unannotated sweep frames), 6 accepted natural events,
+  48 controlled events (24 detector_intervention + 24 controlled_visual, all
+  48 reruns completed), 44,966 full-run output rows, 270 event-metric rows.
+- Caught and fixed three real bugs before trusting any result, each kept in
+  the report/tests rather than quietly patched over:
+  1. `yolo_only`'s `track_id` is a meaningless fresh per-frame index (already
+     known from Task 6) -- the shared event-metrics function was matching it
+     by equality anyway, so coincidentally-equal indices from UNRELATED
+     detections in different frames were registering as false "coverage" and
+     false "same-ID recovery". Fixed with a separate,
+     `compute_yolo_only_event_metrics` that only ever matches by real spatial
+     overlap against the true location, never by track_id.
+  2. Global precision/recall was scored across all 2342 frames per scene, but
+     nuScenes only has 3D annotations at the 404 keyframes -- the other 1938
+     "sweep" frames have NO ground truth at all, not merely unlabeled ones.
+     Every real detection on a sweep frame was counting as a false positive,
+     collapsing precision to ~14% for every method uniformly. Fixed by
+     restricting precision/recall to keyframe frames only; precision is now
+     ~78-85% across methods, a sane number.
+  3. (Carried from the prior entry) the OATM tracker's own immature-
+     uncertainty bug, already fixed before this run.
+- At matched inputs: OATM MVP and ByteTrack bridge occlusion far more often
+  than SORT/static memory/raw YOLO across the 48 controlled events (86-98%
+  hidden-frame coverage vs 0-8% for yolo_only). OATM MVP's global ghost rate
+  (38.4%) is NOT lower than ByteTrack's (32.7%) in this run despite its
+  explicit anti-ghost termination -- reported honestly rather than adjusted;
+  Task 10's termination thresholds were frozen from noise-free synthetic
+  motion, and real detector noise evidently still produces comparable ghost
+  duration. The natural-event family is a very small, honestly-flagged
+  sample: only 2 of 6 accepted events had a strong enough real detection at
+  the pre-occlusion reference frame for ANY method to even establish a
+  tracking anchor -- a genuine detector-confidence limitation affecting all
+  five methods identically, not a tracking-quality difference.
+- Existence-confidence calibration (507 keyframe `PREDICTED_HIDDEN` rows):
+  accuracy among kept predictions rises from 20% (threshold 0.0, everything
+  kept) to 55% (threshold 0.95, only the most confident 20% kept) --
+  monotonic, a real (if imperfect) calibration signal.
+
+### Decision and next step
+
+**Mandatory mentor checkpoint per the assignment.** Task 11 is complete --
+`results/mvp_report.md`, `results/run_metadata.json`, 4 charts, and
+`results/mvp_event_metrics.csv` are all written, and `build_mvp_report.py`
+regenerates the report from immutable outputs alone. Per
+`STUDENT_IMPLEMENTATION_ASSIGNMENT.md`, work must stop here until the mentor
+decides whether this evidence justifies Task 12 (appearance memory), Task 13
+(ego-motion), both, or neither -- no optional component work begins without
+that sign-off.
+
 ## 2026-08-04 — OATM MVP tracker: wiring Tasks 6/8/9/10 into one tracker
 
 ### Change

@@ -18,13 +18,25 @@ VISIBLE_STATES = ("OBSERVED_STRONG", "OBSERVED_WEAK")
 
 def compute_precision_recall(
     outputs: list[dict], gt_by_frame: dict[str, list[dict]], iou_threshold: float = 0.5,
+    keyframe_sample_data_tokens: set[str] | None = None,
 ) -> dict:
     """Greedy one-to-one IoU matching per frame per class. Returns overall and
-    per-class {tp, fp, fn, precision, recall}."""
+    per-class {tp, fp, fn, precision, recall}.
+
+    nuScenes only has 3D annotations at keyframes (2Hz) -- the other, more
+    numerous "sweep" frames (12Hz) have NO ground truth at all, not just
+    unlabeled ones. Scoring predictions on those frames against empty ground
+    truth would count every real detection there as a false positive,
+    collapsing precision to a meaningless number. `keyframe_sample_data_tokens`,
+    when given, restricts scoring to frames where ground truth genuinely
+    exists."""
     predicted_by_frame_class: dict[tuple[str, str], list[dict]] = defaultdict(list)
     for row in outputs:
         if row["state"] not in VISIBLE_STATES:
             continue
+        if keyframe_sample_data_tokens is not None:
+            if row["sample_data_token"] not in keyframe_sample_data_tokens:
+                continue
         eval_class = DETECTOR_TO_EVAL_CLASS.get(row["class_name"])
         if eval_class is None:
             continue

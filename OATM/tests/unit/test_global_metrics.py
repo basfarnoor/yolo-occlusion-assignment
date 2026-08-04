@@ -45,6 +45,22 @@ def test_precision_recall_ignores_unmapped_classes():
     assert result["overall"]["fp"] == 0, "truck has no ground-truth class and must never be scored"
 
 
+def test_precision_recall_ignores_sweep_frames_with_no_ground_truth_at_all():
+    """Regression test: nuScenes only annotates keyframes (2Hz); the far more
+    numerous sweep frames (12Hz) have NO ground truth at all, not merely
+    unlabeled ones. Without keyframe_sample_data_tokens, a real detection on
+    a sweep frame gets scored as a false positive against nonexistent
+    ground truth, collapsing precision for every method uniformly."""
+    outputs = [
+        _out(1, "car", (0, 0, 40, 40), sdt="keyframe_1"),   # correct, on an annotated frame
+        _out(1, "car", (0, 0, 40, 40), sdt="sweep_1"),      # same real object, unannotated frame
+    ]
+    gt_by_frame = {"keyframe_1": [_gt("i1", "car", (0, 0, 40, 40))]}  # sweep_1 has no annotations at all
+    result = compute_precision_recall(outputs, gt_by_frame, keyframe_sample_data_tokens={"keyframe_1"})
+    assert result["car"]["tp"] == 1
+    assert result["car"]["fp"] == 0, "a sweep-frame detection must never count as a false positive"
+
+
 def test_ghost_rate_flags_track_with_zero_real_support():
     outputs = [_out(1, "car", (500, 500, 540, 540), sdt="f1"), _out(1, "car", (500, 500, 540, 540), sdt="f2")]
     gt_by_frame = {"f1": [_gt("i1", "car", (0, 0, 40, 40))], "f2": [_gt("i1", "car", (0, 0, 40, 40))]}

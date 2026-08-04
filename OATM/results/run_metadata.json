@@ -1,0 +1,215 @@
+{
+  "run_id": "20edccbf8044",
+  "methods": [
+    "yolo_only",
+    "static_memory",
+    "sort",
+    "bytetrack",
+    "oatm_mvp"
+  ],
+  "n_scenes": 10,
+  "n_natural_events": 6,
+  "n_controlled_events": 48,
+  "n_controlled_reruns_completed": 48,
+  "n_unique_frames_all_scenes": 2342,
+  "n_keyframes_with_ground_truth": 404,
+  "n_full_output_rows": 44966,
+  "n_event_metric_rows": 270,
+  "tracker_config": {
+    "shared": {
+      "high_score_threshold": 0.5
+    },
+    "static_memory": {
+      "high_score_threshold": 0.5,
+      "new_track_threshold": 0.6,
+      "iou_threshold": 0.3,
+      "track_buffer": 5
+    },
+    "sort": {
+      "high_score_threshold": 0.5,
+      "new_track_threshold": 0.6,
+      "iou_threshold": 0.3,
+      "track_buffer": 5
+    },
+    "bytetrack": {
+      "detection_floor": 0.05,
+      "high_score_threshold": 0.5,
+      "new_track_threshold": 0.6,
+      "first_association_iou_threshold": 0.3,
+      "second_association_iou_threshold": 0.5,
+      "track_buffer": 5
+    },
+    "oatm_mvp": {
+      "detection_floor": 0.05,
+      "high_score_threshold": 0.5,
+      "new_track_threshold": 0.6,
+      "first_association_iou_threshold": 0.3,
+      "second_association_iou_threshold": 0.5,
+      "existence_floor": 0.05,
+      "uncertainty_ceiling": 500.0,
+      "confidence_beta": 0.15,
+      "confidence_alpha": 0.01,
+      "boundary_margin_px": 25.0,
+      "max_grace_frames_without_evidence": 1,
+      "occluder_iou_threshold": 0.02
+    }
+  },
+  "total_elapsed_s": 62.582048177719116,
+  "global_metrics": {
+    "yolo_only": {
+      "precision_recall": {
+        "car": {
+          "tp": 610,
+          "fp": 102,
+          "fn": 1741,
+          "precision": 0.8567415730337079,
+          "recall": 0.25946405784772436
+        },
+        "pedestrian": {
+          "tp": 133,
+          "fp": 54,
+          "fn": 1008,
+          "precision": 0.7112299465240641,
+          "recall": 0.1165644171779141
+        },
+        "overall": {
+          "tp": 743,
+          "fp": 156,
+          "fn": 2749,
+          "precision": 0.8264738598442715,
+          "recall": 0.21277205040091637
+        }
+      },
+      "ghost": null,
+      "runtime_s_10_scenes": 1.68943432001397
+    },
+    "static_memory": {
+      "precision_recall": {
+        "car": {
+          "tp": 576,
+          "fp": 81,
+          "fn": 1775,
+          "precision": 0.8767123287671232,
+          "recall": 0.24500212675457253
+        },
+        "pedestrian": {
+          "tp": 127,
+          "fp": 43,
+          "fn": 1014,
+          "precision": 0.7470588235294118,
+          "recall": 0.11130587204206836
+        },
+        "overall": {
+          "tp": 703,
+          "fp": 124,
+          "fn": 2789,
+          "precision": 0.8500604594921403,
+          "recall": 0.20131729667812143
+        }
+      },
+      "ghost": {
+        "n_tracks": 509,
+        "n_ghost_tracks": 191,
+        "ghost_rate": 0.37524557956778,
+        "mean_ghost_duration_frames": 11.041884816753926
+      },
+      "runtime_s_10_scenes": 1.68943432001397
+    },
+    "sort": {
+      "precision_recall": {
+        "car": {
+          "tp": 545,
+          "fp": 113,
+          "fn": 1806,
+          "precision": 0.8282674772036475,
+          "recall": 0.23181624840493406
+        },
+        "pedestrian": {
+          "tp": 136,
+          "fp": 37,
+          "fn": 1005,
+          "precision": 0.7861271676300579,
+          "recall": 0.11919368974583698
+        },
+        "overall": {
+          "tp": 681,
+          "fp": 150,
+          "fn": 2811,
+          "precision": 0.8194945848375451,
+          "recall": 0.1950171821305842
+        }
+      },
+      "ghost": {
+        "n_tracks": 470,
+        "n_ghost_tracks": 168,
+        "ghost_rate": 0.3574468085106383,
+        "mean_ghost_duration_frames": 11.755952380952381
+      },
+      "runtime_s_10_scenes": 1.68943432001397
+    },
+    "bytetrack": {
+      "precision_recall": {
+        "car": {
+          "tp": 693,
+          "fp": 175,
+          "fn": 1658,
+          "precision": 0.7983870967741935,
+          "recall": 0.2947681837515951
+        },
+        "pedestrian": {
+          "tp": 155,
+          "fp": 46,
+          "fn": 986,
+          "precision": 0.7711442786069652,
+          "recall": 0.13584574934268187
+        },
+        "overall": {
+          "tp": 848,
+          "fp": 221,
+          "fn": 2644,
+          "precision": 0.7932647333956969,
+          "recall": 0.24284077892325315
+        }
+      },
+      "ghost": {
+        "n_tracks": 425,
+        "n_ghost_tracks": 139,
+        "ghost_rate": 0.3270588235294118,
+        "mean_ghost_duration_frames": 18.66187050359712
+      },
+      "runtime_s_10_scenes": 1.68943432001397
+    },
+    "oatm_mvp": {
+      "precision_recall": {
+        "car": {
+          "tp": 690,
+          "fp": 192,
+          "fn": 1661,
+          "precision": 0.782312925170068,
+          "recall": 0.2934921310080817
+        },
+        "pedestrian": {
+          "tp": 153,
+          "fp": 44,
+          "fn": 988,
+          "precision": 0.7766497461928934,
+          "recall": 0.13409290096406662
+        },
+        "overall": {
+          "tp": 843,
+          "fp": 236,
+          "fn": 2649,
+          "precision": 0.7812789620018535,
+          "recall": 0.24140893470790378
+        }
+      },
+      "ghost": {
+        "n_tracks": 425,
+        "n_ghost_tracks": 163,
+        "ghost_rate": 0.3835294117647059,
+        "mean_ghost_duration_frames": 16.26993865030675
+      },
+      "runtime_s_10_scenes": 1.68943432001397
+    }
+  }
+}
