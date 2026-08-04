@@ -11,6 +11,45 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-04 — OATM Task 2: read-only mini audit + chronological CAM_FRONT index
+
+### Change
+
+Implemented `oatm.dataset.nuscenes_index` (chain-walking from each scene's
+`prev`/`next` links, not filename or timestamp sort) and
+`scripts/audit_dataset.py`. Wrote local-only `OATM/artifacts/frame_index.parquet`
+(2,342 rows) and `dataset_audit.json`, plus the committed
+`OATM/results/dataset_audit_summary.md`.
+
+### Reason
+
+Task 2's question: can the exact chronological CAM_FRONT stream be
+reconstructed per scene, from the dataset's own links, with zero missing
+files, zero broken links, and zero out-of-order frames? Nothing downstream
+(projection, detection, tracking) can be trusted until this foundation is
+verified.
+
+### Validation
+
+- Mini quality gate **PASSED** on the first real run against the local
+  dataset: 10/10 scenes, 404/404 keyframes, 2,342/2,342 CAM_FRONT records,
+  zero missing image files, zero non-monotonic timelines, every scene chain
+  complete with exactly one head/tail and fully reciprocal links.
+- 26/26 tests pass (9 new unit tests on synthetic fixtures + 3 new
+  integration tests against the real local dataset); `ruff check` clean.
+- Frame index rebuild is deterministic across two runs (tested).
+- Student answered Task 2's checkpoint in her own words after one
+  clarification each on two of the three questions (unsafe filename sorting;
+  why future frames are forbidden online; why the large index stays local
+  while the compact summary is committed).
+
+### Decision and next step
+
+**Stopping here per the assignment's mandatory mentor checkpoint** -- no
+annotation projection, YOLO, tracking, or OATM logic begins until a mentor
+reviews this Phase 0-1 output. Proposed a checkpoint commit; awaiting
+confirmation before committing and before any Task 3 work starts.
+
 ## 2026-08-04 — OATM Task 0 (project map) and Task 1 (Phase 0 scaffold)
 
 ### Change
