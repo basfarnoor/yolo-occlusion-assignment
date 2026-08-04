@@ -62,6 +62,61 @@ event families -- two explicitly separate experiment types, extending
 Assignment 4's controlled-experiment pattern rather than calling detection
 edits "visual occlusion").
 
+## 2026-08-04 — OATM MVP tracker: wiring Tasks 6/8/9/10 into one tracker
+
+### Change
+
+Added `oatm.tracking.oatm_adapter` (`OATMTracker`, method name `oatm_mvp`):
+one per-frame loop combining the two-stage BYTE-style association (Task 6),
+timestamp-aware Kalman motion (Task 8), the five-state camera-only evidence
+gate (Task 9), and adaptive existence-confidence decay with priority-ordered
+anti-ghost termination (Task 10). This is the prerequisite tracker for Task
+11's full MVP comparison study -- no appearance memory, no ego-motion yet.
+
+### Reason
+
+Task 11 needs one integrated method to compare against the four existing
+baselines; the individual pieces (association, motion, state machine,
+termination) were each already tested in isolation, but never together in
+one real update loop until now.
+
+### Validation
+
+- 8 new tests in `tests/unit/test_oatm_adapter.py` (183 total, all passing;
+  `ruff check` clean on `src` and `tests`).
+- Caught and fixed a real state-transition bug in my own first draft before
+  it was ever tested: a track that was `OBSERVED_WEAK` last frame and
+  received a strong detection this frame was wrongly staying `OBSERVED_WEAK`
+  instead of upgrading to `OBSERVED_STRONG`, because a single dict keyed by
+  track index conflated "just birthed" tracks with "pre-existing track
+  matched again" tracks under one skip condition. Fixed by transitioning
+  matched tracks immediately and inline within the association loops
+  themselves, and using a separate list purely for confidence bookkeeping.
+- Caught and fixed a second, more consequential bug while writing the
+  occlusion-bridging test: a freshly-birthed track's Kalman filter starts
+  with a deliberately huge velocity covariance (trace ~30,000, vs. the
+  frozen `uncertainty_ceiling=500.0`) that only collapses after a SECOND
+  real detection runs the correction step. Without a guard, any track
+  occluded on the very frame after its own birth -- a common case, not an
+  edge case -- was killed instantly by the uncertainty ceiling regardless of
+  `existence_floor` tuning, since that check outranks existence_floor in the
+  fixed priority order. This is the same root cause Task 10's comparison
+  script had already worked around with a 5-frame warm-up, but that warm-up
+  had not carried into the real integrated tracker. Fixed by only applying
+  the uncertainty-ceiling/existence-floor termination checks once
+  `kalman.hits >= 2`; the existing grace-period logic in `classify_event()`
+  still bounds this (a track that stays unmatched past
+  `max_grace_frames_without_evidence` is cut loose regardless), so this is
+  not an unlimited loophole.
+
+### Decision and next step
+
+Next: Task 11, the first complete OATM MVP study -- comparing YOLO-only/
+static/SORT/ByteTrack/OATM-MVP on identical inputs across natural,
+controlled-visual, and detector-intervention evidence, with a **mandatory
+mentor checkpoint** immediately afterward before any optional component
+(appearance memory, ego-motion) begins.
+
 ## 2026-08-04 — OATM Task 10: adaptive confidence and anti-ghost termination
 
 ### Change
