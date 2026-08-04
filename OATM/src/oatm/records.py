@@ -121,6 +121,7 @@ class TrackerOutputRecord(BaseModel):
     method_name: str
     run_id: str
     track_id: int
+    class_name: str
     state: TrackState
     evidence_source: EvidenceSource | None
     x1: float

@@ -221,7 +221,8 @@ class OATMTracker:
             outputs.append(TrackerOutputRecord(
                 scene_token=scene_token, sample_data_token=sample_data_token,
                 frame_index=self.frame_count - 1, method_name=method_name, run_id=run_id,
-                track_id=track.kalman.id, state=state, evidence_source=track.state_machine.evidence_source,
+                track_id=track.kalman.id, class_name=track.kalman.class_name,
+                state=state, evidence_source=track.state_machine.evidence_source,
                 x1=box[0], y1=box[1], x2=box[2], y2=box[3],
                 raw_detection_x1=track.kalman.last_raw_box[0] if track.kalman.last_raw_box else None,
                 raw_detection_y1=track.kalman.last_raw_box[1] if track.kalman.last_raw_box else None,

@@ -47,7 +47,7 @@ def test_detector_observation_record_rejects_out_of_range_confidence():
 def test_tracker_output_record_state_and_evidence_are_independent_fields():
     record = TrackerOutputRecord(
         scene_token="scene-1", sample_data_token="sd-1", frame_index=3, method_name="oatm",
-        run_id="run-1", track_id=7, state="PREDICTED_HIDDEN", evidence_source=None,
+        run_id="run-1", track_id=7, class_name="car", state="PREDICTED_HIDDEN", evidence_source=None,
         x1=0, y1=0, x2=10, y2=10, detector_confidence=None,
         existence_confidence=0.6, identity_confidence=0.9, localization_uncertainty=12.5,
         memory_age_frames=4, memory_age_seconds=0.33, termination_reason=None,

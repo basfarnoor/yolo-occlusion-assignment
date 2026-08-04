@@ -84,7 +84,7 @@ class StaticMemoryTracker:
             outputs.append(TrackerOutputRecord(
                 scene_token=scene_token, sample_data_token=sample_data_token,
                 frame_index=self.frame_count - 1, method_name=method_name, run_id=run_id,
-                track_id=t.id,
+                track_id=t.id, class_name=t.class_name,
                 state="OBSERVED_STRONG" if matched_this_frame else "PREDICTED_HIDDEN",
                 evidence_source="strong_detection" if matched_this_frame else "motion_prediction",
                 x1=t.box[0], y1=t.box[1], x2=t.box[2], y2=t.box[3],

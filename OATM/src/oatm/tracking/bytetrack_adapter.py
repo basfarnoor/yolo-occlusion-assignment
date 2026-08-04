@@ -104,7 +104,7 @@ class ByteTrackAdapter:
             outputs.append(TrackerOutputRecord(
                 scene_token=scene_token, sample_data_token=sample_data_token,
                 frame_index=self.frame_count - 1, method_name=method_name, run_id=run_id,
-                track_id=t.id, state=state, evidence_source=evidence,
+                track_id=t.id, class_name=t.class_name, state=state, evidence_source=evidence,
                 x1=box[0], y1=box[1], x2=box[2], y2=box[3],
                 raw_detection_x1=t.last_raw_box[0] if t.last_raw_box else None,
                 raw_detection_y1=t.last_raw_box[1] if t.last_raw_box else None,
