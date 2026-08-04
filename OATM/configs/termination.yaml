@@ -1,0 +1,15 @@
+# Task 10: adaptive existence-confidence and anti-ghost termination
+# thresholds. Chosen on the synthetic development scenarios in
+# results/termination_comparison.md and frozen here -- must NOT be
+# re-tuned after opening any evaluation-scene result (Task 11+).
+
+existence_confidence:
+  beta: 0.15    # base hazard per second of missing evidence
+  alpha: 0.01   # extra hazard per unit of uncertainty growth
+  existence_floor: 0.05
+
+localization:
+  uncertainty_ceiling: 500.0
+
+fixed_lifetime_baseline:
+  max_missing_frames: 5   # matches the baselines' track_buffer (configs/tracker.yaml)

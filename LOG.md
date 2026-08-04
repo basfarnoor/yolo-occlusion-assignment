@@ -62,6 +62,62 @@ event families -- two explicitly separate experiment types, extending
 Assignment 4's controlled-experiment pattern rather than calling detection
 edits "visual occlusion").
 
+## 2026-08-04 — OATM Task 10: adaptive confidence and anti-ghost termination
+
+### Change
+
+Added `oatm.memory.confidence` (hazard-based existence-confidence decay:
+`P_exist *= exp(-(beta + alpha*ΔU) * Δt)`, real elapsed seconds, resets only
+on new evidence), `oatm.occlusion.termination` (priority-ordered, exactly-
+one-reason anti-ghost termination), and `oatm.occlusion.termination_study` +
+`scripts/run_termination_comparison.py` comparing a fixed-lifetime policy
+against the adaptive one at MATCHED ghost risk. Froze
+`configs/termination.yaml` (beta=0.15, alpha=0.01, existence_floor=0.05,
+uncertainty_ceiling=500.0).
+
+### Reason
+
+Confidence must never rise without new evidence, every terminated track
+needs exactly one traceable reason (never a vague combination), and
+comparing lifetimes only at each policy's own best-recall point would hide
+the real tradeoff -- the honest comparison has to hold ghost risk constant.
+
+### Validation
+
+- 25 new tests (168 total): confidence is monotonically non-increasing
+  without new evidence, a longer real-time gap costs strictly more
+  confidence than a shorter one at the same hazard rate (elapsed seconds,
+  not frame count), confidence stays in [0,1] over a long gap, exactly one
+  termination reason even when all five conditions are simultaneously true
+  (fixed priority order), each reason fires correctly in isolation, a clear
+  exit terminates immediately while a plausible early occlusion does not,
+  and the committed `termination.yaml` values are pinned by a canary test.
+- Found and fixed a real bug in the comparison script before trusting its
+  output: the adaptive policy scored 0.00 recall at every single
+  `existence_floor` setting from 0.01 to 0.6, because the simulation used a
+  freshly-constructed Kalman filter (deliberately huge initial velocity
+  covariance) directly in the "missing frames" loop, tripping the
+  uncertainty ceiling on frame one regardless of any threshold. Fixed by
+  warming up the tracker with 5 real observations first, matching how a
+  track would actually enter a gap in practice; recall became a sane,
+  monotonically increasing curve after the fix.
+- At matched ghost risk (<=5 ghost frames), fixed-lifetime (max_missing=5)
+  reaches 0.50 recall vs. adaptive's (existence_floor=0.25) 0.40 -- reported
+  honestly rather than adjusted to favor OATM's own method. With
+  noise-free constant-velocity synthetic motion, a fixed frame count and an
+  uncertainty ceiling draw a very similar line; the report explains the
+  adaptive policy's advantage should be expected to show more clearly with
+  noisier, more variable real motion.
+
+### Decision and next step
+
+Per this task's ordering, camera-derived ego-motion and appearance memory
+still wait. Next: Task 11, the first complete OATM MVP study -- comparing
+YOLO-only/static/SORT/ByteTrack/OATM-MVP on identical inputs across natural,
+controlled-visual, and detector-intervention evidence, with a **mandatory
+mentor checkpoint** immediately afterward before any optional component
+(appearance memory, ego-motion) begins.
+
 ## 2026-08-04 — OATM Task 9: OATM evidence states / state machine
 
 ### Change
