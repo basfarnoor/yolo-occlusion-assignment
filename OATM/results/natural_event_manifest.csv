@@ -1,0 +1,16 @@
+event_id,scene_token,instance_token,evaluation_class,pre_frame_index,start_frame_index,end_frame_index,post_frame_index,event_source,visibility_pattern,low_vis_run_length,occluder_overlap_iou,review_status,rejection_reason,split
+6f83169d_d9a4df9e,6f83169d067343658251f72e1dd17dbc,d9a4df9e92804a44a039eb21e0dc1349,car,42,48,142,147,natural,4-1-4,17,0.071,unsure,unclear to my eye,development
+fcbccedd_eaaf6076,fcbccedd61424f1b85dcbf8f897f9754,eaaf60765ee8478f8e0bd4942571c6fb,car,24,30,99,105,natural,3-2-4,13,0.148,unsure,unclear to my eye,validation
+fcbccedd_2ef4b4d2,fcbccedd61424f1b85dcbf8f897f9754,2ef4b4d20b064d34b754f68e48f5a5c2,car,76,82,129,135,natural,3-2-3,9,0.142,accepted,,validation
+cc8c0bf5_61dd7d03,cc8c0bf57f984915a77078b10eb33198,61dd7d03d7ad466d89f901ed64e2c0dd,car,65,71,111,117,natural,3-2-3,8,0.223,unsure,unclear to my eye,development
+cc8c0bf5_fbbe278b,cc8c0bf57f984915a77078b10eb33198,fbbe278ba6f84676afea509a306518c1,pedestrian,36,43,76,83,natural,3-2-3,7,0.661,unsure,unclear to my eye,development
+6f83169d_888521a8,6f83169d067343658251f72e1dd17dbc,888521a8b57f46258e81a89bf062278b,car,78,84,118,124,natural,4-1-4,7,0.045,unsure,unclear to my eye,development
+6f83169d_f53b4aa3,6f83169d067343658251f72e1dd17dbc,f53b4aa3d74e473c90afb956e618e3ce,pedestrian,66,72,100,106,natural,4-1-4,6,0.022,accepted,,development
+de7d80a1_155047a7,de7d80a1f5fb4c3e82ce8a4f213b450a,155047a77309452a908e6c96ddd60b55,pedestrian,12,18,42,48,natural,4-1-4,5,0.091,accepted,,development
+fcbccedd_0809d64d,fcbccedd61424f1b85dcbf8f897f9754,0809d64df9264121bead0772ee9b5984,pedestrian,59,65,88,94,natural,4-1-4,5,0.059,accepted,,validation
+6f83169d_7a8b2460,6f83169d067343658251f72e1dd17dbc,7a8b24608009457b963da57aa18beb58,car,48,54,72,78,natural,4-1-4,4,0.127,unsure,more than one occluder -- too much overlap to confidently judge this as one event,development
+6f83169d_f53b4aa3,6f83169d067343658251f72e1dd17dbc,f53b4aa3d74e473c90afb956e618e3ce,pedestrian,118,124,142,147,natural,4-1-4,4,0.03,unsure,more than one occluder -- too much overlap to confidently judge this as one event,development
+cc8c0bf5_cf04a584,cc8c0bf57f984915a77078b10eb33198,cf04a584e9d54f44a9000e98cda623de,pedestrian,55,60,71,76,natural,3-1-3,3,0.453,unsure,unclear to my eye,development
+cc8c0bf5_c4041d38,cc8c0bf57f984915a77078b10eb33198,c4041d3882c344338031b18ef5484631,pedestrian,60,65,76,83,natural,3-2-3,3,0.437,accepted,,development
+de7d80a1_a0328b62,de7d80a1f5fb4c3e82ce8a4f213b450a,a0328b62fcaa46a093c7de5ae9b53ecf,car,36,42,54,60,natural,4-2-4,3,0.327,rejected,wrong objects,development
+fcbccedd_045cd82a,fcbccedd61424f1b85dcbf8f897f9754,045cd82a77a1472499e8c15100cb5ff3,car,88,94,105,111,natural,4-1-4,3,0.188,accepted,,validation

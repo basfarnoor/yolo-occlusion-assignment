@@ -11,6 +11,53 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-04 — OATM Task 4: mine and review natural occlusion events
+
+### Change
+
+Implemented `oatm.dataset.event_mining` (visibility decline-then-recovery
+detection requiring a plausible closer occluder as a second independent
+signal) and `scripts/mine_natural_events.py` /
+`scripts/record_natural_event_review.py`. Assigned a scene-disjoint
+development/validation/test split (6/2/2 of the 10 mini scenes, seeded) before
+any event was selected. Wrote the committed
+`results/natural_event_manifest.csv` and `results/natural_event_selection.md`.
+
+### Reason
+
+A visibility-label change alone is not proof of real occlusion (could be a
+labeling artifact, an exit, or truncation) -- Task 4 requires two independent
+signals plus an actual human visual review before any event counts as usable
+evaluation evidence.
+
+### Validation
+
+- 54 candidate instances found a decline-then-recovery pattern with a
+  plausible closer occluder; 19 more had the visibility pattern but no
+  occluder and were auto-rejected (logged with reasons, never silently
+  dropped, never shown for review).
+- Shortlisted the top 15 (by occlusion length, then occluder overlap) and
+  built a 15-row visual contact sheet (PRE/START/END/POST per candidate, the
+  candidate occluder outlined in cyan).
+- **The student reviewed the actual contact sheet** (sent directly, not just
+  described) and gave a real per-candidate verdict: 6 accepted, 8 unsure
+  (mostly "unclear to my eye," two flagged for multiple overlapping
+  occluders), 1 rejected ("wrong objects"). Recorded verbatim, not invented.
+- 10 new tests (event-boundary detection, occluder depth/overlap logic,
+  deterministic scene-disjoint splitting), all passing (56 total). `ruff
+  check` clean.
+- Confirmed: every scene maps to exactly one split, every non-accepted event
+  records why, and event boundaries are strictly ordered pre < start <= end <
+  post (all tested against the real generated manifest).
+
+### Decision and next step
+
+Only the 6 `accepted` events are eligible for the later MVP evaluation
+(Task 11) -- `unsure` events stay in the manifest for traceability but are
+excluded, not silently promoted. This mini result is explicitly a pilot, not
+a statistical conclusion (15 reviewed candidates from one dataset). Next:
+Task 5 (run the frozen detector once, cache observations for every baseline).
+
 ## 2026-08-04 — OATM Task 3: project 3D ground truth into CAM_FRONT
 
 ### Change
