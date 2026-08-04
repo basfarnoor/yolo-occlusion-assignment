@@ -1,0 +1,27 @@
+# Baseline tracker configuration (Task 6). Thresholds mirror Assignment 4's
+# frozen values (chosen there from a development-scene confidence-by-
+# visibility analysis) as a reasonable, already-justified starting point.
+# Re-tuning, if needed, must happen on development/validation scenes only.
+
+shared:
+  high_score_threshold: 0.5
+
+static_memory:
+  high_score_threshold: 0.5
+  new_track_threshold: 0.6
+  iou_threshold: 0.3
+  track_buffer: 5
+
+sort:
+  high_score_threshold: 0.5
+  new_track_threshold: 0.6
+  iou_threshold: 0.3
+  track_buffer: 5
+
+bytetrack:
+  detection_floor: 0.05
+  high_score_threshold: 0.5
+  new_track_threshold: 0.6
+  first_association_iou_threshold: 0.3
+  second_association_iou_threshold: 0.5
+  track_buffer: 5

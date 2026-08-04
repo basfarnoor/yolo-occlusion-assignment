@@ -11,6 +11,57 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-04 — OATM Task 6: rebuild and verify baselines
+
+### Change
+
+Wrote `results/reuse_audit.md` auditing every component before reuse from
+Assignments 2-4. Reused Assignment 4's geometry/Hungarian-association/
+timestamp-aware-Kalman code unchanged into `src/oatm/tracking/`; rebuilt
+static memory (Assignment 2 had no reusable tracker-shaped code) and adapted
+SORT/ByteTrack to emit OATM's canonical `TrackerOutputRecord` instead of
+Assignment 4's lighter-weight output type. All four baselines (YOLO-only,
+static memory, SORT, ByteTrack) now share one interface and ran over all 10
+scenes from one `configs/tracker.yaml`.
+
+### Reason
+
+Later phases (motion memory, the occlusion state machine, the MVP report)
+need a settled, identically-fed baseline layer to compare against -- and
+Assignment 2's static memory in particular never had a real lifecycle, so it
+could not previously be fairly compared to SORT/ByteTrack's buffer-based one.
+
+### Validation
+
+- 27 new tests, covering: exact
+  IoU=1/IoU=0 cases, one-to-one assignment, dt-scaled Kalman prediction,
+  birth/missing/reactivation/expiry for all three stateful baselines,
+  strong-before-weak ByteTrack ordering, unmatched-weak-cannot-birth,
+  scene-boundary track ID isolation, structural inaccessibility of ground
+  truth (checked both by source-string search and by `update()`'s exact
+  parameter set), determinism, and growing localization uncertainty during
+  missing frames (a real Kalman covariance-trace value, not a placeholder).
+  91 tests total, all passing. `ruff check` clean.
+- Ran all four baselines over all 10 scenes (34,042 output rows, 4.2s).
+  Caught and fixed a real bug in my own summary script: naively grouping
+  YOLO-only's per-frame `track_id` by `(scene, track_id)` silently manufactured
+  fake 97-row-long "tracks" out of unrelated single-frame detections that
+  only shared a reused index number -- exactly the kind of misleading metric
+  this project exists to prevent. Fixed by reporting those two columns as
+  explicitly not applicable for a method with no real identity, rather than
+  computing a number that would be misread as persistence.
+- Sanity signal even at this pre-OATM stage: ByteTrack produced fewer, longer
+  tracks (425 tracks, mean length 23.84) than SORT (470 tracks, 18.44) --
+  consistent with reduced fragmentation, though this is baseline behavior
+  only, not yet an evaluated result (that's Task 11).
+
+### Decision and next step
+
+Next: Task 7 (build the detector-intervention and controlled-visual-occlusion
+event families -- two explicitly separate experiment types, extending
+Assignment 4's controlled-experiment pattern rather than calling detection
+edits "visual occlusion").
+
 ## 2026-08-04 — OATM Task 5: run detector once, cache observations
 
 ### Change
