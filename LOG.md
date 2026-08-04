@@ -11,6 +11,52 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-04 — OATM Task 0 (project map) and Task 1 (Phase 0 scaffold)
+
+### Change
+
+Created `OATM/results/project_map.md` (Task 0: plain-language terms, pipeline,
+and method-comparison table). Then built the Phase 0 reproducible scaffold
+(Task 1): `OATM/pyproject.toml` (pinned `pydantic`/`pyyaml`, dev deps
+`pytest`/`ruff`), a project-local `OATM/.venv/`, `OATM/configs/mini.yaml`,
+`src/oatm/config.py` (repo-relative data-root discovery, validated config with
+readable errors), `src/oatm/records.py` (typed data contracts for every later
+phase's frame index / projected ground truth / detector observations /
+occlusion events / tracker output), 15 unit + integration tests, and
+`OATM/README.md`. Added OATM-specific ignore rules to the root `.gitignore`.
+
+### Reason
+
+Task 0 gives a plain-English map before any code exists. Task 1 proves the
+project can be installed and tested by someone else before any dataset,
+detector, or tracker work begins -- exactly the assignment's "no experiment
+before a trustworthy foundation" ordering.
+
+### Validation
+
+- Student answered Task 0's three checkpoint questions in her own words
+  (`PREDICTED_HIDDEN` vs. a detection; why unlimited persistence would mislead
+  recall; why staged builds stop one broken/masking component from hiding
+  inside a bigger system).
+- 15/15 pytest tests pass (`config` and `records` unit tests, one integration
+  smoke test); `ruff check` passes with no findings.
+- `find_data_root()` resolves the repo's real local `data/` folder (not
+  `data/nuscenes/` as `AGENTS.md` describes -- same discrepancy already noted
+  for the completed assignments) with no hardcoded absolute path; a missing or
+  malformed config raises a readable `OATMConfigError` (tested).
+- `git add -n` on `OATM/` shows only source, config, tests, and docs staged --
+  no dataset, weights, `.venv/`, or cache directories.
+- No YOLO run, no annotation projection, and no tracker code written yet, per
+  Task 1's explicit scope limit.
+
+### Decision and next step
+
+Task 1's own checkpoint ("show `mini.yaml`, explain config vs. hardcoded vs.
+private path") was answered inline in chat, not requiring a separate written
+response. Next: Task 2 (read-only nuScenes mini audit and chronological
+`CAM_FRONT` index) -- ending at the assignment's mandatory mentor checkpoint
+before any projection, YOLO, or tracking work begins.
+
 ## 2026-08-03 — Added the student-facing OATM implementation assignment
 
 ### Change

@@ -1,0 +1,11 @@
+# OATM configuration for the nuScenes mini split.
+# See OATM/IMPLEMENTATION_PLAN.md Phase 1 for where these expected counts
+# come from -- they are the mini dataset's known, exact quality-gate values.
+
+schema_version: 1
+dataset_version: "v1.0-mini"
+random_seed: 42
+
+expected_scene_count: 10
+expected_keyframe_count: 404
+expected_camera_record_count: 2342

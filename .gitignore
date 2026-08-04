@@ -41,3 +41,11 @@ assignments/04_bytetrack_paper_experiment/results/projection_overlays/
 assignments/04_bytetrack_paper_experiment/results/natural_event_contact_sheets/
 assignments/04_bytetrack_paper_experiment/experiment/**/__pycache__/
 assignments/04_bytetrack_paper_experiment/experiment/.pytest_cache/
+
+# OATM active research workspace: large/regenerable outputs and local caches
+# stay out of Git -- only reviewable source, configs, and compact results
+# under OATM/results/ are tracked. See OATM/AGENTS.md-equivalent notes in
+# OATM/README.md.
+OATM/artifacts/
+OATM/.pytest_cache/
+OATM/ruff_cache/
