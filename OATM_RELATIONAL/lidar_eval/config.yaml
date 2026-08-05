@@ -1,0 +1,32 @@
+schema_version: 1
+random_seed: 42
+
+dataset:
+  version: v1.0-mini
+  channel: CAM_FRONT
+  evaluation_classes: [car, pedestrian]
+
+scene_split:
+  strategy: stable_sha256_rank
+  development_fraction: 0.50
+
+detector:
+  model_path: ../yolo26n.pt
+  image_size: 640
+  confidence_floor: 0.05
+  batch_size: 16
+  device: auto
+
+methods:
+  - bytetrack_b5
+  - bytetrack_b12
+  - relational_complete
+
+matching:
+  primary_iou_threshold: 0.30
+  sensitivity_iou_thresholds: [0.10, 0.30, 0.50]
+
+strata:
+  depth_edges_m: [20.0, 40.0]
+  lidar_point_edges: [1, 5]
+  truncation_threshold: 0.25

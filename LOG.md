@@ -11,6 +11,172 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-06 — Consolidated presentation guide around final evaluation
+
+### Change or experiment
+
+Reworked `OATM_RELATIONAL/REPORT_PRESENTATION_GUIDE.md` so run
+`lidar-fixes-20260805` is the only numerical result used in the report, slides,
+and poster. Removed synthetic, pilot, earlier-study, and internal development
+metrics from the results narrative. Added one matched final comparison, a
+cohesive strongest-insights section, final-run reproduction commands, and
+updated slide, poster, caption, examiner, and checklist guidance.
+
+### Reason
+
+The student presentation needs one consistent evidence population rather than
+a mixture of experiments with different protocols and sample sizes. Positive
+findings should be easy to communicate, while weaknesses remain explicit and
+consolidated under Limitations.
+
+### Validation or evidence
+
+Cross-checked every retained number against the validation rows of
+`lidar-fixes-20260805`; confirmed the guide contains no synthetic or natural
+pilot result references and passes `git diff --check`.
+
+### Decision and next step
+
+Use only the final scene-disjoint table for numerical claims. Lead with OATM's
+precision, F1, MOTA, IDF1, identity, localization, predicted-hidden precision,
+and unsupported-track control; keep recall, severe visibility, mini-dataset
+scale, and annotation limitations in the dedicated limitations section.
+
+## 2026-08-06 — Clarified LiDAR-supported occlusion interpretation
+
+### Change or experiment
+
+Expanded the student presentation guide with the exact offline occlusion
+interpretation: nuScenes visibility tokens define coarse visible-fraction
+bins, projected 3D annotations provide `CAM_FRONT` evaluation boxes, and LiDAR
+point counts are sensitivity metadata rather than an occlusion classifier.
+Added an examiner-ready explanation of the same boundary.
+
+### Reason
+
+Calling the protocol a LiDAR evaluation can incorrectly imply that zero LiDAR
+returns prove occlusion or that LiDAR enters OATM inference. Neither is true.
+
+### Validation or evidence
+
+Cross-checked the guide against local `visibility.json`, the annotation
+projection implementation, and the visibility/LiDAR stratification code.
+
+### Decision and next step
+
+Describe visibility token `1` as the most-occluded coarse annotation bin, not
+exact pixel-level occlusion truth. Continue to require manual `CAM_FRONT`
+review or dedicated labels for exact event-level occlusion claims.
+
+## 2026-08-05 — Boundary and silent-reactivation lifecycle repair
+
+### Change or experiment
+
+Replaced edge-touch exit termination with an outward-motion plus visible-box
+fraction rule. Added an optional conditional mature-grace ablation and a
+promoted one-frame silent `DORMANT` identity state. Dormant tracks emit no
+prediction, cannot compete in ordinary ByteTrack association, and reconnect
+only through a separately thresholded strict reappearance stage. Frozen the
+development-selected configuration at visible fraction 0.60, one dormant
+frame, and dormant reappearance score 0.75; conditional mature grace remains
+disabled.
+
+### Reason
+
+The first LiDAR-supported run showed excessive `predicted_exit` terminations,
+low truncated-object recall, and a recall gap to ByteTrack. Generic grace
+increased false persistence, while the first dormant prototype hijacked normal
+detections and raised identity switches. Silent strict reactivation preserves
+an identity opportunity without emitting an unsupported box.
+
+### Validation or evidence
+
+- Frozen-development ablations are stored under the ignored
+  `OATM_RELATIONAL/lidar_eval/results/` directory. The selected candidate
+  improved development recall from 0.324 to 0.351, F1 from 0.467 to 0.489,
+  MOTA from 0.225 to 0.232, IDF1 from 0.383 to 0.399, and truncated recall
+  from 0.453 to 0.487; identity switches fell from 56 to 55.
+- `uv run --frozen pytest -q`: 37 passed; `uv run --frozen ruff check .`:
+  passed.
+- Full frozen-cache run `lidar-fixes-20260805` processed 2,342 causal
+  `CAM_FRONT` frames and scored 3,492 projected annotations.
+- On 1,873 validation annotations at IoU 0.30, final OATM reached 0.841
+  precision, 0.266 recall, 0.404 F1, 0.184 MOTA, 0.303 IDF1, and 59 identity
+  switches. ByteTrack-5 reached 0.734, 0.276, 0.401, 0.142, 0.296, and 64;
+  ByteTrack-12 reached 0.553, 0.286, 0.377, 0.011, 0.274, and 82.
+- Relative to the pre-repair validation run, final OATM improved recall by
+  1.66 points, F1 by 1.62 points, MOTA by 0.37 points, IDF1 by 1.61 points,
+  and reduced identity switches by two. Overall precision fell by 3.2 points
+  and fragmentation increased from 27 to 28. Predicted-hidden precision rose
+  from 0.378 to 0.394, while truncated-object recall rose from 0.301 to
+  0.364 (+6.32 percentage points).
+
+### Decision and next step
+
+Promote the visible-fraction exit rule and one-frame strict silent reactivation.
+The final method now narrowly exceeds ByteTrack-5 in validation F1 and leads
+both ByteTrack arms in precision, MOTA, IDF1, identity switches, localization,
+and predicted-hidden precision. It still trails both in overall and
+most-occluded-bin recall, so report a balanced-metric improvement rather than
+universal superiority. The next revision should improve relation formation on
+severe occlusions without lengthening generic prediction output.
+
+## 2026-08-05 — Scene-disjoint CAM_FRONT LiDAR-supported evaluator
+
+### Change or experiment
+
+Added `OATM_RELATIONAL/lidar_eval/`, a separated three-stage evaluation
+package: frozen YOLO cache validation or optional GPU regeneration, causal
+`CAM_FRONT` tracking for ByteTrack-5, ByteTrack-12, and promoted Relational
+OATM, followed by privileged offline matching against projected official
+nuScenes annotations. Added a four-hour single-A100 Slurm job, versioned config,
+non-overwriting per-run result directories, hashes/runtime provenance, a full
+README, and focused boundary/matching/metrics tests.
+
+The evaluator uses class-aware Hungarian matching at IoU 0.30 with 0.10/0.50
+sensitivity; separates observed from predicted-hidden outputs; reports
+precision, recall, MOTA, IDF1, switches, fragmentation, localization, false
+outputs, and a clearly labeled unsupported-keyframe-track ghost proxy; and
+stratifies by class, visibility, depth, LiDAR-point support, and truncation.
+Five development and five validation scenes are assigned by stable seeded hash.
+
+### Reason
+
+The six-event/two-linkable-event natural pilot is not large enough to establish
+real-data behavior and mixes dense sweep persistence with sparse-keyframe
+localization. The wider evaluation must use LiDAR-supported annotations only as
+offline evidence, preserve the camera-only inference boundary, avoid treating
+unannotated sweeps as empty ground truth, use common ground-truth denominators,
+and expose anti-ghost versus persistence tradeoffs rather than optimize a
+favorable isolated score.
+
+### Validation or evidence
+
+- `uv run --frozen ruff check lidar_eval`: passed.
+- `uv run --frozen pytest -q`: 27 passed (20 existing plus 7 evaluator tests).
+- `bash -n lidar_eval/submit_a100.sbatch`: passed.
+- Existing frozen detector cache validated: 2,342 `CAM_FRONT` frames, 49,436
+  camera detections, matching model hash/configuration and valid row geometry.
+- Full integration run `local-validation-split-20260805` completed over all ten
+  mini scenes and scored 3,492 annotations; all outputs and metadata remain in
+  the ignored local result directory for inspection.
+- On 1,873 annotations in five validation scenes at IoU 0.30, Relational OATM
+  reached 0.873 precision, 0.249 recall, 0.180 MOTA, 0.287 IDF1, and 20.053 px
+  mean center error. ByteTrack-5 reached 0.734, 0.276, 0.142, 0.296, and 21.084;
+  ByteTrack-12 reached 0.553, 0.286, 0.011, 0.274, and 21.361 respectively.
+  Relational OATM's predicted-hidden precision was 0.378 versus 0.250 and 0.140,
+  but its severe-visibility recall was 0.077 versus 0.093 and 0.107.
+
+### Decision and next step
+
+The evaluator is ready for `sbatch`. The current evidence shows strong
+anti-ghost precision, MOTA, and localization but does **not** show overall or
+severe-occlusion recall superiority over ByteTrack. Treat this as the measured
+design target for the next method revision: improve relation formation and
+safe short-term persistence without sacrificing the false-prediction control.
+Do not claim superiority over ByteTrack until that improvement survives the frozen
+scene-disjoint protocol.
+
 ## 2026-08-05 — Final OATM report and presentation guide
 
 ### Change or experiment

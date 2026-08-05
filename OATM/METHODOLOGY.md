@@ -192,11 +192,19 @@ When an object becomes visible again, OATM compares the new detection with:
 
 The system then either reconnects the original identity or starts a new track. Successful reconnection without an identity switch is one of the main experimental outcomes.
 
+The promoted relational implementation also retains a mature but unsupported
+identity internally for one silent frame after its ordinary miss grace expires.
+This `DORMANT` state emits no box and has zero output existence confidence; it
+can reconnect only through a stricter relation-style association threshold. It
+is therefore an identity-recovery opportunity, not an extra prediction frame.
+
 ### 7. Anti-ghost termination
 
 Temporal recovery creates a safety risk if a system continues predicting an object that has actually left. OATM terminates or downgrades a track when:
 
-- Its predicted path crosses the image boundary.
+- Its outward-moving predicted path reaches an image boundary and no more than
+  the development-selected fraction of its box remains visible; touching the
+  boundary alone is not an exit.
 - Its uncertainty exceeds a threshold.
 - The object should have reappeared from behind an occluder but does not.
 - The predicted path conflicts with scene geometry or the visible occluder's motion.
@@ -246,6 +254,29 @@ Splitting by scene prevents nearly identical neighboring frames from leaking bet
 ### Camera-only input with privileged ground truth
 
 The deployed system should receive camera images only. LiDAR-supported 3D annotations, visibility labels, and ego poses may be used to construct ground truth and evaluate whether a hidden object physically remains in the scene. This must be reported clearly: the additional sensor information supervises or evaluates the experiment but is not supplied as live perception evidence to the final camera-only method.
+
+### CAM_FRONT LiDAR-supported offline evaluation protocol
+
+The online and offline paths must be implemented as separate stages. First,
+the detector and tracker run causally over every `CAM_FRONT` frame and save
+their outputs without loading projected annotations. Only after those outputs
+exist may the evaluator load official nuScenes 3D annotations, visibility,
+calibration, instance tokens, ego pose, or LiDAR/radar point counts.
+
+Headline localization and identity metrics use only official annotated
+keyframes. Unannotated camera sweeps are still processed online but are never
+treated as empty ground truth, and interpolated boxes are not official
+headline labels. Matching is class-aware and one-to-one under fixed IoU gates;
+observed detections and predicted-hidden outputs are reported separately.
+
+The primary population retains zero-LiDAR-point and truncated annotations so
+that difficult occlusions are not removed selectively. Visibility, distance,
+point support, and truncation are sensitivity strata. False outputs, identity
+switches, fragmentation, and unsupported-keyframe tracks are reported along
+with recall. Because annotations are sparse, an unsupported-keyframe track is
+explicitly labeled as a ghost proxy rather than a verified sweep-frame ghost
+duration. Whole scenes, never neighboring frames, define development and
+validation populations.
 
 ### Natural and controlled occlusions
 

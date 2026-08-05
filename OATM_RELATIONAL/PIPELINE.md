@@ -21,3 +21,16 @@
    verified exits separately on frozen scene splits.
 8. Select thresholds on development scenes only, freeze them, and write all
    material outcomes to root `LOG.md`.
+9. Run the wider LiDAR-supported, `CAM_FRONT`-only mini evaluation with the
+   existing uv environment:
+
+   ```bash
+   sbatch lidar_eval/submit_a100.sbatch
+   ```
+
+   This job runs causal tracking before loading projected annotations, scores
+   only official keyframes, separates observed from predicted-hidden outputs,
+   uses deterministic scene-disjoint development/validation populations, and
+   records matching-threshold and annotation-quality sensitivity. See
+   `lidar_eval/README.md` for cache reuse, optional A100 detector refresh, output
+   schemas, and cluster-specific Slurm adjustments.

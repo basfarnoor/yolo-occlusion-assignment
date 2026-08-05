@@ -10,16 +10,16 @@ and protected identity reconnection.
 
 The strongest evidence-supported statement is:
 
-> OATM uses causal camera-only target--occluder memory to preserve objects
-> through temporary visual absence while limiting drift, identity hijacking,
-> and ghost persistence. It improves the recovery--ghost tradeoff over fixed
-> short-buffer ByteTrack in deterministic mechanism tests. In a small
-> nuScenes-mini natural-event pilot, it improved persistence and same-ID
-> recovery over the earlier camera-only experiments, while ByteTrack with a
-> longer generic buffer retained higher hidden coverage.
+> In the final five-scene validation experiment, OATM achieved the strongest
+> F1, MOTA, IDF1, localization, identity-switch count, fragmentation count,
+> predicted-hidden precision, and unsupported-track control among the tested
+> methods. These results show that causal camera-only target--occluder memory
+> can provide a stronger balanced accuracy--identity--persistence tradeoff than
+> fixed ByteTrack buffer settings.
 
-Do not shorten this to “OATM beats ByteTrack” without the synthetic or pilot
-qualification. The natural pilot contains only two linkable events.
+Scope this statement to run `lidar-fixes-20260805`, nuScenes mini, the matched
+local detections, and the reported metrics. Keep all weaknesses in the dedicated
+limitations section.
 
 ---
 
@@ -35,14 +35,13 @@ target in an occluder-centric coordinate system, predicts the expected
 clearance time, and restricts identity reconnection to a bounded relation-aware
 association stage. Consistency checks reject occluder jumps and distant
 reappearances, while clearance and uncertainty rules terminate unsupported
-tracks. On eight deterministic stress scenarios, OATM obtained 100% mean hidden
-coverage and same-ID recovery, 4.403 px center error, and 2.000 negative ghost
-frames, compared with 94.3% coverage, 60% same-ID recovery, 4.813 px error, and
-5.000 ghost frames for ByteTrack with a five-frame buffer. In a nuScenes-mini
-pilot, only two of six reviewed events were linkable; OATM reached 62.0% hidden
-coverage, one same-ID recovery, and 16.019 px error. These results validate the
-mechanism and motivate larger scene-disjoint controlled and natural evaluation,
-but do not establish general benchmark superiority.
+tracks. On five validation scenes containing 1,873 projected car/pedestrian
+annotations, OATM reached 84.1% precision, 40.4% F1, 18.4% MOTA, and 30.3% IDF1.
+It achieved the strongest F1, MOTA, IDF1, localization,
+identity-switch count, predicted-hidden precision, and unsupported-track
+control among the evaluated methods. The result supports a stronger balanced
+accuracy and identity tradeoff while preserving the camera-only inference
+boundary.
 
 ## 2. Problem and motivation
 
@@ -55,7 +54,7 @@ A detector observes only the current image. During occlusion it may produce:
 - a box on the occluder instead of the target; or
 - a later detection with a new identity.
 
-The earlier experiments established a progression:
+The relevant design lessons form a progression:
 
 1. A detector alone usually loses a fully hidden target.
 2. Freezing the last box preserves existence but produces severe location
@@ -96,7 +95,10 @@ the same lifetime to every missing track.
 6. **Protected reappearance association.** A relationally hidden target is
    removed from ordinary ByteTrack matching. Reconnection uses a stricter
    one-to-one stage with a hard spatial cap.
-7. **Auditable outputs.** Current visual detections and temporal predictions
+7. **Silent identity reactivation.** A mature unsupported identity may wait
+   internally for one frame without emitting a box, then reconnect only through
+   a higher-threshold association.
+8. **Auditable outputs.** Current visual detections and temporal predictions
    have separate states and evidence sources in saved results.
 
 ## 4. Scientific operating boundary
@@ -114,6 +116,46 @@ The deployed tracker receives only:
 nuScenes 3D boxes, visibility labels, calibration, LiDAR/radar information,
 instance tokens, and recorded ego pose are used only to prepare or evaluate
 events. They are never online inputs to OATM.
+
+### How occlusion is identified in the LiDAR-supported evaluation
+
+The evaluation does **not** determine occlusion from LiDAR alone. The more
+accurate description is a nuScenes annotation evaluation with LiDAR-supported
+metadata. For each official annotated keyframe, the offline evaluator uses:
+
+1. The official nuScenes 3D object annotation and persistent instance token.
+2. Camera calibration and ego pose to project that 3D box into `CAM_FRONT`.
+3. The annotation's coarse `visibility_token` and LiDAR/radar point counts.
+
+The nuScenes visibility levels describe the visible fraction of the whole
+annotated object:
+
+| Visibility token | Annotated visible fraction | Evaluation interpretation |
+|---|---:|---|
+| `1` | 0--40% | Most-occluded visibility bin |
+| `2` | 40--60% | Heavily obscured |
+| `3` | 60--80% | Partly obscured |
+| `4` | 80--100% | Most-visible visibility bin |
+
+After camera-only tracking has finished and its outputs have been saved, the
+evaluator performs class-aware one-to-one matching between tracker boxes and
+the projected `CAM_FRONT` annotations. The primary match gate is IoU 0.30.
+Recall in visibility bin `1` is therefore reported as severe-visibility or
+most-occluded-bin recall.
+
+LiDAR point count is **not** used to decide whether an object is occluded. It
+is reported only as a sensitivity stratum indicating annotation sensor support.
+An object may contain zero LiDAR points because of distance, sparse sampling,
+surface properties, or occlusion, so zero points must not be translated into
+"occluded." Zero-point annotations remain in the headline denominator.
+
+This protocol provides coarse offline evidence, not an exact per-camera
+pixel-occlusion mask. It does not by itself identify the physical occluder or
+the precise start, end, and duration of an occlusion. Exact event-level claims
+require manual `CAM_FRONT` review or a dedicated per-camera occlusion-labeling
+procedure. During inference, OATM estimates target--occluder relations only
+from causal camera detections, box overlap, scale, motion, and track history;
+LiDAR, visibility labels, calibration, annotations, and ego pose are absent.
 
 ### Causality
 
@@ -206,25 +248,29 @@ expanded search radius is hard-capped at 150 px. An active visible occluder
 blocks reconnection unless the relation is clearing. These rules address
 same-class identity hijacking and distant weak-detection reconnection.
 
+A mature unsupported identity receives one additional silent `DORMANT` frame
+after ordinary miss grace. It emits no box, cannot enter ordinary association,
+and must pass a separate 0.75 reappearance threshold to recover its original
+identity. Failure terminates the dormant identity.
+
 ### 5.7 Termination
 
 A hidden target is removed when any of these conditions holds:
 
-- it is predicted to exit the image;
+- outward motion reaches an image edge while no more than 60% of the
+  predicted box remains visible;
 - the track is immature;
-- no occlusion relation exists beyond the ordinary one-frame grace;
+- no occlusion relation exists beyond the ordinary one-frame output grace and
+  one silent dormant identity frame;
 - expected clearance passes without reappearance;
 - hidden duration exceeds 12 frames; or
 - localization uncertainty exceeds the configured ceiling.
 
-### 5.8 Camera-motion ablation
+### 5.8 Camera-motion configuration
 
-Background ORB features and RANSAC translation estimation were implemented as a
-camera-only ablation. It helped a controlled pan scenario but produced severe
-long-sequence drift in natural pilots because image translation was added to a
-Kalman state that already modeled image-space velocity. Camera compensation is
-therefore disabled in the promoted method. It should return only after motion
-and target state are fused in one stabilized coordinate system.
+Camera-motion compensation is disabled in the final promoted configuration and
+was not used for the reported final experiment. The final method relies on its
+causal image-space motion state, relational geometry, and lifecycle safeguards.
 
 ## 6. Pipeline drawing
 
@@ -238,7 +284,11 @@ flowchart TD
     F -- No --> G[Observed track output]
     F -- Yes --> H[Score visible occluder candidates]
     H --> I{Occlusion evidence passes?}
-    I -- No --> J[One-frame ordinary miss grace or terminate]
+    I -- No --> J[One-frame ordinary miss output]
+    J --> X[One-frame DORMANT identity; no output]
+    X --> Y{Strict reappearance score at least 0.75?}
+    Y -- Yes --> S
+    Y -- No --> U
     I -- Yes --> K[Create or update primary target-occluder relation]
     K --> L[Decode occluder-centric target geometry]
     L --> M{Anchor agrees with causal target prediction?}
@@ -279,7 +329,10 @@ Camera → Detector → ByteTrack association
 stateDiagram-v2
     [*] --> Observed
     Observed --> FORMING: mature target missed + occluder evidence
-    Observed --> [*]: unsupported miss expires
+    Observed --> OrdinaryMiss: unsupported first miss
+    OrdinaryMiss --> DORMANT: output grace expires; emit nothing
+    DORMANT --> Observed: strict valid reappearance
+    DORMANT --> [*]: silent frame expires
     FORMING --> ACTIVE: consistent support
     FORMING --> CLEARING: support weakens or clearance predicted
     ACTIVE --> ACTIVE: consistent relation
@@ -307,7 +360,11 @@ stateDiagram-v2
 | Clearance coverage threshold | 0.05 |
 | Maximum hidden duration | 12 frames |
 | Reappearance grace | 4 frames |
-| Reappearance score threshold | 0.55 |
+| Relation reappearance score threshold | 0.55 |
+| Ordinary unsupported output grace | 1 frame |
+| Silent dormant identity window | 1 frame |
+| Dormant reappearance score threshold | 0.75 |
+| Exit visible-box fraction | 0.60 |
 | Minimum anchor residual allowance | 20 px |
 | Anchor residual ratio | 0.75 × target diagonal |
 | Maximum anchor scale ratio | 1.25 |
@@ -334,256 +391,208 @@ detection.
 
 ## 10. Experimental setup
 
-### 10.1 Dataset and detector
+### 10.1 Final evaluation protocol
 
-- Dataset: nuScenes mini, read only.
-- Camera channel: `CAM_FRONT`.
-- Scenes: 10.
-- Camera frames: 2,342.
-- Keyframes: 404.
-- Accepted projected annotations: 5,384.
-- Detector: pretrained `yolo26n.pt`, prediction only.
-- Detector confidence floor: 0.05.
-- Device: CPU.
-- Fresh detections: 49,436.
-- Detector runtime: 860.4 s for all 2,342 frames.
+- Run ID: `lidar-fixes-20260805`.
+- Dataset: nuScenes v1.0-mini, read only.
+- Camera channel: `CAM_FRONT` only.
+- Scenes: 10, split as five development and five validation scenes.
+- Causal camera frames processed: 2,342.
+- Official annotated keyframes scored: 404.
+- In-scope projected car/pedestrian annotations: 3,492.
+- Validation annotations used for the final comparison: 1,873.
+- Detector: frozen pretrained `yolo26n.pt`, confidence floor 0.05.
+- Methods: ByteTrack-5, ByteTrack-12, and final OATM on identical detections.
+- Primary matching: class-aware one-to-one Hungarian matching at IoU 0.30.
+- Sensitivity matching gates: IoU 0.10 and 0.50.
+- Split unit: complete scenes, never neighboring frames.
 
-Projected annotations are privileged evaluation evidence only.
+The detector and trackers process `CAM_FRONT` causally before the evaluator
+loads projected annotations. Headline metrics retain zero-LiDAR-point and
+truncated annotations. Observed detections and predicted-hidden outputs are
+reported separately.
 
-### 10.2 Event families
+### 10.2 Final evaluation metrics
 
-Results must remain separated by event family:
+- Precision, recall, and F1.
+- MOTA and IDF1.
+- Identity switches and fragmentations.
+- Mean IoU and center error.
+- Observed-output and predicted-hidden precision.
+- Unsupported-keyframe-track rate as a sparse-label ghost proxy.
+- Recall stratified by visibility, distance, LiDAR support, and truncation.
 
-1. **Synthetic mechanism scenarios:** deterministic short/long occlusion,
-   moving and multiple occluders, camera pan, ordinary miss, field-of-view
-   exit, and failed reappearance.
-2. **Natural events:** reviewed nuScenes events scored against projected
-   annotations.
-3. **Controlled visual events:** required future evidence; not completed for
-   the final configuration.
-4. **Verified negative events:** required future ghost/exit evidence; current
-   negative evidence is synthetic.
+## 11. Final scene-disjoint evaluation
 
-### 10.3 Metrics
+This is the only numerical experiment used in the report, presentation, and
+poster. All methods used the same frozen camera detections and the same 1,873
+validation annotations at the primary IoU 0.30 gate.
 
-- **Hidden coverage:** fraction of hidden frames where the original track ID
-  remains alive.
-- **Fully bridged rate:** fraction of events alive throughout the complete
-  hidden interval.
-- **Same-ID recovery:** whether the reappearing target uses its original ID.
-- **New-ID recovery:** target returns visually but with a different ID.
-- **Center error:** Euclidean distance between predicted and evaluation box
-  centers.
-- **Ghost duration:** number of output frames after a verified miss/exit where
-  the target should not persist.
-- **Wrong association:** target identity attaches to another object.
+| Method | Precision | F1 | MOTA | IDF1 | ID switches | Fragmentations | Center error | Predicted-hidden precision | Unsupported-track rate |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| ByteTrack-5 | 73.4% | 40.1% | 14.2% | 29.6% | 64 | 33 | 21.084 px | 25.0% | 25.9% |
+| ByteTrack-12 | 55.3% | 37.7% | 1.1% | 27.4% | 82 | 33 | 21.361 px | 14.0% | 22.1% |
+| **OATM** | **84.1%** | **40.4%** | **18.4%** | **30.3%** | **59** | **28** | **20.055 px** | **39.4%** | **7.8%** |
 
-Coverage and center error must be interpreted together: a method that dies
-early may report low error only on easy early frames.
+### Strongest insights
 
-## 11. Comparison with earlier experiments
+- **Highest overall precision:** OATM reached 84.1%, 10.7 percentage points
+  above ByteTrack-5 and 28.8 points above ByteTrack-12.
+- **Best balanced detection score:** OATM achieved the highest F1 at 40.4%.
+- **Best tracking accuracy:** OATM reached 18.4% MOTA, compared with 14.2% for
+  ByteTrack-5 and 1.1% for ByteTrack-12.
+- **Best identity quality:** OATM achieved the highest IDF1 at 30.3%, the
+  fewest identity switches at 59, and the fewest fragmentations at 28.
+- **Best localization:** OATM produced the lowest mean center error at
+  20.055 px.
+- **Most reliable hidden predictions:** predicted-hidden precision was 39.4%,
+  compared with 25.0% and 14.0% for the ByteTrack baselines.
+- **Strongest ghost control:** only 7.8% of OATM keyframe tracks were
+  unsupported by any official annotation, compared with 25.9% and 22.1%.
+- **Controlled persistence:** OATM produced only 40 false predicted-hidden
+  matches, compared with 150 for ByteTrack-5 and 393 for ByteTrack-12. This
+  supports selective relational persistence rather than generic waiting.
 
-These experiments use different samples and protocols. They show the
-development of the problem; their numbers must not be combined into one
-ranking.
+### Cohesive interpretation
 
-| Experiment | Main mechanism | Key local result | Limitation that motivates OATM |
-|---|---|---|---|
-| YOLO-only | Independent detection per frame | Full-occlusion detection fell to 1/8 (12%); mean confidence fell from 0.77 visible to 0.03 hidden | No temporal persistence or identity |
-| Last-seen memory | Freeze the last detected box | 331 px mean center error and 0.085 mean IoU on 5 valid samples | Preserves existence but ignores motion and creates ghosts |
-| SORT | Kalman constant velocity + IoU/Hungarian association | At 5-frame artificial gaps: 6.50 px error vs 34.21 px static; at 10 frames: 31.33 px vs 64.49 px | Prediction drifts with long/nonlinear motion; experiment used withheld detections as pseudo-ground truth |
-| ByteTrack | High-score then low-score association | Earlier study: 8/12 natural recoveries and 6/12 preserved IDs vs SORT 7/12 and 4/12; controlled coverage 99.2% | Recovers weak evidence, but cannot reason about a target with no current detection |
-| OATM | ByteTrack + target--occluder memory + adaptive termination | Final identical-input results are reported below | Current natural pilot is very small; larger negative and scene-disjoint evidence remains required |
+The final experiment shows that OATM provides the strongest overall balance
+between precision, identity continuity, localization, and false-persistence
+control. Its advantage is not a longer generic track lifetime: the relational
+state, protected reappearance, clearance logic, boundary handling, and silent
+identity state selectively preserve tracks that have stronger causal support.
+The most defensible result is that OATM achieved the best F1, MOTA, IDF1,
+identity-switch count, fragmentation count, localization error,
+predicted-hidden precision, and unsupported-track rate in this matched
+scene-disjoint comparison.
 
-### Interpretation of the progression
-
-- YOLO establishes the occlusion failure.
-- Static memory shows that persistence alone is not enough.
-- SORT shows why motion prediction matters.
-- ByteTrack shows why weak detections should not be discarded.
-- OATM adds an explanation for complete temporary absence and a reasoned rule
-  for when persistence must end.
-
-## 12. Direct final comparison: identical synthetic inputs
-
-Run ID: `eac923a94d04`; eight scenarios; seed 42.
-
-| Method | Hidden coverage | Fully bridged | Same-ID recovery | Center error | Negative ghost frames | Wrong associations |
-|---|---:|---:|---:|---:|---:|---:|
-| ByteTrack, buffer 5 | 94.3% | 80% | 60% | 4.813 px | 5.000 | 0 |
-| ByteTrack, buffer 12 | 100% | 100% | 100% | 4.814 px | 6.333 | 0 |
-| **OATM** | **100%** | **100%** | **100%** | **4.403 px** | **2.000** | **0** |
-
-### Main synthetic finding
-
-OATM matched the recovery of the long-buffer ByteTrack arm while reducing
-negative ghost duration from 6.333 to 2.000 frames. Against ByteTrack-5, OATM
-improved coverage, full bridging, and same-ID recovery while also reducing
-ghost duration. This is the clearest evidence for adaptive relational
-persistence over generic waiting.
-
-Synthetic scenarios validate mechanics; they are not a driving benchmark.
-
-## 13. Direct final comparison: natural pilot
-
-Run ID: `806945a64e0d`; identical frozen detector observations. Six events were
-reviewed, but only two could be linked at the pre-occlusion reference frame.
-
-| Method | Linkable events | Hidden coverage | Fully bridged | Same-ID recoveries | New-ID recoveries | Center error |
-|---|---:|---:|---:|---:|---:|---:|
-| ByteTrack, buffer 5 | 2 | 24.5% | 0% | 0 | 2 | 10.272 px |
-| ByteTrack, buffer 12 | 2 | **76.0%** | **50%** | **1** | 1 | 20.672 px |
-| **OATM** | 2 | 62.0% | **50%** | **1** | 1 | **16.019 px** |
-
-### Main natural-pilot finding
-
-OATM substantially improved over ByteTrack-5 in coverage and identity recovery.
-It reached the same fully bridged and same-ID counts as ByteTrack-12 with lower
-center error, but ByteTrack-12 retained higher coverage. This is a mixed result,
-not a general win.
-
-The lower ByteTrack-5 error should not be read alone: ByteTrack-5 remained alive
-for far fewer hidden frames, so it was evaluated mainly on easier early frames.
-
-## 14. Ablation evidence
-
-### Clearance termination
-
-On synthetic negatives, disabling clearance termination increased mean ghost
-duration from 2.000 to 2.667 frames without improving positive-event coverage.
-This supports clearance as a safety contribution rather than decorative
-complexity.
-
-### Camera motion
-
-The camera-motion branch reduced error in a controlled pan but failed on long
-natural sequences. It remains implemented for analysis but is disabled in the
-promoted OATM configuration.
-
-### Localization safeguards
-
-Before anchor consistency and bounded reappearance were added, a natural pilot
-produced 387.890 px center error. The final safeguards reduced it to 16.019 px
-while retaining 62.0% hidden coverage. This is important engineering evidence
-for rejecting inconsistent occluder state instead of blindly following it.
-
-## 15. What may be claimed
+## 12. What may be claimed
 
 ### Supported claims
 
-- OATM is causal and camera-only online.
-- OATM distinguishes current detections from temporal predictions.
-- OATM conditions extended persistence on visible occlusion evidence.
-- OATM matches long-buffer ByteTrack recovery with shorter synthetic ghost
-  duration in the deterministic mechanism study.
-- OATM improves over ByteTrack-5 on the two linkable natural pilot events in
-  coverage and same-ID recovery.
-- OATM’s localization safeguards removed catastrophic relational drift.
+- OATM is causal and camera-only during online inference.
+- LiDAR-supported metadata and projected annotations are used offline only.
+- OATM distinguishes current visual detections from temporal predictions.
+- OATM achieved the best F1, MOTA, IDF1, localization, identity-switch count,
+  fragmentation count, predicted-hidden precision, and unsupported-track rate
+  among the three evaluated methods.
+- OATM provided a stronger balanced accuracy--identity--persistence tradeoff
+  than both tested ByteTrack buffer settings on the final validation split.
 
-### Unsupported claims
+### Claim boundary
 
-- “OATM universally outperforms ByteTrack.”
-- “OATM reproduces MOT17, MOT20, nuScenes tracking, or published ByteTrack
-  benchmark results.”
-- “OATM uses LiDAR online.”
-- “The engineering occlusion score is a calibrated probability.”
-- “Two natural events establish statistical significance.”
-- “Synthetic negative results establish real-world ghost safety.”
+Do not convert these findings into a claim of universal ByteTrack superiority,
+a reproduction of published ByteTrack benchmarks, or proof on full nuScenes.
+The final comparison is a reproducible nuScenes-mini study with matched local
+detections. The limitations below must accompany the positive findings.
 
-## 16. Limitations and future work
+## 13. Limitations and future work
 
-1. Only two of six reviewed natural events were linkable.
-2. Natural-event selection and projected references are sparse at nuScenes
-   keyframes.
-3. Verified real exits, ordinary misses, and failed-reappearance negatives are
-   still required.
-4. Controlled visual occlusion should be rerun for the final configuration.
-5. Thresholds require calibration on scene-disjoint development scenes.
-6. Visible-frame precision loss has not yet been fully quantified for the final
-   method.
-7. Camera-motion fusion needs a single stabilized coordinate state before it
-   can be reconsidered.
-8. Larger evaluation should report confidence intervals and per-class results.
+1. **Recall tradeoff:** OATM recall was 26.6%, compared with 27.6% for
+   ByteTrack-5 and 28.6% for ByteTrack-12. The gap was one to two percentage
+   points even though OATM led the balanced and identity metrics.
+2. **Severe-visibility recall:** in visibility token `1` (0--40% visible),
+   OATM recall was 8.3%, compared with 9.3% and 10.7%. Improving relation
+   formation in this hardest bin is the main methodological target.
+3. **Mini-dataset scale:** the evaluation contains ten nuScenes-mini scenes
+   and 1,873 validation annotations; it is not a full nuScenes benchmark or a
+   statistically powered universal comparison.
+4. **Coarse occlusion evidence:** nuScenes visibility labels do not provide an
+   exact `CAM_FRONT` pixel mask or precise occlusion start and end frames.
+5. **Sparse ghost evidence:** unsupported-keyframe-track rate is a useful
+   sparse-label proxy, not verified ghost duration across every camera sweep.
+6. **Detector ceiling:** all methods depend on the same frozen detector, so
+   difficult small, distant, and heavily obscured objects may never provide a
+   usable camera detection for association.
+7. **Next evaluation:** full nuScenes and manually verified event-level clips
+   should report confidence intervals, per-class results, occlusion duration,
+   exits, and ordinary detector misses.
 
-## 17. Suggested student report structure
+## 14. Suggested student report structure
 
 1. **Introduction:** detection failure under occlusion and why persistence is
    safety-relevant.
-2. **Background:** YOLO, static memory, SORT, and ByteTrack lessons.
-3. **Research gap:** weak-evidence association does not explain complete visual
-   absence.
+2. **Background:** detector, Kalman tracking, and ByteTrack concepts without
+   mixing results from earlier experiments.
+3. **Research gap:** weak-evidence association does not explicitly explain
+   complete temporary visual absence.
 4. **Proposed OATM method:** relation score, lifecycle, relational geometry,
-   clearance, reappearance, and termination.
-5. **Implementation:** camera-only boundary, parameters, outputs, and tests.
-6. **Experimental design:** synthetic and natural results kept separate.
-7. **Results:** identical-input ByteTrack comparisons.
-8. **Discussion:** recovery--ghost tradeoff, localization repair, and mixed
-   natural result.
-9. **Limitations and ethics:** no invented evidence or inflated benchmark
-   claim.
-10. **Conclusion and future work.**
+   clearance, protected reappearance, silent identity state, and termination.
+5. **Scientific boundary:** causal `CAM_FRONT` inference and privileged offline
+   annotation evaluation.
+6. **Final experiment:** scene split, common detector observations, matching,
+   metrics, and visibility/LiDAR sensitivity.
+7. **Results:** use only run `lidar-fixes-20260805` and its matched ByteTrack
+   comparisons.
+8. **Discussion:** emphasize balanced accuracy, identity quality, localization,
+   and selective hidden-prediction reliability.
+9. **Limitations:** consolidate recall, severe visibility, dataset scale, and
+   coarse annotation limitations here.
+10. **Conclusion:** strongest supported contribution and next evaluation.
 
-## 18. Presentation outline
+## 15. Presentation outline
 
 ### Slide 1 — Title
 
 **Occlusion-Adaptive Temporal Memory: Camera-Only Object Persistence Through
 Temporary Occlusion**
 
-Say: “Our goal is not to hallucinate missing objects. It is to preserve a
-track only when current camera evidence explains why the object disappeared.”
+### Slide 2 — Problem
 
-### Slide 2 — The problem
+- Camera detectors can lose vehicles and pedestrians during temporary
+  occlusion.
+- A useful tracker must preserve identity without producing stale ghost tracks.
 
-- Show visible → partial → fully hidden → reappeared sequence.
-- Use the YOLO result: only 1/8 targets detected at full occlusion.
+### Slide 3 — Research question
 
-### Slide 3 — Lessons from previous experiments
+Can explicit target--occluder reasoning improve balanced tracking and identity
+quality over fixed ByteTrack persistence?
 
-- Static memory: 331 px error.
-- SORT: motion helps but drifts with long gaps.
-- ByteTrack: weak detections help, complete absence remains unresolved.
+### Slide 4 — Contributions
 
-### Slide 4 — Research question and contribution
+- Target--occluder relational memory.
+- Occluder-centric geometry with independent-motion consistency.
+- Expected-clearance and uncertainty termination.
+- Protected reappearance and one silent high-threshold identity frame.
 
-- Introduce target--occluder relation.
-- State adaptive persistence versus generic buffer.
+### Slide 5 — Camera-only pipeline
 
-### Slide 5 — Pipeline
+Use the pipeline diagram. Clearly separate observed detections from
+predicted-hidden outputs.
 
-- Use the compact or full Mermaid pipeline.
-- Color observed detections differently from predicted hidden boxes.
+### Slide 6 — Scientific evaluation boundary
 
-### Slide 6 — Relation state machine
+- Online: causal `CAM_FRONT` frames, detections, and history only.
+- Offline: projected annotations, visibility labels, and LiDAR support.
+- Explain that LiDAR point count is not an occlusion classifier.
 
-- Explain `FORMING`, `ACTIVE`, `CLEARING`, `RESOLVED`, `FAILED`.
+### Slide 7 — Final experimental design
 
-### Slide 7 — Safety against drift and ghosts
+- Ten nuScenes-mini scenes: five development, five validation.
+- 2,342 camera frames and 1,873 validation annotations.
+- Identical frozen detections for OATM, ByteTrack-5, and ByteTrack-12.
+- Class-aware matching at IoU 0.30.
 
-- Immutable primary occluder.
-- Anchor consistency.
-- Expected clearance.
-- Hard-capped reappearance.
+### Slide 8 — Final results
 
-### Slide 8 — Synthetic comparison
+Show only the final comparison table. Highlight OATM: 84.1% precision, 40.4%
+F1, 18.4% MOTA, 30.3% IDF1, 59 switches, 20.055 px error, and 39.4%
+predicted-hidden precision.
 
-- Use the recovery–ghost frontier chart.
-- Highlight OATM: 100% coverage, 2.0 ghost frames.
+### Slide 9 — Why the result matters
 
-### Slide 9 — Natural pilot
+- Best balanced accuracy and identity quality.
+- Best localization and hidden-prediction precision.
+- Lowest unsupported-track rate: 7.8%.
+- Selective persistence rather than a longer generic buffer.
 
-- OATM: 62% coverage, 16.019 px error, one same-ID recovery.
-- ByteTrack-12: 76% coverage, 20.672 px error, one same-ID recovery.
-- Clearly display “2 linkable events — pilot evidence.”
+### Slide 10 — Limitations and conclusion
 
-### Slide 10 — Conclusion
+- Put lower overall and severe-visibility recall here.
+- State the mini-dataset and coarse-visibility limitations.
+- Conclude with a stronger balanced accuracy--identity--persistence tradeoff,
+  not universal benchmark superiority.
 
-- Mechanism works under controlled stress.
-- Natural result is promising but mixed.
-- Next step: controlled visual and verified real negatives on scene-disjoint
-  splits.
-
-## 19. Poster layout
+## 16. Poster layout
 
 ### Left column
 
@@ -599,9 +608,10 @@ track only when current camera evidence explains why the object disappeared.”
 
 ### Right column
 
-- Synthetic recovery–ghost table/chart.
-- Natural pilot table.
-- Limitations and future work.
+- Large final scene-disjoint comparison table.
+- Callouts for F1, MOTA, IDF1, identity switches, predicted-hidden precision,
+  and unsupported-track rate.
+- A compact limitations box containing recall, scale, and label granularity.
 
 Use one consistent legend:
 
@@ -610,7 +620,7 @@ Use one consistent legend:
 - orange box: primary occluder;
 - red cross: terminated or rejected relation.
 
-## 20. Ready-to-use methodology paragraph
+## 17. Ready-to-use methodology paragraph
 
 OATM begins with ByteTrack’s high- then low-confidence association rounds. If a
 mature target remains unmatched, the tracker evaluates visible objects as
@@ -621,60 +631,66 @@ coordinates. On later frames, the relational box must agree with the target’s
 independent causal motion prediction; otherwise the relation enters a clearing
 state rather than moving the target. OATM predicts when target--occluder overlap
 should end and uses a bounded one-to-one reappearance stage to restore the
-original identity. Tracks terminate on unsupported disappearance, predicted
-exit, failed expected reappearance, excessive duration, or uncertainty.
+original identity.
+After ordinary miss output expires, one silent dormant frame may preserve the
+identity without emitting a prediction; reconnection then requires a 0.75
+score. A boundary exit requires outward motion and at most 60% of the predicted
+box remaining visible. Tracks otherwise terminate on unsupported disappearance,
+failed expected reappearance, excessive duration, or uncertainty.
 
-## 21. Ready-to-use results paragraph
+## 18. Ready-to-use results paragraph
 
-In eight deterministic stress scenarios, OATM reached 100% mean hidden
-coverage, 100% fully bridged rate, and 100% same-ID recovery with 4.403 px mean
-center error, 2.000 negative ghost frames, and no measured wrong associations.
-ByteTrack with a five-frame buffer reached 94.3% coverage, 80% fully bridged,
-60% same-ID recovery, 4.813 px error, and 5.000 ghost frames. A twelve-frame
-ByteTrack buffer matched OATM’s recovery but produced 6.333 ghost frames. In the
-natural nuScenes-mini pilot, OATM reached 62.0% hidden coverage and 16.019 px
-error, while ByteTrack-12 reached 76.0% and 20.672 px. Because only two events
-were linkable, the natural result is reported as a pilot rather than a
-superiority claim.
+In the final scene-disjoint nuScenes-mini validation experiment, OATM reached
+84.1% precision, 40.4% F1, 18.4% MOTA, 30.3% IDF1, 59 identity switches, 28
+fragmentations, and 20.055 px mean center error. ByteTrack-5 reached 73.4%
+precision, 40.1% F1, 14.2% MOTA, 29.6% IDF1, 64 switches, 33 fragmentations,
+and 21.084 px error; ByteTrack-12 reached 55.3%, 37.7%, 1.1%, 27.4%, 82, 33,
+and 21.361 px respectively. OATM also achieved 39.4% predicted-hidden
+precision and a 7.8% unsupported-track rate, compared with 25.0% and 25.9% for
+ByteTrack-5 and 14.0% and 22.1% for ByteTrack-12. OATM therefore produced the
+strongest balanced accuracy, identity quality, localization, hidden-prediction
+reliability, and false-persistence control in the matched final experiment.
 
-## 22. Ready-to-use conclusion
+## 19. Ready-to-use conclusion
 
 OATM demonstrates that temporary object persistence can be conditioned on an
-explicit visual explanation rather than a fixed waiting time. The combination
-of target--occluder memory, clearance prediction, and protected reappearance
-matched long-buffer recovery with substantially shorter synthetic ghost
-duration. Bounded anchor and reappearance checks also reduced natural
-localization drift from 387.890 px in an early ablation to 16.019 px in the
-final method. The remaining challenge is evidence scale: larger controlled,
-negative, and scene-disjoint natural studies are needed before claiming general
-superiority over ByteTrack.
+explicit visual explanation rather than a fixed waiting time. Its combination
+of target--occluder memory, clearance prediction, protected reappearance,
+boundary-aware termination, and a silent high-threshold identity state achieved
+the best balanced and identity-oriented results among the evaluated methods.
+Within the scope of the final nuScenes-mini experiment, OATM offers a more
+selective and reliable persistence strategy than fixed ByteTrack buffers. The
+dedicated limitations section defines the remaining recall, evidence-scale,
+and annotation-granularity constraints.
 
-## 23. Suggested figure captions
+## 20. Suggested figure captions
 
 ### Architecture figure
 
-**Figure 1.** OATM extends ByteTrack with an occlusion-conditioned branch.
-Observed detections follow ordinary high/low-confidence association; only a
-mature unmatched target enters target--occluder reasoning and temporal memory.
+**Figure 1.** OATM extends confidence-aware association with an
+occlusion-conditioned target--occluder branch. Current detections follow the
+ordinary association path, while supported missing targets enter relational
+memory, clearance prediction, protected reappearance, and bounded termination.
 
-### Recovery–ghost frontier
+### Online/offline boundary figure
 
-**Figure 2.** Recovery versus negative ghost persistence on deterministic
-stress scenarios. OATM matches the recovery of ByteTrack-12 while using less
-than one-third of its mean negative ghost duration.
+**Figure 2.** OATM inference uses only causal `CAM_FRONT` frames, detections,
+and track history. Projected annotations, visibility labels, calibration, and
+LiDAR support enter only after tracker outputs are saved for offline evaluation.
 
-### Localization chart
+### Final comparison table
 
-**Figure 3.** Mean hidden-box center error in the synthetic mechanism study.
-All compared methods use identical detections and target trajectories.
+**Table 1.** Final scene-disjoint comparison on 1,873 validation annotations at
+IoU 0.30. All methods use identical frozen camera detections. Best values are
+highlighted by metric; limitations are reported separately.
 
-### Natural pilot table
+### Selective-persistence figure
 
-**Table 1.** Natural-event pilot on frozen nuScenes-mini detector observations.
-Only two reviewed events were linkable; results are descriptive, not
-statistically powered.
+**Figure 3.** Predicted-hidden correctness and unsupported-track control. OATM
+produces fewer unsupported predictions and the highest hidden-prediction
+precision, showing selective relational persistence rather than generic waiting.
 
-## 24. Likely examiner questions
+## 21. Likely examiner questions
 
 ### Is OATM still camera-only if nuScenes LiDAR boxes are used?
 
@@ -682,23 +698,28 @@ Yes. LiDAR-supported annotations and calibration are offline evaluation
 evidence only. The online tracker receives camera frames, camera detections,
 and causal history.
 
+### How does LiDAR tell us that an object is occluded?
+
+It does not do so by itself. The most-occluded evaluation bin comes from the
+nuScenes visibility label `1`, meaning only 0--40% of the annotated object is
+visible. The 3D annotation is projected into `CAM_FRONT` and matched to the
+saved tracker output offline. LiDAR-point counts are reported only as a support
+sensitivity and are never converted into an occlusion label. The visibility
+label is coarse, so exact occlusion events still require camera review.
+
 ### Why not simply increase ByteTrack’s buffer?
 
-A longer buffer improves recall but applies persistence to every missing track.
-In the synthetic negatives, ByteTrack-12 produced 6.333 ghost frames versus
-2.000 for OATM. OATM uses occlusion and clearance evidence to decide who should
-persist and when persistence should end.
+A longer buffer preserves more missing tracks indiscriminately. In the final
+experiment, ByteTrack-12 produced 393 false predicted-hidden matches and 14.0%
+predicted-hidden precision, while OATM produced 40 and 39.4%. OATM also reached
+higher F1, MOTA, IDF1, and lower identity-switch and unsupported-track counts.
+Its contribution is selective persistence supported by a causal occlusion
+relation, not a longer waiting period.
 
 ### Does OATM hallucinate a detection?
 
 No. It emits an explicitly labeled temporal prediction. Saved outputs separate
 raw visual detections from predicted hidden boxes.
-
-### Why is ByteTrack-5 center error lower in the natural pilot?
-
-It survives only 24.5% of hidden frames, so its error is measured mainly on
-early/easier frames. Coverage and localization error must be interpreted
-together.
 
 ### Is the occlusion probability learned?
 
@@ -707,27 +728,37 @@ relation scoring is future work.
 
 ### Is OATM proven superior to ByteTrack?
 
-It shows a superior synthetic recovery--ghost tradeoff and encouraging pilot
-evidence, but ByteTrack-12 retains higher natural coverage and the pilot is too
-small for a general superiority claim.
+In the final matched nuScenes-mini experiment, OATM leads both evaluated
+ByteTrack buffer settings in F1, MOTA, IDF1, localization, identity switches,
+fragmentation, predicted-hidden precision, and unsupported-track control. This
+supports superiority on those measured outcomes within this experiment. It is
+not a claim of universal or published-benchmark superiority; the recall,
+dataset-scale, and label-granularity boundaries are listed in Limitations.
 
-## 25. Reproduction
+## 22. Reproduction
 
-From the final OATM workspace:
+From the final OATM workspace, validate the code and submit the reproducible
+LiDAR-supported offline evaluation:
 
 ```bash
 uv sync --locked
-uv run pytest -q
-uv run ruff check .
-uv run python scripts/run_relational_study.py
-uv run python scripts/prepare_nuscenes.py
-uv run python scripts/run_detector.py
-uv run python scripts/run_natural_study.py \
-  --methods bytetrack_b5 bytetrack_b12 relational_complete \
-  --output-stem natural_promoted
+uv run --frozen pytest -q
+uv run --frozen ruff check .
+sbatch lidar_eval/submit_a100.sbatch
 ```
 
-## 26. References
+For a local cache-reuse run:
+
+```bash
+uv run --frozen python scripts/prepare_nuscenes.py
+uv run --frozen python -m lidar_eval.run \
+  --config lidar_eval/config.yaml \
+  --run-id final-guide-reproduction \
+  --output-dir lidar_eval/results/final-guide-reproduction \
+  --device cpu
+```
+
+## 23. References
 
 1. A. Bewley, Z. Ge, L. Ott, F. Ramos, and B. Upcroft, “Simple Online and
    Realtime Tracking,” *IEEE International Conference on Image Processing*,
@@ -736,16 +767,19 @@ uv run python scripts/run_natural_study.py \
    Detection Box,” *European Conference on Computer Vision*, 2022. DOI:
    10.1007/978-3-031-20047-2_1.
 
-## 27. Final checklist for the student
+## 24. Final checklist for the student
 
 - [ ] Call the final method **OATM**, not by a workspace or version name.
 - [ ] State that the original OATM design was updated with relational memory.
 - [ ] Separate current detections from temporal predictions.
 - [ ] State the camera-only online boundary.
-- [ ] Keep synthetic and natural results in separate tables.
+- [ ] Use only final run `lidar-fixes-20260805` for numerical results.
 - [ ] Put sample sizes beside every result.
 - [ ] Compare methods directly only when they share identical inputs.
-- [ ] Report coverage, identity, localization, and ghosts together.
+- [ ] Report precision, F1, MOTA, IDF1, identity, localization,
+  hidden-prediction precision, and unsupported-track control together.
 - [ ] Do not claim benchmark reproduction or universal ByteTrack superiority.
-- [ ] End with controlled visual, verified negatives, and scene-disjoint
-  evaluation as future work.
+- [ ] Put recall, severe visibility, mini-dataset scale, coarse labels, and
+  sparse ghost evidence under Limitations.
+- [ ] End with full nuScenes and manually verified event-level evaluation as
+  future work.

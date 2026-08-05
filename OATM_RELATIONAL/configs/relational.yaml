@@ -13,6 +13,13 @@ bytetrack_buffers: [3, 5, 8, 12]
 relational:
   max_hidden_frames: 12
   ordinary_miss_grace_frames: 1
+  # Disabled ablation: conditional visible output grace did not clear the development gate.
+  mature_miss_grace_frames: null
+  mature_miss_min_hits: 4
+  mature_miss_min_confidence: 0.7
+  # One silent frame may preserve identity, but is never emitted as a prediction.
+  dormant_reactivation_frames: 1
+  dormant_reappearance_score_threshold: 0.75
   min_track_hits: 2
   relation_probability_threshold: 0.48
   target_coverage_threshold: 0.12
@@ -26,6 +33,9 @@ relational:
   anchor_max_scale_ratio: 1.25
   uncertainty_ceiling: 10000.0
   boundary_margin_px: 25.0
+  # Outward motion alone is insufficient: at most 60% of the predicted box
+  # may remain visible before a field-of-view exit is declared.
+  exit_visible_fraction_threshold: 0.60
   image_width: 1600.0
   image_height: 900.0
   # Retained as an ablation only. Two natural-event pilots showed severe

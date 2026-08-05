@@ -45,6 +45,10 @@ class RelationalOATMTracker:
         second_association_iou_threshold: float = 0.5,
         max_hidden_frames: int = 12,
         ordinary_miss_grace_frames: int = 1,
+        mature_miss_grace_frames: int | None = None,
+        mature_miss_min_hits: int = 4,
+        mature_miss_min_confidence: float = 0.7,
+        dormant_reactivation_frames: int = 0,
         min_track_hits: int = 2,
         relation_probability_threshold: float = 0.48,
         target_coverage_threshold: float = 0.12,
@@ -53,11 +57,13 @@ class RelationalOATMTracker:
         clearance_horizon_frames: int = 12,
         reappearance_grace_frames: int = 4,
         reappearance_score_threshold: float = 0.55,
+        dormant_reappearance_score_threshold: float = 0.75,
         uncertainty_ceiling: float = 10000.0,
         anchor_max_residual_ratio: float = 0.75,
         anchor_min_residual_px: float = 20.0,
         anchor_max_scale_ratio: float = 1.25,
         boundary_margin_px: float = 25.0,
+        exit_visible_fraction_threshold: float = 0.05,
         image_width: float = 1600.0,
         image_height: float = 900.0,
         enable_camera_compensation: bool = True,
@@ -71,6 +77,21 @@ class RelationalOATMTracker:
         self.second_iou = second_association_iou_threshold
         self.max_hidden_frames = max_hidden_frames
         self.ordinary_miss_grace_frames = ordinary_miss_grace_frames
+        self.mature_miss_grace_frames = mature_miss_grace_frames
+        self.mature_miss_min_hits = mature_miss_min_hits
+        self.mature_miss_min_confidence = mature_miss_min_confidence
+        if ordinary_miss_grace_frames < 0:
+            raise ValueError("ordinary_miss_grace_frames must be non-negative")
+        if mature_miss_grace_frames is not None:
+            if mature_miss_grace_frames < ordinary_miss_grace_frames:
+                raise ValueError("mature_miss_grace_frames must not be shorter than ordinary grace")
+            if mature_miss_min_hits < 1:
+                raise ValueError("mature_miss_min_hits must be positive")
+            if not 0.0 <= mature_miss_min_confidence <= 1.0:
+                raise ValueError("mature_miss_min_confidence must be in [0, 1]")
+        if dormant_reactivation_frames < 0:
+            raise ValueError("dormant_reactivation_frames must be non-negative")
+        self.dormant_reactivation_frames = dormant_reactivation_frames
         self.min_track_hits = min_track_hits
         self.relation_probability_threshold = relation_probability_threshold
         self.target_coverage_threshold = target_coverage_threshold
@@ -79,11 +100,17 @@ class RelationalOATMTracker:
         self.clearance_horizon_frames = clearance_horizon_frames
         self.reappearance_grace_frames = reappearance_grace_frames
         self.reappearance_score_threshold = reappearance_score_threshold
+        if not 0.0 <= dormant_reappearance_score_threshold <= 1.0:
+            raise ValueError("dormant_reappearance_score_threshold must be in [0, 1]")
+        self.dormant_reappearance_score_threshold = dormant_reappearance_score_threshold
         self.uncertainty_ceiling = uncertainty_ceiling
         self.anchor_max_residual_ratio = anchor_max_residual_ratio
         self.anchor_min_residual_px = anchor_min_residual_px
         self.anchor_max_scale_ratio = anchor_max_scale_ratio
         self.boundary_margin_px = boundary_margin_px
+        if not 0.0 <= exit_visible_fraction_threshold <= 1.0:
+            raise ValueError("exit_visible_fraction_threshold must be in [0, 1]")
+        self.exit_visible_fraction_threshold = exit_visible_fraction_threshold
         self.image_width = image_width
         self.image_height = image_height
         self.enable_camera_compensation = enable_camera_compensation
@@ -156,12 +183,33 @@ class RelationalOATMTracker:
         x1, y1, x2, y2 = box
         vx, vy = velocity
         margin = self.boundary_margin_px
-        return (
+        moving_outward_near_edge = (
             (x1 <= margin and vx < 0)
             or (x2 >= self.image_width - margin and vx > 0)
             or (y1 <= margin and vy < 0)
             or (y2 >= self.image_height - margin and vy > 0)
         )
+        if not moving_outward_near_edge:
+            return False
+        box_area = max(x2 - x1, 0.0) * max(y2 - y1, 0.0)
+        if box_area <= 0.0:
+            return True
+        visible_width = max(0.0, min(x2, self.image_width) - max(x1, 0.0))
+        visible_height = max(0.0, min(y2, self.image_height) - max(y1, 0.0))
+        visible_fraction = visible_width * visible_height / box_area
+        # A box merely touching the boundary is still evidence in CAM_FRONT.
+        # Exit is declared only when almost the entire causal prediction has
+        # moved outside while its velocity continues outward.
+        return visible_fraction <= self.exit_visible_fraction_threshold
+
+    def _miss_grace(self, track: _RelationalTrack) -> int:
+        if (
+            self.mature_miss_grace_frames is not None
+            and track.kalman.hits >= self.mature_miss_min_hits
+            and track.kalman.last_confidence >= self.mature_miss_min_confidence
+        ):
+            return self.mature_miss_grace_frames
+        return self.ordinary_miss_grace_frames
 
     def _terminate(self, track: _RelationalTrack, reason: str) -> None:
         track.termination_reason = reason
@@ -221,8 +269,15 @@ class RelationalOATMTracker:
             for index, track in enumerate(self.tracks)
             if track.hidden_frames > 0 and track.relation is not None
         ]
+        dormant_track_indices = [
+            index
+            for index, track in enumerate(self.tracks)
+            if track.state == "DORMANT" and index not in protected_track_indices
+        ]
         association_indices = [
-            index for index in range(len(self.tracks)) if index not in protected_track_indices
+            index
+            for index in range(len(self.tracks))
+            if index not in protected_track_indices and index not in dormant_track_indices
         ]
         association_predictions = [predictions[index] for index in association_indices]
         association_classes = [classes[index] for index in association_indices]
@@ -246,7 +301,7 @@ class RelationalOATMTracker:
             matched_tracks.add(track_index)
         remaining_track_indices = [
             unmatched_tracks[index] for index in unmatched_local
-        ] + protected_track_indices
+        ] + protected_track_indices + dormant_track_indices
 
         remaining_detections = [
             dict(high[index], _source="high", _source_index=index) for index in unmatched_high
@@ -262,6 +317,7 @@ class RelationalOATMTracker:
             predictions,
             self.reappearance_score_threshold,
             {self.tracks[index].kalman.id for index in matched_tracks},
+            dormant_threshold=self.dormant_reappearance_score_threshold,
         )
         used_remaining: set[int] = set()
         for candidate in reappearances:
@@ -386,22 +442,33 @@ class RelationalOATMTracker:
                     track.relation.phase = RelationPhase.CLEARING
                     track.relation.clearing_age_frames += 1
 
-                if track.relation is None and track.hidden_frames > self.ordinary_miss_grace_frames:
-                    reason = "insufficient_occlusion_evidence"
-                elif (
+                dormant = False
+                miss_grace = self._miss_grace(track)
+                if track.relation is None and track.hidden_frames > miss_grace:
+                    if track.hidden_frames <= miss_grace + self.dormant_reactivation_frames:
+                        dormant = True
+                    else:
+                        reason = "insufficient_occlusion_evidence"
+                if reason is None and (
                     self.enable_clearance_termination
                     and track.relation is not None
                     and track.relation.phase == RelationPhase.CLEARING
                     and track.relation.clearing_age_frames > self.reappearance_grace_frames
                 ):
                     reason = "failed_expected_reappearance"
-                elif track.hidden_frames > self.max_hidden_frames:
+                elif reason is None and track.hidden_frames > self.max_hidden_frames:
                     reason = "maximum_hidden_duration"
-                elif float(np.trace(track.kalman.P)) > self.uncertainty_ceiling:
+                elif reason is None and float(np.trace(track.kalman.P)) > self.uncertainty_ceiling:
                     reason = "uncertainty_ceiling_exceeded"
 
             if reason is not None:
                 self._terminate(track, reason)
+                continue
+            if dormant:
+                track.state = "DORMANT"
+                track.evidence_source = None
+                track.existence_confidence = 0.0
+                survivors.append(track)
                 continue
             track.state = "PREDICTED_HIDDEN"
             track.evidence_source = "motion_prediction"
@@ -412,7 +479,9 @@ class RelationalOATMTracker:
         self.tracks = survivors
 
         return [
-            self._output(track, scene_token, sample_data_token, method_name, run_id) for track in self.tracks
+            self._output(track, scene_token, sample_data_token, method_name, run_id)
+            for track in self.tracks
+            if track.state != "DORMANT"
         ]
 
     def _output(

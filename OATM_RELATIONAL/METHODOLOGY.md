@@ -99,6 +99,26 @@ synthetic, controlled visual, detector intervention, natural, and verified
 negative events separately. Select the development configuration that maximizes
 hidden recall subject to ghost duration no worse than the best ByteTrack point.
 
+The LiDAR-supported mini evaluation is a strictly offline measurement stage.
+The detector and trackers first process every `CAM_FRONT` frame causally and
+save outputs without loading ground truth. The evaluator then projects and
+matches official 3D annotations on the 404 annotated keyframes only. LiDAR,
+calibration, visibility, ego pose, and instance identity never enter online
+inference.
+
+Class-aware Hungarian matching is evaluated at IoU 0.30, with 0.10 and 0.50
+sensitivity checks. Observed and predicted-hidden outputs are reported
+separately, and metrics include precision/recall, MOTA, IDF1, identity
+switches, fragmentation, localization error, and unsupported-keyframe tracks.
+The latter is only a sparse-label ghost proxy; verified ghost duration still
+requires reviewed exit/loss events.
+
+The ten mini scenes are assigned whole to five development and five validation
+scenes using a versioned seeded hash. The primary denominator retains
+zero-LiDAR-point and truncated annotations. Visibility, depth, point support,
+and truncation are reported as sensitivity strata, never used to remove hard
+examples from the headline population.
+
 ## Claim boundary
 
 Synthetic experiments validate mechanics only. Real-data superiority requires
@@ -120,3 +140,16 @@ coverage, 0.500 fully bridged rate, and one same-ID recovery, compared with
 0.430, 0.000, and zero for OATM_UPDATED. ByteTrack-12 still reached 0.760
 coverage and one same-ID recovery. The pilot therefore supports an improvement
 over OATM_UPDATED on these events, but it is too small and does not satisfy the
+scene-disjoint real-data superiority boundary.
+
+LiDAR-supported run `lidar-fixes-20260805` evaluated 1,873 annotations on
+five validation scenes after selecting the lifecycle thresholds on five
+development scenes. At IoU 0.30, Relational OATM reached 0.841 precision, 0.266
+recall, 0.404 F1, 0.184 MOTA, 0.303 IDF1, 59 identity switches, and 20.055 px
+mean center error. ByteTrack-5 reached 0.734, 0.276, 0.401, 0.142, 0.296, 64,
+and 21.084 px; ByteTrack-12 reached 0.553, 0.286, 0.377, 0.011, 0.274, 82,
+and 21.361 px. Relational OATM therefore narrowly leads ByteTrack-5 in F1 and
+leads both baselines in precision, MOTA, IDF1, identity switches, localization,
+and predicted-hidden precision. Its overall recall and most-occluded-bin recall
+remain lower, so this is a stronger balanced result but not a universal
+ByteTrack-superiority claim.

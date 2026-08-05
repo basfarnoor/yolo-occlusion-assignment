@@ -44,6 +44,7 @@ def associate_reappearances(
     predicted_boxes: list[Box],
     threshold: float,
     visible_track_ids: set[int] | None = None,
+    dormant_threshold: float | None = None,
 ) -> list[ReappearanceCandidate]:
     visible_track_ids = visible_track_ids or set()
     candidates = []
@@ -52,10 +53,20 @@ def associate_reappearances(
         box = (detection["x1"], detection["y1"], detection["x2"], detection["y2"])
         for track_index in track_indices:
             track = tracks[track_index]
-            if detection["class"] != track.kalman.class_name or track.relation is None:
+            if detection["class"] != track.kalman.class_name:
                 continue
-            phase = getattr(track.relation.phase, "value", track.relation.phase)
-            occluder_still_visible = track.relation.occluder_track_id in visible_track_ids
+            is_dormant = getattr(track, "state", None) == "DORMANT"
+            if track.relation is None and not is_dormant:
+                continue
+            phase = (
+                None
+                if track.relation is None
+                else getattr(track.relation.phase, "value", track.relation.phase)
+            )
+            occluder_still_visible = (
+                track.relation is not None
+                and track.relation.occluder_track_id in visible_track_ids
+            )
             if getattr(track, "hidden_frames", 1) <= 0 or (
                 occluder_still_visible and phase not in {"CLEARING", "RESOLVED"}
             ):
@@ -65,9 +76,14 @@ def associate_reappearances(
                 box,
                 predicted_boxes[track_index],
                 float(np.trace(track.kalman.P)),
-                track.relation.expected_clearance_frames,
+                None if track.relation is None else track.relation.expected_clearance_frames,
             )
-            if score >= threshold:
+            candidate_threshold = (
+                dormant_threshold
+                if is_dormant and dormant_threshold is not None
+                else threshold
+            )
+            if score >= candidate_threshold:
                 candidates.append(ReappearanceCandidate(detection_index, track_index, score))
     selected = []
     used_detections: set[int] = set()
