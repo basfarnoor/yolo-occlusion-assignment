@@ -1,0 +1,63 @@
+{
+  "run_id": "806945a64e0d",
+  "accepted_events": 6,
+  "selected_methods": [
+    "bytetrack_b5",
+    "bytetrack_b12",
+    "selective_oatm",
+    "relational_complete"
+  ],
+  "output_stem": "natural_promoted",
+  "runtimes": {
+    "bytetrack_b5": 1.7189068058505654,
+    "bytetrack_b12": 2.2593650380149484,
+    "selective_oatm": 1.308415207080543,
+    "relational_complete": 1.4557168995961547
+  },
+  "runtime_seconds": 10.698885209858418,
+  "config": {
+    "schema_version": 1,
+    "random_seed": 42,
+    "shared": {
+      "detection_floor": 0.05,
+      "high_score_threshold": 0.5,
+      "new_track_threshold": 0.6,
+      "first_association_iou_threshold": 0.3,
+      "second_association_iou_threshold": 0.5
+    },
+    "bytetrack_buffers": [
+      3,
+      5,
+      8,
+      12
+    ],
+    "relational": {
+      "max_hidden_frames": 12,
+      "ordinary_miss_grace_frames": 1,
+      "min_track_hits": 2,
+      "relation_probability_threshold": 0.48,
+      "target_coverage_threshold": 0.12,
+      "clearance_coverage_threshold": 0.05,
+      "occluder_min_area_ratio": 0.5,
+      "clearance_horizon_frames": 12,
+      "reappearance_grace_frames": 4,
+      "reappearance_score_threshold": 0.55,
+      "anchor_max_residual_ratio": 0.75,
+      "anchor_min_residual_px": 20.0,
+      "anchor_max_scale_ratio": 1.25,
+      "uncertainty_ceiling": 10000.0,
+      "boundary_margin_px": 25.0,
+      "image_width": 1600.0,
+      "image_height": 900.0,
+      "enable_camera_compensation": false,
+      "enable_clearance_termination": true
+    },
+    "camera_motion": {
+      "max_features": 1000,
+      "min_matches": 12,
+      "min_inlier_ratio": 0.35,
+      "ransac_threshold_px": 3.0,
+      "max_translation_px": 60.0
+    }
+  }
+}

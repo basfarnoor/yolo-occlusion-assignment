@@ -11,6 +11,151 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-05 — Final OATM report and presentation guide
+
+### Change or experiment
+
+Added `OATM_RELATIONAL/REPORT_PRESENTATION_GUIDE.md` as the single student
+writing source for the report, slides, and poster. It presents the public method
+as OATM, includes report-ready methodology, Mermaid pipeline and state-machine
+drawings, parameters, experiment design, comparisons with YOLO-only, last-seen
+memory, SORT, and ByteTrack, final result tables, claim boundaries, suggested
+slides/poster layout, captions, examiner questions, and ready-to-use prose.
+
+### Reason
+
+The student needs one evidence-backed narrative that describes the final method
+without exposing internal development versions or mixing results produced under
+different experimental protocols.
+
+### Validation or evidence
+
+Cross-checked the final OATM numbers against synthetic run `eac923a94d04` and
+natural run `806945a64e0d`; cross-checked earlier-study values against their
+committed final reports. Direct performance claims use only identical-input
+ByteTrack arms. The guide preserves the camera-only causal boundary, separates
+synthetic and natural evidence, states the two-linkable-event limitation, and
+contains no internal method-version names.
+
+### Decision and next step
+
+Use this guide as the canonical student-facing writing reference. Keep broader
+ByteTrack superiority and benchmark-reproduction claims out of the report until
+controlled visual, verified negative, and larger scene-disjoint studies exist.
+
+
+## 2026-08-05 — Relational localization and lifecycle repair
+
+### Change or experiment
+
+Traced the two linkable natural events frame by frame and repaired three causal
+state failures in `OATM_RELATIONAL`: primary occluder ownership is immutable
+within a hidden episode, decoded occluder anchors must agree with independent
+target motion within bounded center/scale residuals, and reappearance search has
+a hard spatial cap. Resolved relations are archived before the next frame so a
+stale clearing age cannot terminate a new hidden episode.
+
+### Reason
+
+The earlier 387.890 px error came from tracked occluders jumping hundreds of
+pixels and dragging their targets, followed by distant weak detections being
+accepted under uncertainty. The first conservative repair fixed localization
+but reduced coverage to 0.163; lifecycle tracing then exposed the stale-resolved
+relation bug and a normal-perspective residual that was too strict.
+
+### Validation or evidence
+
+- `pytest -q`: 20 passed, including inconsistent-anchor, distant-reappearance,
+  same-class hijack, and resolved-relation lifecycle regressions.
+- Synthetic run `eac923a94d04`: 1.000 hidden coverage and same-ID recovery,
+  4.403 px error, 2.000 negative ghost frames, and zero wrong associations.
+- Natural run `806945a64e0d`: Relational OATM reached 0.620 hidden coverage,
+  0.500 fully bridged rate, one same-ID recovery, and 16.019 px error.
+  OATM_UPDATED reached 0.430, 0.000, zero, and 15.858 px respectively.
+  ByteTrack-12 retained higher coverage at 0.760.
+
+### Decision and next step
+
+The catastrophic localization problem is fixed and the safeguards are promoted.
+The current pilot supports improvement over OATM_UPDATED on two linkable events,
+but not a general ByteTrack-superiority claim. Next build controlled visual and
+verified negative sets, then calibrate and evaluate on scene-disjoint splits.
+
+
+## 2026-08-05 — Relational OATM implementation and evaluation
+
+### Change or experiment
+
+Created `OATM_RELATIONAL/` as an isolated `uv` workspace extending
+`OATM_UPDATED` with explicit target--occluder state, occluder-centric geometry,
+expected-clearance termination, protected third-stage reappearance, a causal
+camera-motion ablation, reproducible nuScenes preparation/detection scripts,
+tests, compact reports, metadata, and charts. Hidden relational tracks are no
+longer eligible for ordinary ByteTrack association while an active occluder is
+visible.
+
+### Reason
+
+Test whether added relational structure improves the hidden-recall versus ghost
+duration frontier without presenting longer generic track lifetime as an OATM
+contribution.
+
+### Validation or evidence
+
+- `uv run pytest -q`: 17 passed; `uv run ruff check .`: clean at final audit.
+- Synthetic run `e52db2dee70d`: Relational OATM achieved 1.000 mean hidden
+  coverage, 1.000 same-ID recovery, 4.403 px center error, 1.333 negative ghost
+  frames, and zero wrong associations. ByteTrack-5 achieved 0.943 coverage,
+  0.600 same-ID recovery, 4.813 px error, and 5.000 ghost frames.
+- Read-only nuScenes preparation: 10 scenes, 2,342 CAM_FRONT frames, 404
+  keyframes, and 5,384 accepted privileged projected annotations.
+- Cold YOLO26n CPU detector run: exactly 49,436 detections over 2,342 frames;
+  weights SHA-256 `9b09cc8bf347f0fc8a5f7657480587f25db09b34bf33b0652110fb03a8ad4fef`.
+- Final natural pilot `55b3a52bf229`: only 2/6 reviewed events were linkable.
+  Relational OATM coverage was 0.457 versus 0.245 ByteTrack-5, 0.430 Selective
+  OATM, and 0.760 ByteTrack-12. Relational error was 387.890 px and both
+  recoveries used new IDs. Camera-enabled pilots also showed severe drift.
+
+### Decision and next step
+
+The complex architecture and experiment pipeline are implemented, but the
+real-data superiority acceptance check failed. Keep camera compensation disabled
+and do not claim ByteTrack superiority. Next stabilize target--occluder
+selection/localization, build human-verified real negative events, run controlled
+visual experiments, then repeat a statistically powered scene-disjoint study.
+
+
+## 2026-08-05 — OATM_UPDATED selective-occlusion foundation
+
+### Change
+
+Created `OATM_UPDATED/` as an isolated `uv` workspace with methodology,
+pipeline, implementation plan, configuration, source, tests, compact results,
+and ignored artifacts. `SelectiveOATMTracker` retains the audited ByteTrack
+association/Kalman contracts but admits a missing mature track only with
+camera-derived visible-occluder evidence or a bounded one-frame grace period.
+
+### Reason
+
+The prior MVP did not outperform ByteTrack overall. The updated experiment asks
+whether selective activation improves hidden recall at matched ghost duration;
+a longer-buffer ByteTrack arm prevents extra lifetime from being mistaken for a contribution.
+
+### Validation or evidence
+
+- `uv.lock` generated with uv 0.12.1; run `ec2393733008` used Python 3.12.13.
+- `ruff check .` clean; `pytest -q`: 7 passed.
+- Synthetic development: Selective OATM and long-buffer ByteTrack both reached
+  100% occlusion coverage and same-ID recovery. Mean miss/exit ghost duration
+  was 0.5 frames for Selective OATM, 5.0 for ByteTrack, and 6.0 for long-buffer ByteTrack.
+- Tests exposed and drove repair of stable occluders disappearing from gate evidence.
+
+### Decision and next step
+
+This validates mechanics, not real-data superiority. Next regenerate detector
+and projection artifacts, add verified exit/loss negatives, tune on development
+scenes only, and evaluate controlled visual then held-out natural occlusions.
+
 ## 2026-08-04 — OATM Task 6: rebuild and verify baselines
 
 ### Change

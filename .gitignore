@@ -18,6 +18,10 @@ assignments/04_bytetrack_paper_experiment/experiment/.venv/
 # Python cache
 __pycache__/
 *.pyc
+*.egg-info/
+*.orig
+.pytest_cache/
+.ruff_cache/
 
 # Jupyter
 .ipynb_checkpoints/

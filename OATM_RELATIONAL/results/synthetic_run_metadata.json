@@ -1,0 +1,75 @@
+{
+  "run_id": "eac923a94d04",
+  "experiment_family": "synthetic_development",
+  "seed": 42,
+  "scenario_names": [
+    "short_occlusion",
+    "long_occlusion",
+    "moving_occluder",
+    "multiple_occluders",
+    "abrupt_camera_pan",
+    "ordinary_miss",
+    "field_of_view_exit",
+    "failed_reappearance"
+  ],
+  "methods": [
+    "bytetrack_b5",
+    "bytetrack_b12",
+    "selective_oatm",
+    "relational_camera",
+    "relational_no_clearance",
+    "relational_complete"
+  ],
+  "config": {
+    "schema_version": 1,
+    "random_seed": 42,
+    "shared": {
+      "detection_floor": 0.05,
+      "high_score_threshold": 0.5,
+      "new_track_threshold": 0.6,
+      "first_association_iou_threshold": 0.3,
+      "second_association_iou_threshold": 0.5
+    },
+    "bytetrack_buffers": [
+      3,
+      5,
+      8,
+      12
+    ],
+    "relational": {
+      "max_hidden_frames": 12,
+      "ordinary_miss_grace_frames": 1,
+      "min_track_hits": 2,
+      "relation_probability_threshold": 0.48,
+      "target_coverage_threshold": 0.12,
+      "clearance_coverage_threshold": 0.05,
+      "occluder_min_area_ratio": 0.5,
+      "clearance_horizon_frames": 12,
+      "reappearance_grace_frames": 4,
+      "reappearance_score_threshold": 0.55,
+      "anchor_max_residual_ratio": 0.75,
+      "anchor_min_residual_px": 20.0,
+      "anchor_max_scale_ratio": 1.25,
+      "uncertainty_ceiling": 10000.0,
+      "boundary_margin_px": 25.0,
+      "image_width": 1600.0,
+      "image_height": 900.0,
+      "enable_camera_compensation": false,
+      "enable_clearance_termination": true
+    },
+    "camera_motion": {
+      "max_features": 1000,
+      "min_matches": 12,
+      "min_inlier_ratio": 0.35,
+      "ransac_threshold_px": 3.0,
+      "max_translation_px": 60.0
+    }
+  },
+  "runtime_seconds": 1.3835822260007262,
+  "environment": {
+    "python": "3.12.13",
+    "numpy": "2.5.1",
+    "opencv": "5.0.0.93",
+    "pandas": "2.3.3"
+  }
+}
