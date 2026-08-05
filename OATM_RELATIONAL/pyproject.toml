@@ -1,0 +1,30 @@
+[project]
+name = "oatm-relational"
+version = "0.1.0"
+description = "Relational occlusion memory with causal camera compensation"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+    "oatm",
+    "numpy>=1.26,<3",
+    "opencv-python>=4.10,<6",
+    "pandas>=2.2,<3",
+    "pyyaml>=6,<7",
+    "tabulate>=0.9,<1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8,<9", "ruff>=0.6,<1"]
+
+[tool.uv.sources]
+oatm = { path = "../OATM", editable = true }
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
