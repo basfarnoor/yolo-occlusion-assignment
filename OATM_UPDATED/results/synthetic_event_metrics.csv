@@ -1,0 +1,13 @@
+run_id,scenario,event_type,method,gap_frames,hidden_frames_alive,hidden_coverage,prediction_only_frames,fully_bridged,same_id_recovery,ghost_duration_frames
+ec2393733008,short_occlusion,occlusion,bytetrack,3,3,1.0,3,True,True,0
+ec2393733008,short_occlusion,occlusion,bytetrack_long,3,3,1.0,3,True,True,0
+ec2393733008,short_occlusion,occlusion,selective_oatm,3,3,1.0,3,True,True,0
+ec2393733008,long_occlusion,occlusion,bytetrack,6,5,0.8333333333333334,5,False,False,0
+ec2393733008,long_occlusion,occlusion,bytetrack_long,6,6,1.0,6,True,True,0
+ec2393733008,long_occlusion,occlusion,selective_oatm,6,6,1.0,6,True,True,0
+ec2393733008,ordinary_miss,miss,bytetrack,6,5,0.8333333333333334,5,False,,5
+ec2393733008,ordinary_miss,miss,bytetrack_long,6,6,1.0,6,True,,6
+ec2393733008,ordinary_miss,miss,selective_oatm,6,1,0.16666666666666666,1,False,,1
+ec2393733008,field_of_view_exit,exit,bytetrack,6,5,0.8333333333333334,5,False,,5
+ec2393733008,field_of_view_exit,exit,bytetrack_long,6,6,1.0,6,True,,6
+ec2393733008,field_of_view_exit,exit,selective_oatm,6,0,0.0,0,False,,0

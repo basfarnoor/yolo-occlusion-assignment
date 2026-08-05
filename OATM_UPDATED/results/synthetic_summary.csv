@@ -1,0 +1,4 @@
+method,mean_occlusion_coverage,fully_bridged_rate,same_id_recovery_rate,mean_negative_ghost_duration_frames,max_negative_ghost_duration_frames
+bytetrack,0.9166666666666667,0.5,0.5,5.0,5
+bytetrack_long,1.0,1.0,1.0,6.0,6
+selective_oatm,1.0,1.0,1.0,0.5,1

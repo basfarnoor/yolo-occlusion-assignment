@@ -11,6 +11,37 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-05 — OATM_UPDATED selective-occlusion foundation
+
+### Change
+
+Created `OATM_UPDATED/` as an isolated `uv` workspace with methodology,
+pipeline, implementation plan, configuration, source, tests, compact results,
+and ignored artifacts. `SelectiveOATMTracker` retains the audited ByteTrack
+association/Kalman contracts but admits a missing mature track only with
+camera-derived visible-occluder evidence or a bounded one-frame grace period.
+
+### Reason
+
+The prior MVP did not outperform ByteTrack overall. The updated experiment asks
+whether selective activation improves hidden recall at matched ghost duration;
+a longer-buffer ByteTrack arm prevents extra lifetime from being mistaken for a contribution.
+
+### Validation or evidence
+
+- `uv.lock` generated with uv 0.12.1; run `ec2393733008` used Python 3.12.13.
+- `ruff check .` clean; `pytest -q`: 7 passed.
+- Synthetic development: Selective OATM and long-buffer ByteTrack both reached
+  100% occlusion coverage and same-ID recovery. Mean miss/exit ghost duration
+  was 0.5 frames for Selective OATM, 5.0 for ByteTrack, and 6.0 for long-buffer ByteTrack.
+- Tests exposed and drove repair of stable occluders disappearing from gate evidence.
+
+### Decision and next step
+
+This validates mechanics, not real-data superiority. Next regenerate detector
+and projection artifacts, add verified exit/loss negatives, tune on development
+scenes only, and evaluate controlled visual then held-out natural occlusions.
+
 ## 2026-08-04 — OATM Task 6: rebuild and verify baselines
 
 ### Change

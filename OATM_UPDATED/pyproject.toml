@@ -1,0 +1,32 @@
+[project]
+name = "oatm-updated"
+version = "0.1.0"
+description = "Selective occlusion-gated temporal memory built on the audited OATM baselines"
+requires-python = ">=3.10,<3.15"
+dependencies = [
+    "oatm",
+    "numpy>=1.26,<3",
+    "pandas>=2.2,<3",
+    "tabulate>=0.9,<1",
+    "pyyaml>=6,<7",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<9",
+    "ruff>=0.6,<1",
+]
+
+[tool.uv.sources]
+oatm = { path = "../OATM", editable = true }
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 110
+src = ["src", "tests", "scripts"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
