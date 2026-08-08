@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="182mm" height="86.5mm" viewBox="0 0 1600 760" role="img" aria-labelledby="title desc">
+  <title id="title">Compact OATM pipeline with a real nuScenes occlusion sequence</title>
+  <desc id="desc">A compact two-panel academic figure. The upper panel shows three real nuScenes camera frames in which a target is visible, hidden, and visible again. The lower panel shows a straight OATM processing path from detection and association through an occlusion gate, a state update using dual appearance and motion memory, and an explicitly labeled output.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#344054"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#1479A5"/>
+    </marker>
+    <clipPath id="clip-before"><rect x="45" y="58" width="470" height="235"/></clipPath>
+    <clipPath id="clip-hidden"><rect x="565" y="58" width="470" height="235"/></clipPath>
+    <clipPath id="clip-after"><rect x="1085" y="58" width="470" height="235"/></clipPath>
+    <style>
+      .panel { fill:#FFFFFF; stroke:#B7C0CC; stroke-width:1.8; }
+      .node { fill:#FFFFFF; stroke:#344054; stroke-width:2.2; }
+      .core { fill:#F7F9FC; stroke:#17233F; stroke-width:2.4; }
+      .memory { fill:#F6F1FA; stroke:#6E4AA1; stroke-width:2; }
+      .title { font-family:Arial,Helvetica,sans-serif; font-size:24px; font-weight:700; fill:#17233F; }
+      .head { font-family:Arial,Helvetica,sans-serif; font-size:21px; font-weight:700; fill:#17233F; }
+      .text { font-family:Arial,Helvetica,sans-serif; font-size:17px; fill:#344054; }
+      .small { font-family:Arial,Helvetica,sans-serif; font-size:15px; fill:#526176; }
+      .tiny { font-family:Arial,Helvetica,sans-serif; font-size:13px; fill:#526176; }
+      .blue { fill:#116D94; }
+      .amber { fill:#A85F00; }
+      .purple { fill:#5D3D88; }
+      .white { fill:#FFFFFF; }
+      .edge { fill:none; stroke:#344054; stroke-width:2.6; marker-end:url(#arrow); stroke-linecap:round; }
+      .edge-blue { fill:none; stroke:#1479A5; stroke-width:2.6; marker-end:url(#arrow-blue); stroke-linecap:round; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="760" fill="#FFFFFF"/>
+
+  <!-- Panel (a): real temporal example -->
+  <rect class="panel" x="20" y="16" width="1560" height="354" rx="7"/>
+  <text class="title" x="42" y="44">(a) Real nuScenes sequence</text>
+  <text class="small" x="430" y="43">sample_003 • conceptual OATM states shown for illustration</text>
+
+  <path class="edge" d="M 522 176 L 556 176"/>
+  <path class="edge" d="M 1042 176 L 1076 176"/>
+
+  <image x="45" y="24.4" width="537.1" height="302.1" xlink:href="assets/sample_003_before.jpg" clip-path="url(#clip-before)" preserveAspectRatio="none"/>
+  <image x="565" y="24.4" width="537.1" height="302.1" xlink:href="assets/sample_003_hidden.jpg" clip-path="url(#clip-hidden)" preserveAspectRatio="none"/>
+  <image x="1085" y="24.4" width="537.1" height="302.1" xlink:href="assets/sample_003_after.jpg" clip-path="url(#clip-after)" preserveAspectRatio="none"/>
+
+  <rect x="45" y="58" width="470" height="235" fill="none" stroke="#344054" stroke-width="1.7"/>
+  <rect x="565" y="58" width="470" height="235" fill="none" stroke="#344054" stroke-width="1.7"/>
+  <rect x="1085" y="58" width="470" height="235" fill="none" stroke="#344054" stroke-width="1.7"/>
+
+  <rect x="57" y="70" width="68" height="27" rx="3" fill="#17233F" fill-opacity="0.90"/>
+  <text class="small white" x="91" y="89" text-anchor="middle">I(t−1)</text>
+  <rect x="577" y="70" width="54" height="27" rx="3" fill="#17233F" fill-opacity="0.90"/>
+  <text class="small white" x="604" y="89" text-anchor="middle">I(t)</text>
+  <rect x="1097" y="70" width="72" height="27" rx="3" fill="#17233F" fill-opacity="0.90"/>
+  <text class="small white" x="1133" y="89" text-anchor="middle">I(t+k)</text>
+
+  <!-- Target annotations: solid = visual evidence; dashed = prediction-only region. -->
+  <rect x="160" y="176" width="81" height="42" fill="none" stroke="#1E9BC6" stroke-width="4"/>
+  <rect x="160" y="152" width="49" height="23" fill="#1E9BC6"/>
+  <text class="tiny white" x="184.5" y="168" text-anchor="middle">ID j</text>
+
+  <rect x="635" y="159" width="149" height="57" fill="#E78B00" fill-opacity="0.10" stroke="#E78B00" stroke-width="4" stroke-dasharray="10 7"/>
+  <rect x="635" y="135" width="108" height="23" fill="#E78B00"/>
+  <text class="tiny white" x="689" y="151" text-anchor="middle">predicted ID j</text>
+
+  <rect x="1155" y="164" width="127" height="42" fill="none" stroke="#1E9BC6" stroke-width="4"/>
+  <rect x="1155" y="140" width="49" height="23" fill="#1E9BC6"/>
+  <text class="tiny white" x="1179.5" y="156" text-anchor="middle">ID j</text>
+
+  <text class="head blue" x="280" y="327" text-anchor="middle">Observed</text>
+  <text class="small" x="280" y="351" text-anchor="middle">refresh the clear appearance anchor</text>
+  <text class="head amber" x="800" y="327" text-anchor="middle">Hidden</text>
+  <text class="small" x="800" y="351" text-anchor="middle">emit a prediction—not a camera detection</text>
+  <text class="head blue" x="1320" y="327" text-anchor="middle">Reappeared</text>
+  <text class="small" x="1320" y="351" text-anchor="middle">reconnect the original identity</text>
+
+  <!-- Panel (b): compact method path -->
+  <rect class="panel" x="20" y="384" width="1560" height="356" rx="7"/>
+  <text class="title" x="42" y="418">(b) OATM online path</text>
+  <text class="small" x="318" y="417">single camera • causal • no future frames</text>
+
+  <!-- Straight connectors only. -->
+  <path class="edge" d="M 310 500 L 354 500"/>
+  <path class="edge" d="M 604 500 L 648 500"/>
+  <path class="edge" d="M 998 500 L 1042 500"/>
+  <path class="edge-blue" d="M 823 631 L 823 577"/>
+
+  <rect class="node" x="48" y="451" width="262" height="98" rx="6"/>
+  <text class="head" x="179" y="482" text-anchor="middle">Detect + associate</text>
+  <text class="text" x="179" y="511" text-anchor="middle">strong detections first</text>
+  <text class="small" x="179" y="535" text-anchor="middle">then recover with weak evidence</text>
+
+  <rect class="node" x="354" y="451" width="250" height="98" rx="6"/>
+  <text class="head" x="479" y="482" text-anchor="middle">Occlusion gate</text>
+  <text class="tiny blue" x="390" y="520" text-anchor="middle">OBSERVED</text>
+  <text class="tiny amber" x="479" y="520" text-anchor="middle">HIDDEN</text>
+  <text class="tiny" x="558" y="520" text-anchor="middle">LOST / EXIT</text>
+  <text class="tiny" x="479" y="541" text-anchor="middle">visual evidence + trajectory + boundary</text>
+
+  <rect class="core" x="648" y="438" width="350" height="139" rx="6"/>
+  <text class="head" x="823" y="469" text-anchor="middle">Occlusion-adaptive update</text>
+  <line x1="670" y1="485" x2="976" y2="485" stroke="#C1C8D2" stroke-width="1.3"/>
+  <text class="small blue" x="674" y="511">OBSERVED</text>
+  <text class="text" x="800" y="511">correct state</text>
+  <text class="small amber" x="674" y="538">HIDDEN</text>
+  <text class="small" x="800" y="538">predict / uncertainty / decay</text>
+  <text class="small" x="674" y="565">LOST / EXIT</text>
+  <text class="text" x="800" y="565">terminate</text>
+
+  <rect class="node" x="1042" y="451" width="510" height="98" rx="6"/>
+  <text class="head" x="1297" y="479" text-anchor="middle">Explicit track status</text>
+  <rect x="1065" y="495" width="126" height="29" rx="3" fill="#EAF6FA" stroke="#1479A5" stroke-width="1.8"/>
+  <text class="tiny blue" x="1128" y="514" text-anchor="middle">OBSERVED</text>
+  <rect x="1207" y="495" width="178" height="29" rx="3" fill="#FFF4E1" stroke="#D67A00" stroke-width="1.8" stroke-dasharray="6 4"/>
+  <text class="tiny amber" x="1296" y="514" text-anchor="middle">PREDICTED_HIDDEN</text>
+  <rect x="1401" y="495" width="128" height="29" rx="3" fill="#F1F3F5" stroke="#667085" stroke-width="1.8"/>
+  <text class="tiny" x="1465" y="514" text-anchor="middle">TERMINATED</text>
+  <text class="tiny" x="1297" y="542" text-anchor="middle">reappearance: spatial gate + A(clear) match → same identity</text>
+
+  <rect class="memory" x="648" y="631" width="350" height="72" rx="6"/>
+  <text class="small purple" x="823" y="650" text-anchor="middle">PER-OBJECT DUAL MEMORY</text>
+  <line x1="823" y1="658" x2="823" y2="691" stroke="#9B82BB" stroke-width="1.4"/>
+  <text class="text purple" x="735" y="676" text-anchor="middle">Appearance A(clear)</text>
+  <text class="tiny" x="735" y="696" text-anchor="middle">last reliable embedding</text>
+  <text class="text" x="910" y="676" text-anchor="middle">Motion M(t−1)</text>
+  <text class="tiny" x="910" y="696" text-anchor="middle">state + uncertainty</text>
+
+  <text class="tiny" x="48" y="722">Hidden-state prediction uses camera motion estimated causally from consecutive images.</text>
+  <text class="tiny purple" x="1552" y="722" text-anchor="end">nuScenes 3D/LiDAR-supported labels are evaluation evidence only; they are not OATM inputs.</text>
+</svg>

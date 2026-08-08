@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="680" viewBox="0 0 1600 680" role="img" aria-labelledby="svgTitle svgDesc">
+  <title id="svgTitle">OATM online architecture</title>
+  <desc id="svgDesc">A compact tracking foundation activates an expanded Occlusion-Adaptive Temporal Memory module when a mature target becomes unmatched.</desc>
+  <defs>
+    <marker id="arrowNavy" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#11183F"/></marker>
+    <marker id="arrowOrange" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#F7931E"/></marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#315FA8"/></marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#26835F"/></marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#A14B4B"/></marker>
+    <style>
+      .label{font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;fill:#11183F;text-anchor:middle}
+      .sub{font-family:Arial,Helvetica,sans-serif;font-size:14px;fill:#5B6178;text-anchor:middle}
+      .tiny{font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;fill:#11183F}
+      .flow{fill:none;stroke:#11183F;stroke-width:2.2;marker-end:url(#arrowNavy)}
+      .blue-flow{fill:none;stroke:#315FA8;stroke-width:2.2;marker-end:url(#arrowBlue)}
+    </style>
+  </defs>
+
+  <rect width="1600" height="680" fill="#FFFFFF"/>
+
+  <!-- Compact tracking foundation -->
+  <rect x="40" y="242" width="270" height="116" rx="5" fill="#F6F7FA" stroke="#11183F" stroke-width="1.8"/>
+  <text x="175" y="283" class="label">Detection and Association</text>
+  <text x="175" y="312" class="sub">YOLO detections · Kalman motion</text>
+  <text x="175" y="335" class="sub">ByteTrack association</text>
+
+  <polygon points="360,300 465,222 570,300 465,378" fill="#FFFFFF" stroke="#11183F" stroke-width="2"/>
+  <text x="465" y="278" class="label" style="font-size:17px">Established</text>
+  <text x="465" y="301" class="label" style="font-size:17px">track</text>
+  <text x="465" y="324" class="label" style="font-size:17px">unmatched?</text>
+  <path d="M310 300H360" class="flow"/>
+
+  <!-- Normal observed output is visually secondary -->
+  <path d="M465 378V475H370" fill="none" stroke="#26835F" stroke-width="2.1" marker-end="url(#arrowGreen)"/>
+  <text x="482" y="412" class="tiny" fill="#26835F">NO</text>
+  <rect x="165" y="430" width="205" height="90" rx="5" fill="#F1FAF6" stroke="#26835F" stroke-width="2"/>
+  <text x="267.5" y="468" class="label">Matched Observation</text>
+  <text x="267.5" y="494" class="sub">current visual evidence</text>
+
+  <!-- OATM contribution -->
+  <rect x="620" y="30" width="930" height="620" rx="8" fill="#F2F7FE" stroke="#315FA8" stroke-width="2.2"/>
+  <rect x="620" y="30" width="930" height="58" rx="8" fill="#E3EEFC"/>
+  <path d="M620 80H1550" stroke="#315FA8" stroke-width="1.4"/>
+  <text x="1085" y="56" class="label">OATM · Occlusion-Adaptive Temporal Memory</text>
+  <text x="1085" y="76" class="sub">activated only for an unmatched established track</text>
+
+  <path d="M570 300H600V168H655" fill="none" stroke="#F7931E" stroke-width="2.7" stroke-linejoin="round" marker-end="url(#arrowOrange)"/>
+  <text x="585" y="286" class="tiny" fill="#C56C0B" text-anchor="middle">YES</text>
+
+  <!-- 1. Explain the disappearance -->
+  <rect x="655" y="118" width="310" height="100" rx="5" fill="#FFF4E8" stroke="#F7931E" stroke-width="2.3"/>
+  <text x="810" y="157" class="label">Occlusion Evidence</text>
+  <text x="810" y="185" class="sub">target–occluder overlap · scale · motion</text>
+
+  <rect x="1045" y="118" width="450" height="100" rx="5" fill="#FFFFFF" stroke="#315FA8" stroke-width="2.1"/>
+  <text x="1270" y="157" class="label">Relation Initialization</text>
+  <text x="1270" y="185" class="sub">primary occluder · relative target geometry</text>
+  <path d="M965 168H1045" class="flow"/>
+
+  <!-- 2. Two causal predictions -->
+  <path d="M1270 218V252H930V282" class="blue-flow"/>
+  <path d="M1270 218V282" class="blue-flow"/>
+
+  <rect x="720" y="282" width="420" height="98" rx="5" fill="#FFFFFF" stroke="#315FA8" stroke-width="2.1"/>
+  <text x="930" y="321" class="label">Independent Motion Prediction</text>
+  <text x="930" y="349" class="sub">target Kalman estimate</text>
+
+  <rect x="1190" y="282" width="305" height="98" rx="5" fill="#FFFFFF" stroke="#315FA8" stroke-width="2.1"/>
+  <text x="1342.5" y="321" class="label">Occluder-Relative Reconstruction</text>
+  <text x="1342.5" y="349" class="sub">target geometry from the visible occluder</text>
+
+  <!-- 3. Cross-check and anticipate clearance -->
+  <path d="M930 380V414H1070V438" class="blue-flow"/>
+  <path d="M1342.5 380V414H1210V438" class="blue-flow"/>
+  <rect x="850" y="438" width="500" height="98" rx="5" fill="#FFFFFF" stroke="#315FA8" stroke-width="2.2"/>
+  <text x="1100" y="477" class="label">Agreement and Clearance Test</text>
+  <text x="1100" y="505" class="sub">validate support and anticipate the end of occlusion</text>
+
+  <!-- 4. Bounded outcomes -->
+  <path d="M1100 536V565H835V588" fill="none" stroke="#315FA8" stroke-width="2.2" stroke-dasharray="8 6" marker-end="url(#arrowBlue)"/>
+  <path d="M1100 536V588" fill="none" stroke="#26835F" stroke-width="2.2" marker-end="url(#arrowGreen)"/>
+  <path d="M1100 536V565H1370V588" fill="none" stroke="#A14B4B" stroke-width="2.2" marker-end="url(#arrowRed)"/>
+
+  <rect x="710" y="588" width="250" height="44" rx="4" fill="#EDF3FC" stroke="#315FA8" stroke-width="2" stroke-dasharray="7 5"/>
+  <text x="835" y="616" class="label" style="font-size:16px">Relation-Supported Prediction</text>
+
+  <rect x="985" y="588" width="230" height="44" rx="4" fill="#F1FAF6" stroke="#26835F" stroke-width="2"/>
+  <text x="1100" y="616" class="label" style="font-size:16px">Same-ID Reassociation</text>
+
+  <rect x="1240" y="588" width="260" height="44" rx="4" fill="#FFF7F7" stroke="#A14B4B" stroke-width="2"/>
+  <text x="1370" y="616" class="label" style="font-size:16px">Safe Track Termination</text>
+</svg>

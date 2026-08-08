@@ -1,0 +1,4 @@
+run_id,population,iou_threshold,validation_annotations,method,precision,recall,f1,mota,idf1,id_switches,fragmentations,mean_center_error_px,predicted_hidden_precision,unsupported_track_rate,false_predicted_hidden_matches,most_occluded_recall
+lidar-fixes-20260805,validation,0.30,1873,ByteTrack-5,0.734,0.276,0.401,0.142,0.296,64,33,21.084,0.250,0.259,150,0.093
+lidar-fixes-20260805,validation,0.30,1873,ByteTrack-12,0.553,0.286,0.377,0.011,0.274,82,33,21.361,0.140,0.221,393,0.107
+lidar-fixes-20260805,validation,0.30,1873,OATM,0.841,0.266,0.404,0.184,0.303,59,28,20.055,0.394,0.078,40,0.083

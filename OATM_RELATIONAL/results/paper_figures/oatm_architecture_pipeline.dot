@@ -1,0 +1,362 @@
+digraph OATMArchitecture {
+  graph [
+    rankdir=LR,
+    newrank=true,
+    compound=true,
+    splines=polyline,
+    nodesep=0.30,
+    ranksep=0.46,
+    pad=0.18,
+    margin=0.04,
+    bgcolor="#FFFFFF",
+    fontname="Arial",
+    fontcolor="#11183F",
+    label=<<FONT FACE="Cambria" POINT-SIZE="28"><B>OATM: Occlusion-Conditioned Tracking Architecture</B></FONT><BR/><FONT FACE="Arial" POINT-SIZE="14">Causal camera-only inference with strictly separated offline evaluation</FONT>>,
+    labelloc=t,
+    labeljust=l
+  ];
+
+  node [
+    shape=box,
+    style="rounded,filled",
+    fillcolor="#FFFFFF",
+    color="#11183F",
+    fontcolor="#11183F",
+    fontname="Arial",
+    fontsize=10,
+    penwidth=1.15,
+    margin="0.13,0.08"
+  ];
+
+  edge [
+    color="#11183F",
+    fontcolor="#11183F",
+    fontname="Arial",
+    fontsize=8,
+    penwidth=1.15,
+    arrowsize=0.65
+  ];
+
+  subgraph cluster_online {
+    label=<<FONT FACE="Arial" POINT-SIZE="12"><B>(a) ONLINE — CAUSAL CAMERA-ONLY TRACKING</B></FONT>>;
+    labeljust=l;
+    labelloc=t;
+    color="#11183F";
+    fillcolor="#FBFCFE";
+    style="rounded,filled";
+    penwidth=1.25;
+    margin=16;
+
+    camera [
+      label=<<B>CAM_FRONT Frame</B><BR/><FONT POINT-SIZE="8">current frame t</FONT>>,
+      width=1.35
+    ];
+
+    detector [
+      label=<<B>YOLO26n Detections</B><BR/><FONT POINT-SIZE="8">class · confidence · 2D box</FONT>>,
+      width=1.75
+    ];
+
+    association [
+      label=<<B>Kalman + ByteTrack</B><BR/><FONT POINT-SIZE="8">high-score → low-score association</FONT>>,
+      width=1.95
+    ];
+
+    unmatched [
+      shape=diamond,
+      style="filled",
+      fillcolor="#FFFFFF",
+      label=<<B>Mature target<BR/>unmatched?</B>>,
+      width=1.45,
+      height=0.75,
+      margin=0.05
+    ];
+
+    observed_output [
+      label=<<B>OBSERVED OUTPUT</B><BR/><FONT POINT-SIZE="8">current visual evidence</FONT>>,
+      color="#2E7D5B",
+      fillcolor="#EEF8F2",
+      penwidth=1.55,
+      width=1.65
+    ];
+
+    visible_pool [
+      label=<<B>Visible Tracks</B><BR/><FONT POINT-SIZE="8">candidate occluders</FONT>>,
+      color="#E88916",
+      fillcolor="#FFF4E5",
+      width=1.45
+    ];
+
+    camera -> detector;
+    detector -> association;
+    association -> unmatched [label="unmatched tracks"];
+    association -> observed_output [label="matched", color="#2E7D5B", fontcolor="#2E7D5B"];
+    association -> visible_pool [label="visible matches", color="#E88916", fontcolor="#B96808"];
+
+    subgraph cluster_oatm {
+      label=<<FONT FACE="Arial" POINT-SIZE="11"><B>OCCLUSION-ADAPTIVE TEMPORAL MEMORY</B></FONT>>;
+      labeljust=l;
+      labelloc=t;
+      color="#8CB8D8";
+      fillcolor="#F1F7FC";
+      style="rounded,filled";
+      penwidth=1.15;
+      margin=14;
+
+      relation_gate [
+        shape=diamond,
+        style="filled",
+        fillcolor="#FFF4E5",
+        color="#E88916",
+        label=<<B>Target–occluder<BR/>evidence passes?</B><BR/><FONT POINT-SIZE="7">coverage · scale · depth<BR/>motion · maturity</FONT>>,
+        width=1.75,
+        height=1.00,
+        margin=0.04
+      ];
+
+      miss_grace [
+        label=<<B>Ordinary Miss</B><BR/><FONT POINT-SIZE="8">one-frame output grace</FONT>>,
+        fillcolor="#F4F5F7",
+        color="#737B8C",
+        width=1.55
+      ];
+
+      dormant [
+        label=<<B>DORMANT Identity</B><BR/><FONT POINT-SIZE="8">one frame · no box emitted</FONT>>,
+        style="rounded,dotted,filled",
+        fillcolor="#F4F5F7",
+        color="#737B8C",
+        penwidth=1.45,
+        width=1.70
+      ];
+
+      relation [
+        label=<<B>Primary Occlusion Relation</B><BR/><FONT POINT-SIZE="8">immutable occluder · relative geometry</FONT>>,
+        fillcolor="#DDECF7",
+        color="#286A9B",
+        penwidth=1.65,
+        width=2.10
+      ];
+
+      target_motion [
+        label=<<B>Target Motion Prediction</B><BR/><FONT POINT-SIZE="8">independent Kalman state</FONT>>,
+        fillcolor="#EAF3FA",
+        color="#286A9B",
+        width=1.85
+      ];
+
+      relation_decode [
+        label=<<B>Relational Box Decode</B><BR/><FONT POINT-SIZE="8">target relative to visible occluder</FONT>>,
+        fillcolor="#FFF4E5",
+        color="#E88916",
+        width=1.95
+      ];
+
+      consistency [
+        shape=diamond,
+        style="filled",
+        fillcolor="#EAF3FA",
+        color="#286A9B",
+        label=<<B>Dual-Prediction<BR/>Check</B><BR/><FONT POINT-SIZE="7">center + scale agreement</FONT>>,
+        width=1.55,
+        height=0.90,
+        margin=0.04
+      ];
+
+      clearance [
+        label=<<B>Expected Clearance</B><BR/><FONT POINT-SIZE="8">predict target–occluder separation</FONT>>,
+        fillcolor="#FFF4E5",
+        color="#E88916",
+        width=1.95
+      ];
+
+      supported [
+        label=<<B>Relation Supported</B><BR/><FONT POINT-SIZE="8">hidden track remains eligible</FONT>>,
+        fillcolor="#EAF3FA",
+        color="#286A9B",
+        width=1.75
+      ];
+
+      clearing [
+        label=<<B>CLEARING</B><BR/><FONT POINT-SIZE="8">keep independent prediction</FONT>>,
+        fillcolor="#FFF1CF",
+        color="#C88700",
+        width=1.75
+      ];
+
+      reappearance [
+        label=<<B>Protected Reappearance</B><BR/><FONT POINT-SIZE="8">class · distance · scale · timing</FONT><BR/><FONT POINT-SIZE="7">one-to-one · bounded search</FONT>>,
+        fillcolor="#DDECF7",
+        color="#286A9B",
+        penwidth=1.55,
+        width=2.05
+      ];
+
+      resolved [
+        label=<<B>RESOLVED</B><BR/><FONT POINT-SIZE="8">restore original ID</FONT>>,
+        fillcolor="#EEF8F2",
+        color="#2E7D5B",
+        penwidth=1.55,
+        width=1.55
+      ];
+
+      guard [
+        shape=diamond,
+        style="filled",
+        fillcolor="#FFFFFF",
+        color="#11183F",
+        label=<<B>Persistence still<BR/>supported?</B><BR/><FONT POINT-SIZE="7">clearance · exit · uncertainty<BR/>duration · relation support</FONT>>,
+        width=1.75,
+        height=1.00,
+        margin=0.04
+      ];
+
+      hidden_output [
+        label=<<B>HIDDEN OUTPUT</B><BR/><FONT POINT-SIZE="8">temporal prediction</FONT>>,
+        style="rounded,dashed,filled",
+        fillcolor="#EAF3FA",
+        color="#286A9B",
+        penwidth=1.65,
+        width=1.60
+      ];
+
+      failed [
+        label=<<B>FAILED</B><BR/><FONT POINT-SIZE="8">terminate unsupported track</FONT>>,
+        fillcolor="#FFF1F0",
+        color="#B64A4A",
+        penwidth=1.55,
+        width=1.65
+      ];
+
+      terminated [
+        label=<<B>TERMINATED</B><BR/><FONT POINT-SIZE="8">no output</FONT>>,
+        fillcolor="#FFF1F0",
+        color="#B64A4A",
+        penwidth=1.55,
+        width=1.50
+      ];
+
+      params [
+        shape=plain,
+        label=<<FONT FACE="Arial" POINT-SIZE="7" COLOR="#5A6475">τrel=0.48  ·  H=12 frames  ·  τclear=0.05  ·  τre=0.55  ·  rmax=150 px  ·  τdorm=0.75</FONT>>
+      ];
+
+      relation_gate -> miss_grace [label="NO", color="#737B8C", fontcolor="#737B8C"];
+      relation_gate -> relation [label="YES", color="#E88916", fontcolor="#B96808"];
+      miss_grace -> dormant [label="next frame", color="#737B8C", fontcolor="#737B8C"];
+
+      relation -> target_motion;
+      relation -> relation_decode [color="#E88916"];
+      relation -> clearance [color="#E88916"];
+      target_motion -> consistency;
+      relation_decode -> consistency [color="#E88916"];
+      consistency -> supported [label="CONSISTENT", color="#286A9B", fontcolor="#286A9B"];
+      consistency -> clearing [label="INCONSISTENT", color="#C88700", fontcolor="#9A6800"];
+      clearance -> supported [label="not due", color="#286A9B", fontcolor="#286A9B"];
+      clearance -> clearing [label="due", color="#C88700", fontcolor="#9A6800"];
+      supported -> reappearance;
+      clearing -> reappearance [color="#C88700"];
+      dormant -> reappearance [label="strict reactivation", color="#737B8C", fontcolor="#737B8C"];
+      reappearance -> resolved [label="VALID MATCH", color="#2E7D5B", fontcolor="#2E7D5B"];
+      reappearance -> guard [label="NO MATCH"];
+      guard -> hidden_output [label="CONTINUE", color="#286A9B", fontcolor="#286A9B"];
+      guard -> failed [label="FAIL", color="#B64A4A", fontcolor="#B64A4A"];
+      failed -> terminated [color="#B64A4A"];
+      hidden_output -> params [style=invis, weight=2];
+      { rank=same; relation; miss_grace; dormant; }
+      { rank=same; target_motion; relation_decode; clearance; consistency; }
+      { rank=same; supported; clearing; reappearance; }
+      { rank=same; resolved; guard; }
+      { rank=same; hidden_output; failed; terminated; params; }
+    }
+
+    unmatched -> relation_gate [label="YES", lhead=cluster_oatm];
+    unmatched -> observed_output [label="NO", color="#2E7D5B", fontcolor="#2E7D5B"];
+    visible_pool -> relation_gate [label="candidate pool", color="#E88916", fontcolor="#B96808", lhead=cluster_oatm];
+    association -> reappearance [label="residual detections", color="#286A9B", fontcolor="#286A9B", lhead=cluster_oatm];
+    resolved -> observed_output [label="same ID", color="#2E7D5B", fontcolor="#2E7D5B", ltail=cluster_oatm];
+    miss_grace -> hidden_output [label="one frame", color="#286A9B", fontcolor="#286A9B", style=dashed];
+
+    hidden_output -> relation [
+      label="next frame",
+      color="#286A9B",
+      fontcolor="#286A9B",
+      style=dashed,
+      constraint=false,
+      minlen=2
+    ];
+    observed_output -> association [
+      label="next frame",
+      color="#2E7D5B",
+      fontcolor="#2E7D5B",
+      constraint=false,
+      minlen=2
+    ];
+  }
+
+  subgraph cluster_offline {
+    label=<<FONT FACE="Arial" POINT-SIZE="12"><B>(b) OFFLINE EVALUATION — NEVER USED DURING TRACKING</B></FONT><BR/><FONT FACE="Arial" POINT-SIZE="9">Privileged annotations are loaded only after causal tracker outputs are saved.</FONT><BR/><FONT FACE="Arial" POINT-SIZE="9" COLOR="#B64A4A"><B>⊥  NO FEEDBACK TO TRACKER</B></FONT>>;
+    labeljust=l;
+    labelloc=t;
+    color="#8B93A3";
+    fillcolor="#F7F7F8";
+    style="rounded,dashed,filled";
+    penwidth=1.15;
+    margin=14;
+
+    frozen [
+      label=<<B>Frozen OATM Outputs</B><BR/><FONT POINT-SIZE="8">observed and predicted rows distinct</FONT>>,
+      color="#737B8C",
+      fillcolor="#FFFFFF",
+      width=1.95
+    ];
+
+    annotations [
+      label=<<B>Projected nuScenes Boxes</B><BR/><FONT POINT-SIZE="8">official 3D annotations in CAM_FRONT</FONT>>,
+      color="#737B8C",
+      fillcolor="#FFFFFF",
+      width=2.10
+    ];
+
+    metadata [
+      label=<<B>Visibility + Sensor Support</B><BR/><FONT POINT-SIZE="8">LiDAR/radar metadata · offline only</FONT>>,
+      color="#737B8C",
+      fillcolor="#FFFFFF",
+      width=2.10
+    ];
+
+    matching [
+      label=<<B>Class-Aware Hungarian Matching</B><BR/><FONT POINT-SIZE="8">primary gate: IoU 0.30</FONT>>,
+      color="#737B8C",
+      fillcolor="#FFFFFF",
+      width=2.15
+    ];
+
+    metrics [
+      label=<<B>Evaluation Metrics</B><BR/><FONT POINT-SIZE="8">precision · recall · F1 · MOTA · IDF1</FONT><BR/><FONT POINT-SIZE="8">identity · localization · hidden reliability</FONT>>,
+      color="#737B8C",
+      fillcolor="#FFFFFF",
+      width=2.25
+    ];
+
+    frozen -> matching [style=dotted, color="#737B8C"];
+    annotations -> matching [style=dotted, color="#737B8C"];
+    metadata -> matching [style=dotted, color="#737B8C"];
+    matching -> metrics [style=dotted, color="#737B8C"];
+  }
+
+  hidden_output -> frozen [style=dotted, color="#8B93A3", constraint=false, lhead=cluster_offline];
+  observed_output -> frozen [style=dotted, color="#8B93A3", constraint=false, lhead=cluster_offline];
+
+  { rank=same; camera; detector; frozen; }
+  { rank=same; association; annotations; }
+  { rank=same; unmatched; visible_pool; relation_gate; metadata; }
+  { rank=same; reappearance; matching; }
+  { rank=same; observed_output; hidden_output; terminated; metrics; }
+
+  camera -> frozen [style=invis, weight=100];
+  association -> annotations [style=invis, weight=100];
+  relation_gate -> metadata [style=invis, weight=100];
+  reappearance -> matching [style=invis, weight=100];
+  terminated -> metrics [style=invis, weight=100];
+}

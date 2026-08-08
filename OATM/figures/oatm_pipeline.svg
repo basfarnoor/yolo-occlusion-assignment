@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="182mm" height="102mm" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Occlusion-Adaptive Temporal Memory pipeline</title>
+  <desc id="desc">A paper-ready, camera-only causal pipeline. Current and previous camera frames feed a detector, two-stage association, and an occlusion-aware state controller. Observed tracks update appearance and motion memory, predicted-hidden tracks use ego-motion-compensated prediction and uncertainty-aware confidence decay, and lost or exited tracks terminate. A separate state-machine panel and an offline privileged-evaluation panel appear below.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#26364A"/>
+    </marker>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#1976A3"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#C77600"/>
+    </marker>
+    <marker id="arrow-gray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#667085"/>
+    </marker>
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#7052A0"/>
+    </marker>
+    <style>
+      .panel { fill: #FFFFFF; stroke: #B8C2CC; stroke-width: 2; }
+      .panel-soft { fill: #F7F9FB; stroke: #B8C2CC; stroke-width: 2; }
+      .node { fill: #FFFFFF; stroke: #26364A; stroke-width: 2.4; }
+      .node-blue { fill: #EAF5FA; stroke: #1976A3; stroke-width: 2.6; }
+      .node-amber { fill: #FFF4DE; stroke: #C77600; stroke-width: 2.6; }
+      .node-gray { fill: #F1F3F5; stroke: #667085; stroke-width: 2.4; }
+      .node-purple { fill: #F5F0FA; stroke: #7052A0; stroke-width: 2.2; }
+      .core { fill: #17233F; stroke: #17233F; stroke-width: 2.6; }
+      .label { font-family: Arial, Helvetica, sans-serif; fill: #17233F; font-size: 20px; }
+      .small { font-family: Arial, Helvetica, sans-serif; fill: #435269; font-size: 17px; }
+      .tiny { font-family: Arial, Helvetica, sans-serif; fill: #526176; font-size: 15px; }
+      .micro { font-family: Arial, Helvetica, sans-serif; fill: #526176; font-size: 13px; }
+      .head { font-family: Arial, Helvetica, sans-serif; fill: #17233F; font-size: 24px; font-weight: 700; }
+      .panel-title { font-family: Arial, Helvetica, sans-serif; fill: #17233F; font-size: 25px; font-weight: 700; }
+      .white { fill: #FFFFFF; }
+      .blue { fill: #155E80; }
+      .amber { fill: #9A5800; }
+      .gray { fill: #4D5968; }
+      .purple { fill: #5A3E84; }
+      .bold { font-weight: 700; }
+      .edge { fill: none; stroke: #26364A; stroke-width: 3; marker-end: url(#arrow); stroke-linecap: round; stroke-linejoin: round; }
+      .edge-blue { fill: none; stroke: #1976A3; stroke-width: 3; marker-end: url(#arrow-blue); stroke-linecap: round; stroke-linejoin: round; }
+      .edge-amber { fill: none; stroke: #C77600; stroke-width: 3; stroke-dasharray: 9 7; marker-end: url(#arrow-amber); stroke-linecap: round; stroke-linejoin: round; }
+      .edge-gray { fill: none; stroke: #667085; stroke-width: 3; stroke-dasharray: 3 7; marker-end: url(#arrow-gray); stroke-linecap: round; stroke-linejoin: round; }
+      .feedback { fill: none; stroke: #526176; stroke-width: 2.5; stroke-dasharray: 8 6; marker-end: url(#arrow); stroke-linecap: round; stroke-linejoin: round; }
+      .offline-edge { fill: none; stroke: #7052A0; stroke-width: 2.6; marker-end: url(#arrow-purple); stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="#FFFFFF"/>
+
+  <!-- Panel connectors are drawn before nodes so all edges remain behind labels. -->
+  <path class="edge" d="M 225 176 L 288 176"/>
+  <path class="edge" d="M 500 176 L 548 176"/>
+  <path class="edge" d="M 778 176 L 823 176"/>
+  <path class="edge-blue" d="M 1073 148 C 1090 148, 1096 130, 1114 130"/>
+  <path class="edge-amber" d="M 1073 188 C 1090 188, 1096 300, 1114 300"/>
+  <path class="edge-gray" d="M 1073 221 C 1090 221, 1096 518, 1114 518"/>
+  <path class="edge-blue" d="M 1342 130 L 1412 130"/>
+  <path class="edge-amber" d="M 1342 300 L 1412 300"/>
+  <path class="edge-gray" d="M 1342 518 L 1412 518"/>
+
+  <path class="edge" d="M 130 245 C 130 351, 218 412, 283 412"/>
+  <path class="edge-amber" d="M 463 390 C 550 272, 930 272, 1114 300"/>
+  <path class="feedback" d="M 672 352 L 672 238"/>
+  <path class="feedback" d="M 906 352 L 906 250"/>
+  <path class="feedback" d="M 1114 556 C 1090 556, 1070 531, 1046 505"/>
+
+  <!-- (a) Online pipeline -->
+  <rect class="panel" x="22" y="24" width="1556" height="590" rx="12"/>
+  <text class="panel-title" x="48" y="62">(a) Online OATM inference</text>
+  <text class="small" x="430" y="61">camera-only • causal at time t • current and earlier frames only</text>
+
+  <!-- Visible online-pipeline connectors; nodes are painted afterward. -->
+  <path class="edge" d="M 225 176 L 288 176"/>
+  <path class="edge" d="M 500 176 L 548 176"/>
+  <path class="edge" d="M 778 176 L 823 176"/>
+  <path class="edge-blue" d="M 1073 148 C 1090 148, 1096 130, 1114 130"/>
+  <path class="edge-amber" d="M 1073 188 C 1090 188, 1096 300, 1114 300"/>
+  <path class="edge-gray" d="M 1073 221 C 1090 221, 1096 518, 1114 518"/>
+  <path class="edge-blue" d="M 1342 130 L 1412 130"/>
+  <path class="edge-amber" d="M 1342 300 L 1412 300"/>
+  <path class="edge-gray" d="M 1342 518 L 1412 518"/>
+  <path class="edge" d="M 130 245 C 130 351, 218 412, 283 412"/>
+  <path class="edge-amber" d="M 463 390 C 550 272, 930 272, 1114 300"/>
+  <path class="feedback" d="M 672 352 L 672 238"/>
+  <path class="feedback" d="M 906 352 L 906 250"/>
+
+  <!-- Camera frames -->
+  <g aria-label="Camera frames up to time t">
+    <rect class="node" x="50" y="100" width="175" height="145" rx="9"/>
+    <text class="label bold" x="138" y="126" text-anchor="middle">Camera frames</text>
+    <rect x="76" y="143" width="105" height="58" rx="3" fill="#EEF2F6" stroke="#738096" stroke-width="1.8"/>
+    <path d="M 83 191 L 110 166 L 148 166 L 174 191" fill="#D9E2EA" stroke="#738096" stroke-width="1.5"/>
+    <rect x="116" y="170" width="29" height="12" rx="2" fill="#FFFFFF" stroke="#26364A" stroke-width="1.5"/>
+    <circle cx="122" cy="184" r="3.3" fill="#26364A"/>
+    <circle cx="140" cy="184" r="3.3" fill="#26364A"/>
+    <rect x="91" y="155" width="105" height="58" rx="3" fill="#FFFFFF" fill-opacity="0.58" stroke="#26364A" stroke-width="2"/>
+    <path d="M 98 203 L 124 178 L 161 178 L 189 203" fill="none" stroke="#8A97A8" stroke-width="1.6"/>
+    <rect x="130" y="181" width="31" height="13" rx="2" fill="#FFFFFF" stroke="#1976A3" stroke-width="2"/>
+    <text class="tiny" x="137" y="232" text-anchor="middle">I(t−1), I(t)</text>
+  </g>
+
+  <!-- Detector -->
+  <g aria-label="Current-frame detector">
+    <rect class="node" x="288" y="112" width="212" height="128" rx="9"/>
+    <text class="label bold" x="394" y="142" text-anchor="middle">Detector + features</text>
+    <text class="small" x="394" y="169" text-anchor="middle">box • class • confidence</text>
+    <text class="small" x="394" y="193" text-anchor="middle">appearance embedding</text>
+    <circle cx="330" cy="216" r="7" fill="#1976A3"/>
+    <circle cx="396" cy="216" r="7" fill="#E49A23"/>
+    <circle cx="456" cy="216" r="7" fill="#FFFFFF" stroke="#667085" stroke-width="2"/>
+    <text class="tiny" x="342" y="221">strong</text>
+    <text class="tiny" x="408" y="221">weak</text>
+    <text class="tiny" x="468" y="221">none</text>
+  </g>
+
+  <!-- Association -->
+  <g aria-label="ByteTrack-style two-stage association">
+    <rect class="node" x="548" y="112" width="230" height="128" rx="9"/>
+    <text class="label bold" x="663" y="142" text-anchor="middle">Two-stage association</text>
+    <text class="small" x="663" y="172" text-anchor="middle">1. match strong detections</text>
+    <text class="small" x="663" y="198" text-anchor="middle">2. recover with weak evidence</text>
+    <text class="tiny" x="663" y="224" text-anchor="middle">motion + appearance gates</text>
+  </g>
+
+  <!-- State controller -->
+  <g aria-label="Occlusion-aware state controller">
+    <rect class="core" x="823" y="92" width="250" height="166" rx="12"/>
+    <text class="label white bold" x="948" y="124" text-anchor="middle">OATM state controller</text>
+    <line x1="845" y1="138" x2="1051" y2="138" stroke="#FFFFFF" stroke-opacity="0.38" stroke-width="1.5"/>
+    <text class="tiny white" x="846" y="164">• detection strength</text>
+    <text class="tiny white" x="846" y="188">• occluder overlap / depth proxy</text>
+    <text class="tiny white" x="846" y="212">• trajectory consistency / boundary</text>
+    <text class="tiny white" x="846" y="236">• age, uncertainty, previous state</text>
+  </g>
+
+  <!-- State-specific processing -->
+  <g aria-label="Observed-track update">
+    <rect class="node-blue" x="1114" y="72" width="228" height="116" rx="10"/>
+    <text class="label blue bold" x="1228" y="101" text-anchor="middle">Observed update</text>
+    <text class="small" x="1134" y="129">• correct motion state</text>
+    <text class="small" x="1134" y="153">• strong: refresh appearance</text>
+    <text class="small" x="1134" y="177">• weak: preserve clear anchor</text>
+  </g>
+
+  <g aria-label="Hidden-state recovery">
+    <rect class="node-amber" x="1114" y="205" width="228" height="183" rx="10"/>
+    <text class="label amber bold" x="1228" y="235" text-anchor="middle">Hidden-state recovery</text>
+    <text class="small" x="1134" y="265">• ego-motion-compensated</text>
+    <text class="small" x="1147" y="289">motion prediction</text>
+    <text class="small" x="1134" y="317">• uncertainty-region search</text>
+    <text class="small" x="1134" y="343">• decay existence / identity</text>
+    <text class="small" x="1134" y="369">• anti-ghost termination check</text>
+  </g>
+
+  <g aria-label="Lost or exited termination">
+    <rect class="node-gray" x="1114" y="470" width="228" height="96" rx="10"/>
+    <text class="label gray bold" x="1228" y="500" text-anchor="middle">Lost / exited</text>
+    <text class="small" x="1228" y="527" text-anchor="middle">retire track; do not persist</text>
+    <text class="micro" x="1228" y="550" text-anchor="middle">boundary • uncertainty • low existence</text>
+  </g>
+
+  <!-- Explicit outputs -->
+  <g aria-label="Track outputs labeled by evidence source">
+    <rect class="node-blue" x="1412" y="88" width="140" height="84" rx="10"/>
+    <text class="label blue bold" x="1482" y="120" text-anchor="middle">OBSERVED</text>
+    <text class="tiny" x="1482" y="146" text-anchor="middle">strong / weak</text>
+
+    <rect class="node-amber" x="1412" y="248" width="140" height="104" rx="10"/>
+    <text class="label amber bold" x="1482" y="282" text-anchor="middle">PREDICTED</text>
+    <text class="label amber bold" x="1482" y="307" text-anchor="middle">HIDDEN</text>
+    <text class="tiny" x="1482" y="333" text-anchor="middle">uncertainty region</text>
+
+    <rect class="node-gray" x="1412" y="480" width="140" height="76" rx="10"/>
+    <text class="label gray bold" x="1482" y="513" text-anchor="middle">NO OUTPUT</text>
+    <text class="tiny" x="1482" y="536" text-anchor="middle">track terminated</text>
+  </g>
+
+  <!-- Camera-motion input -->
+  <g aria-label="Camera-derived ego-motion estimate">
+    <rect class="node" x="283" y="367" width="180" height="90" rx="9"/>
+    <text class="label bold" x="373" y="397" text-anchor="middle">Camera motion</text>
+    <text class="small" x="373" y="424" text-anchor="middle">causal estimate from</text>
+    <text class="small" x="373" y="447" text-anchor="middle">consecutive images</text>
+  </g>
+
+  <!-- Dual memory -->
+  <g aria-label="Per-object dual memory">
+    <rect class="panel-soft" x="525" y="310" width="530" height="235" rx="12"/>
+    <text class="head" x="790" y="342" text-anchor="middle">Per-object dual memory at t−1</text>
+
+    <rect class="node-purple" x="553" y="366" width="220" height="145" rx="10"/>
+    <text class="label purple bold" x="663" y="396" text-anchor="middle">Appearance memory</text>
+    <text class="small purple" x="663" y="420" text-anchor="middle">A(clear)</text>
+    <text class="small" x="573" y="447">last clearly visible crop /</text>
+    <text class="small" x="573" y="470">embedding for identity</text>
+    <text class="small" x="573" y="492">refresh only from reliable</text>
+    <text class="small" x="573" y="508">visual evidence</text>
+
+    <rect class="node" x="795" y="366" width="232" height="145" rx="10"/>
+    <text class="label bold" x="911" y="398" text-anchor="middle">Motion state M(t−1)</text>
+    <text class="small" x="815" y="428">position • velocity • scale</text>
+    <text class="small" x="815" y="453">age • time since seen</text>
+    <text class="small" x="815" y="478">localization uncertainty</text>
+    <text class="small" x="815" y="503">existence / identity confidence</text>
+  </g>
+
+  <text class="tiny" x="1060" y="569" text-anchor="end">dashed feedback = memory update; hidden frames never overwrite the clear appearance anchor</text>
+  <text class="micro amber" x="1118" y="407" text-anchor="start">Reappearance gate:</text>
+  <text class="micro amber" x="1118" y="424" text-anchor="start">predicted region + A(clear)</text>
+  <text class="micro amber" x="1118" y="441" text-anchor="start">+ class / scale / direction</text>
+  <text class="micro amber" x="1118" y="458" text-anchor="start">→ reconnect original identity</text>
+
+  <!-- Panel (b) state machine connectors -->
+  <path class="edge-blue" d="M 203 745 L 288 745"/>
+  <path class="edge-blue" d="M 288 774 L 203 774"/>
+  <path class="edge-amber" d="M 423 745 L 512 745"/>
+  <path class="edge-gray" d="M 667 745 L 757 745"/>
+  <path class="edge-gray" d="M 594 788 L 594 826"/>
+  <path class="edge-amber" d="M 590 704 C 590 684, 160 684, 160 703"/>
+
+  <!-- Panel (b) track state machine -->
+  <rect class="panel" x="22" y="630" width="960" height="246" rx="12"/>
+  <text class="panel-title" x="48" y="670">(b) Track-state transitions</text>
+
+  <path class="edge-blue" d="M 203 745 L 288 745"/>
+  <path class="edge-blue" d="M 288 774 L 203 774"/>
+  <path class="edge-amber" d="M 423 745 L 512 745"/>
+  <path class="edge-gray" d="M 667 745 L 757 745"/>
+  <path class="edge-gray" d="M 594 788 L 594 826"/>
+  <path class="edge-amber" d="M 590 704 C 590 684, 160 684, 160 703"/>
+
+  <rect class="node-blue" x="62" y="704" width="141" height="82" rx="10"/>
+  <text class="label blue bold" x="132" y="736" text-anchor="middle">OBSERVED</text>
+  <text class="small" x="132" y="763" text-anchor="middle">STRONG</text>
+
+  <rect class="node-blue" x="288" y="704" width="135" height="82" rx="10" stroke-dasharray="7 5"/>
+  <text class="label blue bold" x="356" y="736" text-anchor="middle">OBSERVED</text>
+  <text class="small" x="356" y="763" text-anchor="middle">WEAK</text>
+
+  <rect class="node-amber" x="512" y="704" width="155" height="82" rx="10" stroke-dasharray="8 5"/>
+  <text class="label amber bold" x="590" y="736" text-anchor="middle">PREDICTED</text>
+  <text class="small" x="590" y="763" text-anchor="middle">HIDDEN</text>
+
+  <rect class="node-gray" x="757" y="704" width="122" height="82" rx="10"/>
+  <text class="label gray bold" x="818" y="752" text-anchor="middle">LOST</text>
+
+  <rect class="node-gray" x="512" y="826" width="155" height="38" rx="9"/>
+  <text class="small gray bold" x="590" y="851" text-anchor="middle">EXITED</text>
+
+  <text class="tiny" x="245" y="728" text-anchor="middle">weakens</text>
+  <text class="tiny" x="245" y="809" text-anchor="middle">strong match</text>
+  <text class="micro" x="468" y="720" text-anchor="middle">no match +</text>
+  <text class="micro" x="468" y="739" text-anchor="middle">occlusion cues</text>
+  <text class="tiny" x="712" y="727" text-anchor="middle">stop rule</text>
+  <text class="tiny" x="610" y="816">boundary</text>
+  <text class="tiny amber" x="650" y="671" text-anchor="middle">reappearance match reconnects the original identity</text>
+
+  <!-- Panel (c) offline evaluation connectors -->
+  <path class="offline-edge" d="M 1188 752 L 1242 752"/>
+  <path class="offline-edge" d="M 1390 752 L 1432 752"/>
+
+  <!-- Panel (c) offline-only lane -->
+  <rect x="1000" y="630" width="578" height="246" rx="12" fill="#FBF9FD" stroke="#7052A0" stroke-width="2.3" stroke-dasharray="10 7"/>
+  <text class="panel-title purple" x="1026" y="670">(c) Privileged evaluation only</text>
+  <text class="tiny purple" x="1026" y="696">never supplied as live evidence to the camera-only OATM pipeline</text>
+  <path class="offline-edge" d="M 1188 752 L 1242 752"/>
+  <path class="offline-edge" d="M 1390 752 L 1432 752"/>
+
+  <rect class="node-purple" x="1026" y="716" width="162" height="92" rx="9"/>
+  <text class="small purple bold" x="1107" y="743" text-anchor="middle">nuScenes labels</text>
+  <text class="tiny" x="1107" y="767" text-anchor="middle">3D boxes • visibility</text>
+  <text class="micro" x="1107" y="789" text-anchor="middle">LiDAR • ego pose (oracle)</text>
+
+  <rect class="node-purple" x="1242" y="716" width="148" height="92" rx="9"/>
+  <text class="small purple bold" x="1316" y="743" text-anchor="middle">Camera GT</text>
+  <text class="tiny" x="1316" y="767" text-anchor="middle">projected boxes</text>
+  <text class="tiny" x="1316" y="789" text-anchor="middle">event / exit labels</text>
+
+  <rect class="node-purple" x="1432" y="704" width="120" height="116" rx="9"/>
+  <text class="small purple bold" x="1492" y="731" text-anchor="middle">Metrics</text>
+  <text class="tiny" x="1492" y="755" text-anchor="middle">hidden recall</text>
+  <text class="tiny" x="1492" y="776" text-anchor="middle">ID continuity</text>
+  <text class="tiny" x="1492" y="797" text-anchor="middle">ghosts • recovery</text>
+
+  <text class="tiny" x="1026" y="849">Report natural and controlled occlusions separately; split data by scene.</text>
+</svg>

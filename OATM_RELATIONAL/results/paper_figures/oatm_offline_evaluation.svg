@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="410" viewBox="0 0 1600 410" role="img" aria-labelledby="svgTitle svgDesc">
+  <title id="svgTitle">OATM offline evaluation</title>
+  <desc id="svgDesc">Frozen tracker outputs and privileged nuScenes annotations enter a separate offline matching and metric pipeline with no feedback to the tracker.</desc>
+  <defs>
+    <marker id="arrowGrey" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#74798A"/></marker>
+    <style>
+      .label{font-family:Arial,Helvetica,sans-serif;font-size:18px;font-weight:700;fill:#11183F;text-anchor:middle}
+      .sub{font-family:Arial,Helvetica,sans-serif;font-size:14px;fill:#5B6178;text-anchor:middle}
+      .band{font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;letter-spacing:1.3px;fill:#74798A}
+      .flow{fill:none;stroke:#74798A;stroke-width:2.2;stroke-dasharray:4 5;marker-end:url(#arrowGrey)}
+      .merge{fill:none;stroke:#74798A;stroke-width:2.2;stroke-dasharray:4 5}
+    </style>
+  </defs>
+
+  <rect width="1600" height="410" fill="#FFFFFF"/>
+  <rect x="35" y="25" width="1530" height="360" rx="8" fill="#FAFAFB" stroke="#A9ADBA" stroke-width="1.8" stroke-dasharray="9 7"/>
+  <text x="65" y="58" class="band">OFFLINE EVALUATION ONLY · NO FEEDBACK TO TRACKER</text>
+
+  <rect x="90" y="92" width="300" height="105" rx="5" fill="#F2F7FE" stroke="#315FA8" stroke-width="2"/>
+  <text x="240" y="132" class="label">Frozen OATM Outputs</text>
+  <text x="240" y="160" class="sub">observed and predicted rows</text>
+  <text x="240" y="181" class="sub">remain distinct</text>
+
+  <rect x="90" y="230" width="300" height="105" rx="5" fill="#FFF4E8" stroke="#F7931E" stroke-width="2"/>
+  <text x="240" y="268" class="label">nuScenes Ground Truth</text>
+  <text x="240" y="296" class="sub">projected annotations · visibility</text>
+  <text x="240" y="317" class="sub">LiDAR/radar support metadata</text>
+
+  <path d="M390 144H465Q495 144 495 174V207" class="merge"/>
+  <path d="M390 282H465Q495 282 495 252V221" class="merge"/>
+  <circle cx="495" cy="214" r="7" fill="#74798A"/>
+  <path d="M502 214H620" class="flow"/>
+
+  <rect x="620" y="154" width="330" height="120" rx="5" fill="#FFFFFF" stroke="#74798A" stroke-width="1.8"/>
+  <text x="785" y="200" class="label">Class-Aware Matching</text>
+  <text x="785" y="229" class="sub">Hungarian assignment</text>
+  <text x="785" y="251" class="sub">at IoU 0.30</text>
+
+  <path d="M950 214H1060" class="flow"/>
+  <rect x="1060" y="120" width="430" height="188" rx="5" fill="#FFFFFF" stroke="#11183F" stroke-width="1.9"/>
+  <text x="1275" y="162" class="label">Evaluation Metrics</text>
+  <line x1="1100" y1="181" x2="1450" y2="181" stroke="#D8DCE7" stroke-width="1.2"/>
+  <text x="1275" y="214" class="sub">Precision · Recall · F1</text>
+  <text x="1275" y="244" class="sub">MOTA · IDF1 · identity errors</text>
+  <text x="1275" y="274" class="sub">Localization · hidden reliability</text>
+</svg>

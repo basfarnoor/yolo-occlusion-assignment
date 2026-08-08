@@ -11,6 +11,56 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-07 — Final paper figure pack
+
+### Change or experiment
+
+Replaced the mixed synthetic/pilot paper-figure generator with a final-run-only
+publication pipeline. Added a compact canonical table for
+`lidar-fixes-20260805`, retained the approved online and offline SVG diagrams,
+and generated six additional figures covering the final metric profile,
+selective persistence, identity/localization, severe-visibility recall,
+occluder-relative geometry, and the causal recovery sequence. Every current
+figure is exported as SVG, PDF, and 600-DPI PNG.
+
+### Reason
+
+The paper requires one consistent evidence population, clear terminology, and
+figures that remain readable under zoom and print reduction. Earlier paper
+figures mixed synthetic mechanism evidence and a two-linkable-event pilot with
+the final scene-disjoint result.
+
+### Validation or evidence
+
+The generator asserts the final run ID, validation population, IoU 0.30 gate,
+1,873-annotation denominator, rounded F1 consistency, supported OATM metric
+rankings, and the known overall/severe-visibility recall limitation. All output
+formats pass structural, resolution, and DPI checks; rendered figures were
+inspected at full and reduced size for clipping and label overlap. The full
+test suite passes (39 tests), `ruff check .` passes, and `git diff --check`
+reports no whitespace errors.
+
+### Decision and next step
+
+Use the eight figures listed in `OATM_RELATIONAL/results/paper_figures/README.md`
+for the paper, poster, and presentation. Keep legacy synthetic and pilot assets
+only for traceability, and preserve the final guide's claim boundaries in every
+caption and discussion.
+
+## 2026-08-07 — Simplified legacy natural-event matrix
+
+### Change
+
+Removed the obsolete `Selective OATM` comparison row from the natural-event
+outcome matrix and regenerated the matching SVG, PDF, and 600-DPI PNG. The
+remaining OATM, ByteTrack-12, and ByteTrack-5 rows now occupy the full matrix.
+
+### Validation
+
+Confirmed that the removed method no longer appears in the SVG, inspected the
+figure at full and reduced size, checked the PDF structure, and verified the
+PNG dimensions and 600-DPI metadata.
+
 ## 2026-08-06 — Consolidated presentation guide around final evaluation
 
 ### Change or experiment
