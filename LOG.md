@@ -11,6 +11,40 @@
   mini, reconstruct chronological `CAM_FRONT` sequences, project annotations,
   and produce a verified candidate-occlusion index.
 
+## 2026-08-08 — Cohesive paper evidence update
+
+### Change or experiment
+
+Integrated the poster's five-frame real-event identity case study into the
+LaTeX paper using the original 1600x706 source panels. Retained the poster's
+selective-persistence and identity/localization plots in their sharper vector
+forms, and removed the older synthetic development plots from the paper's main
+evidence flow. After figure-level review, also removed the redundant causal
+recovery schematic and retained its essential lifecycle explanation in prose;
+the remaining figures were renumbered automatically. The manuscript text was
+then converted to true LaTeX double spacing while retaining a compact title
+and affiliation block.
+
+### Reason
+
+The paper needed a concrete qualitative link between aggregate identity
+metrics and an observable occlusion/reappearance lifecycle, without mixing
+legacy development populations into the final scene-disjoint results.
+
+### Validation or evidence
+
+The case-study text reproduces the poster's recorded identity sequence while
+explicitly treating it as one explanatory event rather than a new statistical
+estimate. The double-spaced paper compiles to 16 pages with resolved references
+and no overfull or underfull boxes; all pages were rendered and inspected for
+figure order, readability, captions, headers, and page numbering.
+
+### Decision and next step
+
+Use the final validation figures for quantitative claims and the real-event
+sequence only as bounded qualitative evidence. A manually verified event-level
+cohort remains the next step for estimating recovery and ghost-duration rates.
+
 ## 2026-08-07 — Final paper figure pack
 
 ### Change or experiment

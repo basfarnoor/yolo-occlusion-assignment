@@ -1,0 +1,318 @@
+Occlusion-Adaptive Temporal Memory                                                                                           [Author One] et al.
+
+Occlusion-Adaptive Temporal Memory: A Camera-Only Framework for
+  Track Continuity Under Visual Occlusion in Autonomous Driving
+                                          [Author One]¹ [Author Two]¹ [Author Three]²
+                                         ¹ [Institution and location]       ² [Institution and location]
+                                   Under the direction of: Tanveer Hussain • Assisted by: Ahmed Bahaj
+     [KAUST Division Name], King Abdullah University of Science and Technology • Saudi Research Science Institute 2026   •    Aug 9, 2026
+
+
+Abstract.
+   Camera-based perception for autonomous driving relies almost entirely on single-frame object detectors, which have no inherent mech-
+anism for distinguishing a temporarily occluded object from one that has genuinely left the scene. This work presents Occlusion-Adaptive
+Temporal Memory (OATM), a causal, camera-only tracking method that extends ByteTrack’s two-stage, confidence-aware association with
+explicit target-occluder relational reasoning: when a mature track goes unmatched, OATM evaluates whether a currently visible object
+plausibly explains the disappearance, stores the target in an occluder-centric coordinate frame, checks that memory against the target’s own
+independent motion prediction, predicts when the occlusion should end, and restricts identity reconnection to a bounded, relation-aware
+association stage. In a final scene-disjoint evaluation on ten nuScenes-mini scenes, with five used only to fix lifecycle thresholds and five
+held out for validation, every method was scored on identical frozen detections over 1,873 projected car and pedestrian annotations at IoU
+0.30. OATM reached 84.1% precision, 40.4% F1, 18.4% MOTA, and 30.3% IDF1, with 59 identity switches, 28 fragmentations, and
+20.055 px mean center error, versus 73.4% precision, 40.1% F1, 14.2% MOTA, and 29.6% IDF1 for a five-frame ByteTrack buffer, and
+55.3% precision, 37.7% F1, 1.1% MOTA, and 27.4% IDF1 for a twelve-frame buffer. OATM also produced the most reliable hidden-state
+predictions (39.4% predicted-hidden precision versus 25.0% and 14.0%) and the fewest unsupported keyframe tracks (7.8% versus 25.9%
+and 22.1%), evidence of selective relational persistence rather than an indiscriminately longer wait. These results support a stronger bal-
+anced accuracy-identity-persistence tradeoff than either tested ByteTrack buffer, though OATM’s overall recall (26.6%) and its recall in the
+most-occluded visibility bin (8.3%) remained slightly below both baselines, and the evaluation is a ten-scene nuScenes-mini study rather
+than a full benchmark.
+
+1. Introduction
+Robust object tracking under occlusion remains a fundamental challenge for camera-based perception in autonomous driving.
+Single-frame detectors estimate location and class independently for each image and have no mechanism for reasoning about
+continuity across time, so a temporarily occluded object and one that has genuinely left the scene both manifest identically
+as an absence of detection. On reappearance, the object is typically registered as a new, unrelated detection, severing identity
+continuity, a real cost for downstream planning and control, which depend on continuous position estimates of nearby road
+users. Occlusion is not a rare failure mode: in the nuScenes dataset [1], nearly 40% of annotated object instances exhibit less
+than 80% visibility at some point in their track.
+   Tracking-by-detection methods associate per-frame detections into tracks using a motion model, typically a Kalman filter
+under a constant-velocity assumption, combined with an intersection-over-union (IoU)-based assignment solved via the Hun-
+garian algorithm [2]. Subsequent work extends association to incorporate low-confidence detections that would otherwise be
+discarded [3], and separate lines of research aggregate visual features temporally [4] or maintain longer-horizon memory of
+tracked objects [5–8], reviewed in Section 2. Existing methods, however, generally treat occlusion as an implicit byproduct
+of detector failure or a fixed confidence threshold rather than a distinct state requiring explicit classification, and none jointly
+provides a memory of the hidden target explicitly protected against contamination by the occluder, a termination rule tied to
+a predicted end of occlusion, and a reconnection stage guarded against identity hijacking by nearby same-class objects.
+   Without an explicit, causally reasoned notion of occlusion, a tracker cannot decide whether to keep predicting a hidden
+object’s position, terminate it as lost, or protect its remembered state from being silently overwritten by whatever is occluding it.
+To address this gap, we propose Occlusion-Adaptive Temporal Memory (OATM), a causal, camera-only tracking method built
+on the same two-stage, confidence-aware association and constant-velocity motion prediction as ByteTrack [3], extended with
+three components. First, when a mature track goes unmatched, an explicit target-occluder relation forms only if a currently
+visible object plausibly explains the disappearance, moving through a defined lifecycle (forming, active, clearing, resolved, or
+failed) rather than being treated as an undifferentiated association failure. Second, the hidden target is stored in a coordinate
+frame centered on its occluder and accepted only while it agrees with the target’s own independently predicted position, so an
+inconsistent or drifting relation is rejected rather than followed. Third, OATM predicts the expected moment the occlusion
+should end and couples this to a bounded reappearance stage and a priority-ordered termination rule, so a track is retired for
+exactly one traceable reason rather than a fixed frame-count timer. Sections 3 and 4 describe this method and its evaluation
+in full.
+
+
+
+
+                                                                        1
+Occlusion-Adaptive Temporal Memory                                                                             [Author One] et al.
+
+2. Related Works
+Recent progress in multi-object tracking has been driven substantially by improvements in object detection. Modern detec-
+tors, including the YOLO family [9], estimate bounding boxes and class labels independently for each frame; this per-frame
+independence is exactly what prevents a detector with no access to prior frames from distinguishing a temporarily occluded
+object from one that is genuinely absent, and the tracking literature has largely developed to compensate for this rather than
+to remove it.
+    The dominant paradigm, tracking-by-detection, treats detections as a fixed observation stream and associates them into
+coherent identities separately. SORT [2] does so with a Kalman filter under a constant-velocity assumption and an IoU cost
+matrix solved by the Hungarian algorithm, but associates only detections above a fixed confidence threshold; a detection below
+it, whether from occlusion, blur, or scale, is discarded and becomes indistinguishable from a genuine absence of evidence.
+ByteTrack [3] addresses this with a two-stage procedure: high-confidence detections matched first, then a second round against
+low-confidence detections, never allowing an unmatched low-confidence detection to start a new track. This recovers weak
+visual evidence, but once a detection is entirely absent, ByteTrack has no mechanism beyond generic motion extrapolation
+until its track buffer expires.
+    A related line of work addresses degraded detection quality at the feature level. Flow-guided feature aggregation [4] aligns
+convolutional features across neighboring frames using estimated optical flow, improving consistency for objects still partially
+visible nearby, an assumption that fails under multi-frame full occlusion. MeMOT [5] and MeMOTR [6] use transformer-
+based memory to retain object representations across longer sequences than a Kalman filter alone tolerates. PermaTrack [7]
+trains an explicit object-permanence objective, predicting continued existence through full occlusion rather than relying on
+motion extrapolation. Mask-guided spatio-temporal feature aggregation [8] restricts temporal aggregation using segmentation
+masks, reducing the risk that an occluding object contaminates the representation of the target it hides.
+    Occlusion may also be addressed with sensing unavailable to a single camera: LiDAR and radar can, depending on occluder
+geometry, provide evidence invisible to the camera [10], and cooperative perception shares observations across vehicles or
+infrastructure to cover a single vehicle’s blind spots [11]. These directions are complementary to the present work, which
+stays camera-only to characterize what temporal reasoning alone can recover.
+    Across this body of work, three limitations recur: occlusion is handled as an incidental consequence of a detection or
+association failure rather than an explicitly classified perceptual state; temporal memory of a hidden target, where retained
+at all, is not explicitly protected against contamination or hijacking by the object doing the occluding, often of the same
+class; and no reviewed method couples memory retention to a predicted end of occlusion together with a principled, bounded
+reconnection rule, relying instead on a fixed frame-count threshold, an implicit confidence cutoff, or a learned model’s opaque
+memory. OATM addresses these three limitations directly, as described in Section 3.
+3. Methodology
+3.1 Dataset and Detection
+All experiments use the publicly released mini subset of nuScenes [1], restricted to the forward-facing camera channel
+(CAM_FRONT) only, so the study isolates what temporal reasoning alone can recover from a single monocular stream. The
+mini subset comprises 10 scenes and 2,342 total CAM_FRONT frames, of which 404 are human-annotated keyframes (2 Hz);
+the remainder are unannotated ”sweep” frames. Ground truth is constructed independently of the tracking pipeline: nuScenes’
+3D bounding-box annotations for the car and pedestrian categories are projected into the CAM_FRONT image plane using
+recorded ego-vehicle pose and camera calibration, yielding 3,492 in-scope projected car and pedestrian annotations across
+all 404 keyframes. The ten scenes are split whole, never at the frame level, into five development scenes, used only to fix
+lifecycle thresholds, and five held-out validation scenes, whose 1,873 annotations are the sole basis for every comparison
+reported in Section 4. Projected annotations, visibility labels, calibration, LiDAR/radar information, and recorded ego pose
+are used exclusively to prepare and evaluate events offline; none is ever an input to the online tracker.
+    A single pretrained, lightweight YOLO detector [9] is run once, in prediction-only mode at a confidence floor of 0.05, over
+every frame in all 10 scenes on CPU, producing 49,436 fresh detections in 860.4 seconds. Detections are cached so every
+compared tracking method receives an identical, frozen detection stream; only the car and pedestrian categories are used
+downstream.
+3.2 OATM: Occlusion-Adaptive Temporal Memory
+OATM retains ByteTrack’s two association rounds unchanged: high-confidence detections matched to predicted tracks, then
+remaining tracks given one further opportunity against low-confidence detections, and activates its own reasoning only once
+these ordinary rounds fail to observe a mature target. At that point OATM asks a question ByteTrack itself does not ask: is
+this disappearance actually explained by a visible occluder, and when should that explanation stop being trusted?
+
+
+
+
+                                                               2
+Occlusion-Adaptive Temporal Memory                                                                                [Author One] et al.
+
+
+
+
+  Figure 1. OATM extends ByteTrack with an occlusion-conditioned branch. Observed detections follow ordinary association; only a
+                        mature, unmatched target enters target-occluder reasoning and temporal memory.
+
+
+3.2.1 Occlusion Candidate Scoring and Relational Lifecycle
+For an unmatched, mature target, OATM scores every other visible object as a candidate occluder using target-relative cov-
+erage, occluder-to-target scale ratio, a depth-order cue from each box’s lower image boundary, trajectory agreement, and
+track maturity; this weighted score is a deterministic engineering signal, not a calibrated probability. A supported target
+forms exactly one primary relation with its highest-scoring occluder, moving through a defined lifecycle: FORMING, when
+a visible occluder first explains the disappearance; ACTIVE, while the relation stays geometrically consistent (Section 3.2.2);
+CLEARING, once separation is predicted or support becomes inconsistent; RESOLVED, when a valid detection reconnects
+the original identity; and FAILED, when persistence ends without recovery. The primary occluder cannot switch mid-episode,
+so a different nearby object can never silently take over ownership of the target.
+3.2.2 Occluder-Centric Geometric Memory
+Rather than remembering a hidden target’s last appearance, OATM remembers its position relative to its occluder. At relation
+formation, the target box is encoded as a normalized center offset and scale relative to the occluder box; on later frames,
+the current occluder’s box decodes an implied target position from this stored relation. This decoded position is accepted
+only when it agrees with the target’s own, entirely independent causal Kalman prediction, within a bounded center residual
+and scale ratio. If the two disagree, OATM does not follow the occluder-relative anchor; it keeps the independent prediction
+and moves the relation to CLEARING. This is what protects the hidden target’s memory from being silently overwritten by
+whatever is occluding it: an inconsistent or drifting relation is rejected rather than trusted.
+3.2.3 Expected Clearance, Termination, and Protected Reappearance
+While a relation is active, OATM propagates both boxes over a bounded horizon and identifies the first frame at which target-
+relative coverage falls below a low threshold, the expected clearance time, after which the target receives a short, fixed reap-
+pearance grace window rather than indefinite persistence. A mature target that never forms an occlusion relation at all is not
+dropped immediately either: after its ordinary one-frame output grace expires, it may hold its identity for one further silent
+frame, emitting no box at all, and reconnects only through a separate, higher-threshold check; failing that check ends the
+identity. A hidden target is terminated the first time any one condition holds: outward motion toward an image boundary with
+less than 60% of the predicted box still visible, an immature track, no occlusion relation beyond the ordinary one-frame grace
+and its single silent frame, expected clearance passing without reappearance, hidden duration exceeding twelve frames, or
+localization uncertainty exceeding a configured bound. Persistence is therefore always tied to one specific, traceable reason.
+    A relationally hidden target is excluded from ByteTrack’s own association rounds; reconnection instead uses a separate,
+stricter, one-to-one stage scoring remaining detections on class agreement, distance to the independently predicted box, scale
+agreement, and consistency with the expected clearance time, accepting a match only above a fixed threshold and within a
+hard-capped search radius. An active occluder blocks reconnection unless the relation has already entered CLEARING. This
+prevents a nearby same-class object from hijacking the target’s identity, and prevents a distant, unrelated weak detection from
+being accepted merely because the ordinary buffer has not yet expired.
+    A camera-motion compensation branch (background feature tracking and robust translation estimation) was implemented
+and evaluated as an ablation but is disabled in the promoted configuration and was not used for the final reported experiment,
+because it reduced error on a controlled panning scenario while producing severe drift on longer natural sequences once
+combined with the image-space velocity already modeled by the target’s own Kalman filter.
+
+
+
+
+                                                                3
+Occlusion-Adaptive Temporal Memory                                                                                 [Author One] et al.
+
+3.3 Evaluation Protocol and Metrics
+OATM is compared against ByteTrack itself at two track-buffer lengths, using identical cached detections and identical as-
+sociation thresholds, so OATM’s relational reasoning is the single controlled variable. ByteTrack-5 uses a five-frame buffer,
+matching this project’s earlier baselines; ByteTrack-12 uses a twelve-frame buffer matching OATM’s own maximum hidden-
+duration ceiling, so any OATM advantage cannot be attributed to a longer generic wait than its baseline is given.
+   The final comparison uses all ten nuScenes-mini scenes, split whole into five development scenes, used only to fix lifecycle
+and consistency thresholds, and five held-out validation scenes, used only for the reported comparison in Section 4. Tracker
+output and official 3D annotations are matched after tracking finishes, offline, using class-aware one-to-one Hungarian match-
+ing at an IoU of 0.30, with IoU 0.10 and 0.50 checked as sensitivity gates; the 1,873 validation-scene annotations are the sole
+basis for every reported number.
+   nuScenes visibility tokens (four coarse bins from roughly 0-40% to 80-100% annotated-visible fraction) and LiDAR/radar
+point counts accompany each official annotation and are used only offline, as sensitivity strata for stratifying recall by occlu-
+sion severity and sensor support, never as an online occlusion signal and never to remove hard examples from the reported
+denominator. A zero-LiDAR-point annotation is not treated as occluded, since an object can register zero points from distance
+or sparse sampling alone; it is retained in the headline population like every other annotation. This coarse, image-level label
+is not an exact per-pixel occlusion mask, so precise occlusion start, end, and duration still require manual CAM_FRONT
+review.
+   Reported metrics are precision, recall, and F1 against the matched annotations; MOTA and IDF1 as standard tracking-
+accuracy and identity-consistency scores; identity switches and fragmentation counts; mean center error between matched
+predicted and annotated box centers; predicted-hidden precision, the fraction of temporally predicted, currently-invisible
+outputs that match a real annotation; and an unsupported-keyframe-track rate, a sparse-label proxy for ghost persistence
+measuring how often a tracker output at an annotated keyframe corresponds to no official annotation at all. Every threshold
+used in Section 4 was fixed on the five development scenes before the five validation scenes were scored, and the run carries
+a single identifier (lidar-fixes-20260805) so every reported number is traceable to its source.
+4. Results and Discussion
+Earlier development-phase synthetic and natural-pilot studies, illustrated in Figures 2 and 3, validated the relational mech-
+anism and its localization safeguards before final thresholds were fixed on the five development scenes; per the evaluation
+protocol in Section 3.3, only the final scene-disjoint run (lidar-fixes-20260805) is reported numerically below.
+
+
+
+
+ Figure 2. Recovery versus negative ghost persistence on the eight development-phase stress scenarios. OATM matches ByteTrack-12’s
+                                     recovery using less than one-third of its mean ghost duration.
+
+
+4.1 Final Scene-Disjoint Evaluation
+On the five held-out validation scenes (1,873 annotations, IoU 0.30), OATM reached 84.1% precision, 40.4% F1, 18.4%
+MOTA, and 30.3% IDF1, with 59 identity switches, 28 fragmentations, and 20.055 px mean center error. ByteTrack-5
+reached 73.4% precision, 40.1% F1, 14.2% MOTA, and 29.6% IDF1, with 64 identity switches, 33 fragmentations, and
+21.084 px error. ByteTrack-12 reached 55.3% precision, 37.7% F1, 1.1% MOTA, and 27.4% IDF1, with 82 identity switches,
+33 fragmentations, and 21.361 px error.
+
+                                                                4
+Occlusion-Adaptive Temporal Memory                                                                                 [Author One] et al.
+
+
+
+
+Figure 3. Mean hidden-box center error in the development-phase synthetic mechanism study. All methods use identical detections and
+                                                        target trajectories.
+
+
+   OATM also reached 39.4% predicted-hidden precision and a 7.8% unsupported-keyframe-track rate, versus 25.0% and
+25.9% for ByteTrack-5 and 14.0% and 22.1% for ByteTrack-12; in absolute counts, OATM produced only 40 false predicted-
+hidden matches against 150 for ByteTrack-5 and 393 for ByteTrack-12.
+   OATM led both baselines on every metric above except recall. F1, MOTA, and IDF1 together indicate the strongest
+balanced detection-and-identity result; the fewest identity switches and fragmentations indicate the most stable identity as-
+signment; the lowest center error indicates the best localization; and the combination of the highest predicted-hidden precision
+with the lowest unsupported-track rate indicates that OATM’s persistence is selective rather than merely longer. ByteTrack-
+12’s own numbers make the contrast explicit: giving it OATM’s own maximum hidden duration did not translate into a better
+balanced result, since its identity switches, fragmentations, precision, and unsupported-track rate were all worse than OATM’s,
+and its MOTA fell even below the shorter ByteTrack-5 buffer’s. A longer generic wait is not, by itself, evidence toward the
+tradeoff OATM targets.
+4.2 Limitations
+This result does not extend to every axis. OATM’s overall recall was 26.6%, slightly below ByteTrack-5’s 27.6% and
+ByteTrack-12’s 28.6%, and in the most-occluded visibility bin (annotated visible fraction under 40%) OATM’s recall fell
+to 8.3%, versus 9.3% and 10.7% for the two baselines, the clearest remaining target for the relation-formation mechanism
+specifically. The evaluation itself is a ten-scene nuScenes-mini study with 1,873 validation annotations, not a full-nuScenes
+benchmark or a statistically powered universal comparison, and its occlusion evidence is the coarse visibility label described
+in Section 3.3, not an exact per-camera pixel mask or a verified occlusion start and end time; the unsupported-track rate is
+likewise a sparse-label proxy rather than a directly verified ghost duration. All three methods share the same frozen detector,
+so objects too small, distant, or heavily obscured to produce any usable detection are outside what association (relational or
+otherwise) can recover.
+   Taken together, these results support a specific, bounded set of claims. OATM is causal and camera-only at inference
+time; it distinguishes current detections from temporal predictions in every saved output; it achieved the strongest F1, MOTA,
+IDF1, identity-switch count, fragmentation count, localization error, predicted-hidden precision, and unsupported-track rate
+among the three evaluated methods on the final validation split. They do not support broader claims: OATM does not lead
+in recall, either overall or in the most-occluded bin; the occlusion-candidate score is a deterministic engineering signal, not
+a calibrated probability; and no result here reproduces a published MOT17, MOT20, or full nuScenes benchmark number,
+since this ten-scene mini comparison is specific to this project.
+5. Conclusions
+This work presented OATM, a causal, camera-only tracking method that extends ByteTrack with explicit target-occluder rela-
+tional reasoning: occlusion-candidate scoring and lifecycle, occluder-centric geometric memory checked against independent
+motion prediction, expected-clearance termination with a single silent, high-threshold identity frame for a mature miss that
+never forms a relation, and protected reappearance association. In a final scene-disjoint evaluation on ten nuScenes-mini
+scenes, five held out for validation, OATM reached the strongest precision, F1, MOTA, IDF1, identity-switch count, frag-
+mentation count, localization error, predicted-hidden precision, and unsupported-track rate among the tested methods, using
+identical frozen detections and identical association thresholds throughout.
+
+
+                                                                5
+Occlusion-Adaptive Temporal Memory                                                                                     [Author One] et al.
+
+    Three conclusions follow. First, conditioning persistence on an explicit, causally scored occlusion relation, rather than
+an undifferentiated miss or a fixed buffer, is implementable from camera signals alone and produces a measurably stronger
+balanced accuracy-identity-persistence tradeoff than either tested ByteTrack buffer on this evaluation. Second, that advantage
+is not simply a longer wait: ByteTrack-12 was given OATM’s own maximum hidden duration and still trailed OATM on
+identity, localization, and false-persistence measures, and trailed even the shorter ByteTrack-5 buffer on MOTA. Selectivity,
+not duration, is what the relational mechanism contributes. Third, the result is bounded rather than universal: OATM’s
+overall and most-occluded-bin recall remained slightly below both baselines, and the ten-scene, 1,873-annotation evaluation
+is a reproducible nuScenes-mini study, not a claim of universal ByteTrack superiority or a reproduced published benchmark.
+    The clearest next step is closing the recall gap in the most-occluded visibility bin, since this is where the relation-formation
+mechanism specifically underperforms rather than where its safeguards are too conservative. A full nuScenes evaluation,
+rather than the ten-scene mini subset used here, would support confidence intervals and per-class results instead of a single
+matched comparison. Manually verified, event-level review of individual occlusion episodes, rather than the coarse visibility-
+label stratification used here, would let ghost duration and occlusion timing be checked directly instead of through the sparse
+unsupported-track proxy. Camera-motion compensation, evaluated as an ablation but disabled in the promoted configuration,
+should be reconsidered only once target state and ego-motion are fused within one stabilized coordinate system.
+6. Acknowledgements
+The author thanks Tanveer Hussain for guidance and mentorship throughout the design, implementation, and evaluation of
+this project, and Ahmed Bahaj for additional support. This work was completed as part of the Saudi Research Science
+Institute (SRSI) 2026 program, hosted by the [KAUST Division Name] division at King Abdullah University of Science and
+Technology (KAUST). The author also acknowledges the Motional/nuScenes team for the public release of the nuScenes
+dataset used throughout this study.
+7. References
+ [1] H. Caesar, V. Bankiti, A. H. Lang, S. Vora, V. E. Liong, Q. Xu, A. Krishnan, Y. Pan, G. Baldan, and O. Beijbom. nuScenes: A mul-
+     timodal dataset for autonomous driving. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition
+     (CVPR 2020), pages 11618–11628, 2020.
+ [2] A. Bewley, Z. Ge, L. Ott, F. Ramos, and B. Upcroft. Simple online and realtime tracking. In 2016 IEEE International Conference on
+     Image Processing (ICIP), pages 3464–3468, 2016.
+ [3] Y. Zhang, P. Sun, Y. Jiang, D. Yu, F. Weng, Z. Yuan, P. Luo, W. Liu, and X. Wang. ByteTrack: Multi-object tracking by associating
+     every detection box. In Proceedings of the European Conference on Computer Vision (ECCV 2022), 2022.
+ [4] X. Zhu, Y. Wang, J. Dai, L. Yuan, and Y. Wei. Flow-guided feature aggregation for video object detection. In Proceedings of the
+     IEEE International Conference on Computer Vision (ICCV 2017), pages 408–417, 2017.
+ [5] J. Cai, M. Xu, W. Li, Y. Xiong, W. Xia, Z. Tu, and S. Soatto. MeMOT: Multi-object tracking with memory. In Proceedings of the
+     IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR 2022), pages 8080–8090, 2022.
+ [6] R. Gao and L. Wang. MeMOTR: Long-term memory-augmented transformer for multi-object tracking. In Proceedings of the
+     IEEE/CVF International Conference on Computer Vision (ICCV 2023), pages 9901–9910, 2023.
+ [7] P. Tokmakov, J. Li, W. Burgard, and A. Gaidon. Learning to track with object permanence. In Proceedings of the IEEE/CVF
+     International Conference on Computer Vision (ICCV 2021), 2021.
+ [8] K. A. Hashmi, T. U. Sheikh, D. Stricker, and M. Z. Afzal. Beyond boxes: Mask-guided spatio-temporal feature aggregation for video
+     object detection. In IEEE/CVF Winter Conference on Applications of Computer Vision (WACV 2025), 2025.
+ [9] G. Jocher, J. Qiu, M. Liu, S. Lyu, F. C. Akyon, and M. E. Kalfaoglu. Ultralytics YOLO26: Unified real-time end-to-end vision models.
+     arXiv preprint arXiv:2606.03748, 2026. https://arxiv.org/abs/2606.03748.
+[10] S. K. Kwon, E. Hyun, J.-H. Lee, J. Lee, and S. H. Son. Detection scheme for a partially occluded pedestrian based on occluded depth
+     in lidar-radar sensor fusion. Optical Engineering, 56(11):113112, 2017.
+[11] A. Guo, S. Zhang, E. Tang, X. Gao, H. Pang, H. Tian, Y. Mu, W. Wen, C. Fang, and Z. Chen. When autonomous vehicle meets v2x
+     cooperative perception: How far are we? arXiv preprint arXiv:2509.24927, 2025. https://arxiv.org/abs/2509.24927.
+
+
+
+
+                                                                   6
+
